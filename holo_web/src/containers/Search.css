@@ -1,0 +1,43 @@
+body {
+  background-color: #c9d3fb;
+}
+
+.Input {
+  width: 80vw;
+  height: 5vh;
+  margin: auto 1vw auto 1vm 0;
+  font-family: "aSmile_L";
+  font-size: 2.5vh;
+}
+
+.NoResults {
+  width: 100vw;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.NoResultsImg {
+  max-width: 30vw;
+  max-height: 30vh;
+  margin: auto auto 1vh auto;
+}
+
+.NoResultsMsg {
+  margin: 1vh auto auto auto;
+  text-align: center;
+  white-space: pre-line;
+  font-family: "aSmile";
+  font-size: 5vh;
+  color: #1d4999;
+}
+
+@font-face {
+  font-family: "aSmile_L";
+  src: url(../font/aSmile_L.ttf);
+}
+
+@font-face {
+  font-family: "aSmile";
+  src: url(../font/aSmile.ttf);
+}

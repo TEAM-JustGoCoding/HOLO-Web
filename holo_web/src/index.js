@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Board from './containers/Board';
 import './index.css';
-import Board from './Board';
 
 ReactDOM.render(
   <React.StrictMode>
