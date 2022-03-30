@@ -4,6 +4,7 @@ import { AppBar, Box, Toolbar, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import styled from "styled-components";
 import noResultsImg from "../images/noResults.png"
+import React from 'react';
 
 const StyledAppBar = styled(AppBar)`
   && {
@@ -15,6 +16,7 @@ const StyledAppBar = styled(AppBar)`
     color: #757575;
   }
 `;
+
 
 export default function Search() {
   const [searchWord, setSearchWord] = useState(null)
@@ -53,3 +55,5 @@ export default function Search() {
     </div>
   );
 }
+
+
