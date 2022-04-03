@@ -2,12 +2,45 @@ body {
   background-color: #c9d3fb;
 }
 
+.headerBar{
+  background-color: #9dc3e6;
+  width: 100vw;
+  height: 10vh;
+  display: flex;
+  color: #757575;
+  box-shadow: 0 3px 5px rgba(0,0,0,0.30)
+}
+
 .Input {
   width: 80vw;
   height: 5vh;
-  margin: auto 1vw auto 1vm 0;
+  margin: auto 0.5vw auto auto;
   font-family: "aSmile_L";
   font-size: 2.5vh;
+}
+
+.searchButton {
+  background-color: rgba(0,0,0,0);
+  width: 8vh;
+  height: 8vh;
+  padding: 0;
+  margin: auto auto auto 0.5vw;
+  border-radius:50px;
+  border: 0;
+  outline: 0;
+}
+.searchButton:hover {
+	background-color: rgba(0,0,0,0.05);
+}
+.searchButton:active {
+	background-color: rgba(0,0,0,0.15);
+}
+
+.searchImg{
+  width: 5vh;
+  height: 5vh;
+  margin: auto auto auto auto;
+  color: #757575;
 }
 
 .NoResults {

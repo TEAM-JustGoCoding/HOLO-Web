@@ -1,75 +1,42 @@
-import { AppBar, Box, Toolbar, IconButton } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import styled from "styled-components";
-import Logo from "../images/logo.png"
 import './Board.css';
-import React from 'react';
+import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
+import {images} from '../images';
+import { AiOutlineSearch } from "react-icons/ai";
 
-const StyledAppBar = styled(AppBar)`
-  && {
-    background-color: #9dc3e6;
-    width: 100vw;
-    height: 10vh;
-    display: flex;
-    color: #757575;
-  }
-`;
 
 function search(){
   console.log("검색")
 }
 
-/*
-export default function Board() {
+function ShowBoard() {
+  const [select, setSelect] = useState("left")
+  
   return (
     <div>
-      <Box sx={{ flexGrow: 1 }}>
-        <StyledAppBar position="static">
-          <Toolbar>
-            <img className="Logo" src={Logo} alt="Logo"/>
-            <IconButton
-              onClick={search}
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              sx={{ mr: 2 }}
-            >
-              <SearchIcon />
-            </IconButton>
-          </Toolbar>
-        </StyledAppBar>
-      </Box>
+      <div className="headerBar">
+        <img className="logo" src={images.logo} alt="Logo"/>
+        <Link className="linkSearchButton" to='/search'>
+          <button className="moveSearchButton" onClick={search}>
+            <AiOutlineSearch className="moveSearchImg"/>
+          </button>
+        </Link>
+      </div>
+      <div className="buttonBar">
+        <button className="leftButton" onClick={() => setSelect("left")}>정책</button>
+        <button className="rightButton" onClick={() => setSelect("right")}>생활백서</button>
+      </div>
+      <div className={`board ${select === "left" ? 'left' : 'right'}`}>
+      </div>
     </div>
   );
 }
-*/
+
 
 class Board extends React.Component {
   render() {
-    return (
-        <div>
-          <Box sx={{ flexGrow: 1 }}>
-            <StyledAppBar position="static">
-              <Toolbar>
-                <img className="Logo" src={Logo} alt="Logo"/>
-                <Link to='/search'>
-                  <IconButton
-                    onClick={search}
-                    size="large"
-                    edge="start"
-                    color="inherit"
-                    aria-label="open drawer"
-                    sx={{ mr: 2 }}
-                  >
-                  <SearchIcon />
-                  </IconButton>
-                </Link>
-              </Toolbar>
-            </StyledAppBar>
-          </Box>
-        </div>
+    return(
+      <ShowBoard/>
     );
   }
 }
