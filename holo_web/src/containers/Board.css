@@ -1,8 +1,101 @@
-body {
-  background-color: #c9d3fb;
+.headerBar{
+  background-color: #9dc3e6;
+  width: 100vw;
+  height: 10vh;
+  display: flex;
+  color: #757575;
+  box-shadow: 0 3px 5px rgba(0,0,0,0.30)
 }
 
-.Logo {
+.logo {
   height: 100%;
-  margin: 0 auto 0 auto;
+  margin: auto auto auto auto;
+}
+
+.linkSearchButton {
+  margin: auto 3vw auto 0;
+}
+
+.moveSearchButton {
+  background-color: rgba(0,0,0,0);
+  width: 8vh;
+  height: 8vh;
+  padding: 0;
+  border-radius:50px;
+  border: 0;
+  outline: 0;
+}
+.moveSearchButton:hover {
+	background-color: rgba(0,0,0,0.05);
+}
+.moveSearchButton:active {
+	background-color: rgba(0,0,0,0.15);
+}
+
+.moveSearchImg{
+  width: 5vh;
+  height: 5vh;
+  margin: auto auto auto auto;
+  color: #757575;
+}
+
+.buttonBar{
+  width: 100vw;
+  height: 10vh;
+  display: flex;
+  flex-direction: row;
+}
+
+.leftButton{
+  background-color: #c9d3fb;
+  width: 50vw;
+  height: 10vh;
+  padding: 0;
+  margin: 0 auto 0 0;
+  font-family: "aSmile";
+  font-size: 4vh;
+  color: #1d4999;
+  border: 0;
+  outline: 0;
+}
+
+.rightButton{
+  background-color: #ddcafa;
+  width: 50vw;
+  height: 10vh;
+  padding: 0;
+  margin: 0 0 0 auto;
+  font-family: "aSmile";
+  font-size: 4vh;
+  color: #1d4999;
+  border: 0;
+  outline: 0;
+}
+
+.board.left {
+  background-color: #c9d3fb;
+  width: 100vw;
+  height: 80vh;
+}
+
+.board.right {
+  background-color: #ddcafa;
+  width: 100vw;
+  height: 80vh;
+}
+
+.postTable {
+  width: 80vw;
+  height: 50vh;
+  margin: auto auto auto auto;
+}
+
+@font-face {
+  font-family: "aSmile_L";
+  src: url(../font/aSmile_L.ttf);
+}
+
+@font-face {
+  font-family: "aSmile";
+  src: url(../font/aSmile.ttf);
 }
