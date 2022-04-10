@@ -1,5 +1,12 @@
-body {
+.policySearch {
   background-color: #c9d3fb;
+  width: 100vw;
+  height: 100vh;
+}
+.infoSearch {
+  background: #ddcafa;
+  width: 100vw;
+  height: 100vh;
 }
 
 .headerBar{
@@ -8,7 +15,7 @@ body {
   height: 10vh;
   display: flex;
   color: #757575;
-  box-shadow: 0 3px 5px rgba(0,0,0,0.30)
+  box-shadow: 0 3px 5px rgba(0,0,0,0.30);
 }
 
 .Input {
@@ -35,12 +42,22 @@ body {
 .searchButton:active {
 	background-color: rgba(0,0,0,0.15);
 }
-
 .searchImg{
   width: 5vh;
   height: 5vh;
-  margin: auto auto auto auto;
+  margin: auto auto;
   color: #757575;
+}
+
+.searchResults{
+  width:100vw;
+  height: 90vh;
+  display: flex;
+}
+.searchTable{
+  width: 95vw;
+  height: 80vh;
+  margin: auto auto;
 }
 
 .NoResults {
@@ -49,13 +66,11 @@ body {
   display: flex;
   flex-direction: column;
 }
-
 .NoResultsImg {
   max-width: 30vw;
   max-height: 30vh;
   margin: auto auto 1vh auto;
 }
-
 .NoResultsMsg {
   margin: 1vh auto auto auto;
   text-align: center;

@@ -3,25 +3,28 @@
   width: 100vw;
   height: 10vh;
   display: flex;
+  position: relative;
   color: #757575;
-  box-shadow: 0 3px 5px rgba(0,0,0,0.30)
+  box-shadow: 0 3px 5px rgba(0,0,0,0.30);
 }
 
 .logo {
   height: 100%;
-  margin: auto auto auto auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .linkSearchButton {
-  margin: auto 3vw auto 0;
+  margin: auto 3vw auto auto;
 }
-
 .moveSearchButton {
   background-color: rgba(0,0,0,0);
   width: 8vh;
   height: 8vh;
   padding: 0;
-  border-radius:50px;
+  border-radius: 50px;
   border: 0;
   outline: 0;
 }
@@ -31,7 +34,6 @@
 .moveSearchButton:active {
 	background-color: rgba(0,0,0,0.15);
 }
-
 .moveSearchImg{
   width: 5vh;
   height: 5vh;
@@ -76,18 +78,52 @@
   background-color: #c9d3fb;
   width: 100vw;
   height: 80vh;
+  display: flex;
+  flex-direction: column;
 }
-
 .board.right {
   background-color: #ddcafa;
   width: 100vw;
   height: 80vh;
+  display: flex;
+  flex-direction: column;
 }
 
-.postTable {
-  width: 80vw;
-  height: 50vh;
+.moveWriteButton {
+  background-color: #1d4999;
+  width: 8vh;
+  height: 8vh;
+  padding: 0;
+  position: absolute;
+  top: 80%;
+  left: 80%;
+  border-radius: 50px;
+  border: 0;
+  outline: 0;
+  box-shadow: 0 4px 7px rgba(0,0,0,0.30);
+}
+.moveWriteButton:hover {
+	background-color: #183c80;
+}
+.moveWriteButton:active {
+	background-color: #183c80;
+}
+.moveWriteImg{
+  width: 5vh;
+  height: 5vh;
   margin: auto auto auto auto;
+  color: white;
+}
+
+.boardTable {
+  width: 95vw;
+  height: 50vh;
+  margin: 3vh auto auto auto;
+}
+
+.boardPagination {
+  width: 100vw;
+  margin: auto auto 0 auto;
 }
 
 @font-face {
