@@ -1,0 +1,25 @@
+.boardTitle{
+    font-family: "aSmile";
+    font-size: 3vh;
+}
+
+.boardInfo{
+    font-family: "aSmile_L";
+    font-size: 2vh;
+}
+
+.test{
+}
+.test tr{
+    background-color: white;
+}
+
+@font-face {
+  font-family: "aSmile_L";
+  src: url(../font/aSmile_L.ttf);
+}
+  
+@font-face {
+  font-family: "aSmile";
+  src: url(../font/aSmile.ttf);
+}
