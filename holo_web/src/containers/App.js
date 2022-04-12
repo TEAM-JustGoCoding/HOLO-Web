@@ -1,15 +1,17 @@
 import { Route, Routes } from 'react-router-dom';
-import Board from './Board';
+import Home from './Home';
+import InfoBoard from './InfoBoard';
 import PolicySearch from './PolicySearch';
-import InfoSearch from './InfoSearch';
+import DocumentSearch from './DocumentSearch';
 import Write from './Write';
 
 const App = () => {
   return (
     <Routes>
-      <Route path="/" element={<Board />} />
+      <Route path="/" element={<Home/>} />
+      <Route path="/infoboard" element={<InfoBoard />} />
       <Route path="/policysearch" element={<PolicySearch />} />
-      <Route path="/infosearch" element={<InfoSearch />} />
+      <Route path="/documentsearch" element={<DocumentSearch />} />
       <Route path="/write" element={<Write />} />
     </Routes>
   );

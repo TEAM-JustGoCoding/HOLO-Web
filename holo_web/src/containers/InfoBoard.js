@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import {images} from '../images';
 import { AiOutlineSearch, AiOutlinePlus } from "react-icons/ai";
 import BoardTable from '../components/BoardTable';
-import Pagination from '../components/Paging';
+import Pagination from '../components/Pagination';
 
 const policyList = [
   {
@@ -132,16 +132,16 @@ function ShowBoard() {
   
   return (
     <div>
-      <div className="headerBar">
+      <div className="boardHeaderBar">
         <div></div>
-        <img className="logo" src={images.logo} alt="Logo"/>
-        <Link className="linkSearchButton" to={select === "left" ? '/policysearch' : '/infosearch'}>
-          <button className="moveSearchButton" onClick={search}>
+        <img src={images.logo} alt="Logo"/>
+        <Link className="linkSearchButton" to={select === "left" ? '/policysearch' : '/documentsearch'}>
+          <button onClick={search}>
             <AiOutlineSearch className="moveSearchImg"/>
           </button>
         </Link>
       </div>
-      <div className="buttonBar">
+      <div className="boardButtonBar">
         <button className="leftButton" onClick={() => setSelect("left")}>정책</button>
         <button className="rightButton" onClick={() => setSelect("right")}>생활백서</button>
       </div>
