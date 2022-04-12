@@ -1,4 +1,4 @@
-.headerBar{
+.writeHeaderBar{
     background-color: #9dc3e6;
     width: 100vw;
     height: 10vh;
@@ -66,11 +66,11 @@
 
 @font-face {
     font-family: "aSmile_L";
-    src: url(../font/aSmile_L.ttf);
+    src: url(../fonts/aSmile_L.ttf);
 }
   
 @font-face {
     font-family: "aSmile";
-    src: url(../font/aSmile.ttf);
+    src: url(../fonts/aSmile.ttf);
 }
   

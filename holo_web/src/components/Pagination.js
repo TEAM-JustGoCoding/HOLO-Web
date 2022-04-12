@@ -1,8 +1,8 @@
-import './Paging.css';
+import './Pagination.css';
 import React, { useState } from "react";
 import Pagination from "react-js-pagination";
 
-const Paging = () => {
+const CustomPagination = () => {
     const [page, setPage] = useState(1);
     
     const handlePageChange = (page) => {
@@ -22,4 +22,4 @@ const Paging = () => {
     );
 };
 
-export default Paging;
+export default CustomPagination;

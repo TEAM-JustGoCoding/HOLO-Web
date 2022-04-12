@@ -34,8 +34,8 @@ function NoResults() {
   const msg = "앗! 검색 결과가 없어요!\n 다시 검색해주세요!"
   return(
     <div className="NoResults">
-      <img className="NoResultsImg" src={images.noResults} alt="NoResultsImg"/>
-      <h1 className="NoResultsMsg">{msg}</h1>
+      <img src={images.noResults} alt="NoResultsImg"/>
+      <h1>{msg}</h1>
     </div>
   );
 }
@@ -74,10 +74,10 @@ function Search() {
 
 
   return (
-    <div className="infoSearch">
-      <div className="headerBar">
-        <input className="Input" type="text" onChange={getResearchWord} placeholder="검색어를 입력해주세요"/>
-        <button className="searchButton" onClick={search}>
+    <div className="documentSearch">
+      <div className="searchHeaderBar">
+        <input type="text" onChange={getResearchWord} placeholder="검색어를 입력해주세요"/>
+        <button onClick={search}>
           <AiOutlineSearch className="searchImg"/>
         </button>
       </div>

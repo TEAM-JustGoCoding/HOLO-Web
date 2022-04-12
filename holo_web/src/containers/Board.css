@@ -1,4 +1,4 @@
-.headerBar{
+.boardHeaderBar {
   background-color: #9dc3e6;
   width: 100vw;
   height: 10vh;
@@ -7,8 +7,7 @@
   color: #757575;
   box-shadow: 0 3px 5px rgba(0,0,0,0.30);
 }
-
-.logo {
+.boardHeaderBar > img {
   height: 100%;
   position: absolute;
   top: 50%;
@@ -19,7 +18,7 @@
 .linkSearchButton {
   margin: auto 3vw auto auto;
 }
-.moveSearchButton {
+.linkSearchButton > button {
   background-color: rgba(0,0,0,0);
   width: 8vh;
   height: 8vh;
@@ -28,10 +27,10 @@
   border: 0;
   outline: 0;
 }
-.moveSearchButton:hover {
+.linkSearchButton > button:hover {
 	background-color: rgba(0,0,0,0.05);
 }
-.moveSearchButton:active {
+.linkSearchButton > button:active {
 	background-color: rgba(0,0,0,0.15);
 }
 .moveSearchImg{
@@ -41,7 +40,7 @@
   color: #757575;
 }
 
-.buttonBar{
+.boardButtonBar{
   width: 100vw;
   height: 10vh;
   display: flex;
@@ -60,7 +59,6 @@
   border: 0;
   outline: 0;
 }
-
 .rightButton{
   background-color: #ddcafa;
   width: 50vw;
@@ -96,7 +94,7 @@
   padding: 0;
   position: absolute;
   top: 80%;
-  left: 80%;
+  right: 5%;
   border-radius: 50px;
   border: 0;
   outline: 0;
@@ -128,10 +126,10 @@
 
 @font-face {
   font-family: "aSmile_L";
-  src: url(../font/aSmile_L.ttf);
+  src: url(../fonts/aSmile_L.ttf);
 }
 
 @font-face {
   font-family: "aSmile";
-  src: url(../font/aSmile.ttf);
+  src: url(../fonts/aSmile.ttf);
 }
