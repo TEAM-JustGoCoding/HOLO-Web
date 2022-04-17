@@ -25,7 +25,7 @@ const policyList = [
   },
   {
     id: 3,
-    title: "스마트 플러그 지원 사업",
+    title: "🔥 스마트 플러그 지원 사업",
     date: "2022-09-04",
     writer: "도라미",
     view: "200",
@@ -41,7 +41,7 @@ const policyList = [
   },
   {
     id: 5,
-    title: "1인 가구 정리 수납 컨설팅",
+    title: "보람일자리사업 1인가구 상담헬퍼 모집",
     date: "2021-11-21",
     writer: "정책공유봇",
     view: "78",
@@ -57,7 +57,7 @@ const policyList = [
   },
   {
     id: 7,
-    title: "보람일자리사업 1인가구 상담헬퍼 모집",
+    title: "1인 가구 정리 수납 컨설팅",
     date: "2022-09-04",
     writer: "우네",
     view: "18",
@@ -83,7 +83,7 @@ const infoList = [
   },
   {
     id: 3,
-    title: "돼지고기 잡냄새 없애는 방법 공유해요",
+    title: "🔥 돼지고기 잡냄새 없애는 방법 공유해요",
     date: "2022-04-11",
     writer: "옌",
     view: "13",
@@ -147,7 +147,7 @@ function ShowBoard() {
       </div>
       <div className={`board ${select === "left" ? 'left' : 'right'}`}>
         <div className="boardTable">
-          <BoardTable list={select === "left" ? policyList : infoList}></BoardTable>
+          <div><BoardTable list={select === "left" ? policyList : infoList}></BoardTable></div>
         </div>
         <Link to='/write'>
           <button className="moveWriteButton">
@@ -155,7 +155,7 @@ function ShowBoard() {
           </button>
         </Link>
         <div className="boardPagination">
-          <Pagination></Pagination>
+          <div><Pagination></Pagination></div>
         </div>
       </div>
     </div>

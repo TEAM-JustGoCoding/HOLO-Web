@@ -10,13 +10,13 @@ const BoardTable = (props) => {
   const {list} = props;
 
   return (
-    <Table bordered hover className="test2">
-      <tbody className="test">
+    <Table bordered hover>
+      <tbody className="tableBody">
       {list.map(item=>(
         <tr key={item.id} onClick={()=>search(item.id)}>
           <td>
-            <div className="boardTitle">{item.title}</div>
-            <div className="boardInfo">{item.date} | {item.writer} | 👁 {item.view} | ♥ {item.like}</div>
+            <div className="tableTitle">{item.title}</div>
+            <div className="tableInfo">{item.date} | {item.writer} | 👁 {item.view} | ♥ {item.like}</div>
           </td>
         </tr>
       ))}

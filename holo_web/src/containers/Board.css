@@ -114,14 +114,23 @@
 }
 
 .boardTable {
+  width: 100vw;
+  height: 75vh;
+  display: flex;
+}
+.boardTable > div {
   width: 95vw;
-  height: 50vh;
-  margin: 3vh auto auto auto;
+  margin: auto;
 }
 
 .boardPagination {
   width: 100vw;
-  margin: auto auto 0 auto;
+  height: 7.5vh;
+  display: flex;
+}
+.boardPagination > div {
+  height: auto;
+  margin: 0 auto auto auto;
 }
 
 @font-face {

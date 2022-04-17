@@ -1,17 +1,27 @@
-.boardTitle{
-    font-family: "aSmile";
-    font-size: 3vh;
+.tableBody tr{
+    background-color: white;
+}
+.tableBody tr:nth-child(1),
+.tableBody tr:nth-child(2),
+.tableBody tr:nth-child(3){
+  background-color: #f0f0f0;
 }
 
-.boardInfo{
+.tableTitle{
+    font-family: "aSmile";
+    font-size: 2.75vh;
+    width: 90vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.tableInfo{
     font-family: "aSmile_L";
     font-size: 2vh;
-}
-
-.test{
-}
-.test tr{
-    background-color: white;
+    width: 90vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 @font-face {
