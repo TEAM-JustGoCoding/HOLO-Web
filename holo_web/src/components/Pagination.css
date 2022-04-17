@@ -1,7 +1,6 @@
 .pagination {
     display: flex;
     justify-content: center;
-    margin-top: 15px;
 }
 
 ul { 
@@ -38,6 +37,6 @@ ul.pagination li.active a {
 
 .page-selection { 
     width: 48px; 
-    height: 30px; 
+    height: 5px; 
     color: #1d4999; 
 }

@@ -96,7 +96,6 @@ function Search() {
     setSearchWord(val.target.value)
   }
 
-
   return (
     <div className="policySearch">
       <div className="searchHeaderBar">

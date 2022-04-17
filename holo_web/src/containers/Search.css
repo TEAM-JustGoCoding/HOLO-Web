@@ -18,7 +18,7 @@
   box-shadow: 0 3px 5px rgba(0,0,0,0.30);
 }
 .searchHeaderBar>input{
-  width: 80vw;
+  width: 70vw;
   height: 5vh;
   margin: auto 0.5vw auto auto;
   font-family: "aSmile_L";
@@ -65,16 +65,16 @@
   flex-direction: column;
 }
 .NoResults > img {
-  max-width: 30vw;
-  max-height: 30vh;
-  margin: auto auto 1vh auto;
+  max-width: 35vw;
+  max-height: 25vh;
+  margin: auto auto 2.5vh auto;
 }
 .NoResults > h1 {
-  margin: 1vh auto auto auto;
+  margin: 2.5vh auto auto auto;
   text-align: center;
   white-space: pre-line;
   font-family: "aSmile";
-  font-size: 5vh;
+  font-size: 3.5vh;
   color: #1d4999;
 }
 
