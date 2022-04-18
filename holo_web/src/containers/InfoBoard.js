@@ -176,8 +176,8 @@ function ShowBoard() {
         </Link>
       </div>
       <div className="boardButtonBar">
-        <button className="leftButton" onClick={() => { setSelect("left"); /*getPolicyJson();*/}} >정책</button>
-        <button className="rightButton" onClick={() => { setSelect("right"); /*getInfoJson();*/}}>생활백서</button>
+        <button className="leftButton" onClick={() => { setSelect("left"); }} >정책</button>
+        <button className="rightButton" onClick={() => { setSelect("right");}}>생활백서</button>
       </div>
       <div className={`board ${select === "left" ? 'left' : 'right'}`}>
         <div className="boardTable">
