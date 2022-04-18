@@ -6,6 +6,37 @@ import { AiOutlineSearch, AiOutlinePlus } from "react-icons/ai";
 import BoardTable from '../components/BoardTable';
 import Pagination from '../components/Pagination';
 
+var poliJson=[];
+var infoJson=[];
+
+function getPolicyJson() {
+	return fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/policyBoardJson.json')
+  .then(response => { return response.json();})
+	.then(response => { 
+                      poliJson = [];
+                      var obj = response;
+                      //console.log(obj.length);
+  
+                      for(var i=0; i < obj.length; i++) {
+                        poliJson.push(obj[i]);
+                      }           
+                      console.log(poliJson);
+                    });
+}
+
+function getInfoJson() {
+	return fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/infoBoardJson.json')
+	.then(response => { return response.json();})
+	.then(response => { 
+                      infoJson = [];
+                      var obj = response;
+                      for(var i=0; i < obj.length; i++) {
+                        infoJson.push(obj[i]);
+                      }     
+                      console.log(infoJson);
+                    });
+}
+
 const policyList = [
   {
     id: 1,
@@ -128,7 +159,10 @@ function search(){
 }
 
 function ShowBoard() {
-  const [select, setSelect] = useState("left")
+  const [select, setSelect] = useState("left");
+  
+  getPolicyJson();
+  getInfoJson();
   
   return (
     <div>
@@ -142,8 +176,8 @@ function ShowBoard() {
         </Link>
       </div>
       <div className="boardButtonBar">
-        <button className="leftButton" onClick={() => setSelect("left")}>정책</button>
-        <button className="rightButton" onClick={() => setSelect("right")}>생활백서</button>
+        <button className="leftButton" onClick={() => { setSelect("left"); /*getPolicyJson();*/}} >정책</button>
+        <button className="rightButton" onClick={() => { setSelect("right"); /*getInfoJson();*/}}>생활백서</button>
       </div>
       <div className={`board ${select === "left" ? 'left' : 'right'}`}>
         <div className="boardTable">
@@ -164,6 +198,10 @@ function ShowBoard() {
 
 
 class Board extends React.Component {
+  inifunc() {
+    
+  }
+
   render() {
     return(
       <ShowBoard/>
