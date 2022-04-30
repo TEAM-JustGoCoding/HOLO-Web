@@ -5,12 +5,14 @@ import {images} from '../images';
 import { AiOutlineSearch, AiOutlinePlus } from "react-icons/ai";
 import BoardTable from '../components/BoardTable';
 import Pagination from '../components/Pagination';
+import axios from 'axios';
 
 var poliJson=[];
 var infoJson=[];
 
 function getPolicyJson() {
-	return fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/policyBoardJson.json')
+  
+	return fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/policyJson.json')
   .then(response => { return response.json();})
 	.then(response => { 
                       poliJson = [];
@@ -22,10 +24,22 @@ function getPolicyJson() {
                       }           
                       console.log(poliJson);
                     });
+  
+ /*
+  axios.get("http://holo.dothome.co.kr/policyJson.json",{
+    withCredentials: false
+  })
+      .then(function(body) {
+        console.log(typeof(body));
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+*/
 }
 
 function getInfoJson() {
-	return fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/infoBoardJson.json')
+	return fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/docJson.json')
 	.then(response => { return response.json();})
 	.then(response => { 
                       infoJson = [];
@@ -176,8 +190,8 @@ function ShowBoard() {
         </Link>
       </div>
       <div className="boardButtonBar">
-        <button className="leftButton" onClick={() => { setSelect("left"); }} >정책</button>
-        <button className="rightButton" onClick={() => { setSelect("right");}}>생활백서</button>
+        <button className="leftButton" onClick={() => { setSelect("left"); /*getPolicyJson();*/}} >정책</button>
+        <button className="rightButton" onClick={() => { setSelect("right"); /*getInfoJson();*/}}>생활백서</button>
       </div>
       <div className={`board ${select === "left" ? 'left' : 'right'}`}>
         <div className="boardTable">
