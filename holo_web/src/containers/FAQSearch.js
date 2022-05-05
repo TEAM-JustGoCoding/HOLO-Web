@@ -6,32 +6,28 @@ import BoardTable from '../components/BoardTable';
 import Pagination from '../components/Pagination';
 
 const list = [
-  {
-    id: 1,
-    title: "돼지고기 잡냄새 없애는 방법 공유해요",
-    date: "2022-04-11",
-    writer: "옌",
-    view: "13",
-    like: "1"
-  },
-  {
-    id: 2,
-    title: "탄 냄비 세척하는 방법이에용",
-    date: "2022-02-12",
-    writer: "옌",
-    view: "20",
-    like: "2"
-  }
+    { id: 0,
+    title: "채팅방을 삭제했어요. 복구할 수 있나요?"},
+    { id: 1,
+      title: "게시글은 어떻게 삭제하나요? (게시글 삭제하기)"},
+    { id: 2,
+    title: "프로필 사진과 닉네임을 변경하고 싶어요."},
+    { id: 3,
+    title: "HOLO 뜻이 뭔가요? (왜 HOLO 인가요?)"},
+    { id: 4,
+    title: "HOLO에서 지켜야 할 매너"},
+    { id: 5,
+    title: "위치 정보를 변경하고 싶어요."}                           
 ]
 
 function ExistResults() {
   const [page, setPage] = useState(1);
 
   function sliceList(){
-    if (page === (list.length/8))
-      return list.slice(8*(page-1), list.length)
+    if (page === (list.length/10))
+      return list.slice(10*(page-1), list.length)
     else
-      return list.slice(8*(page-1), 8*page);
+      return list.slice(10*(page-1), 10*page);
   }
   const handlePageChange = (page) => {
     setPage(page); 
@@ -41,10 +37,10 @@ function ExistResults() {
   return(
     <div>
       <div className="searchTable">
-        <div><BoardTable type="Info" list={sliceList()}></BoardTable></div>
+        <div><BoardTable type="FAQ" list={sliceList()}></BoardTable></div>
       </div>
       <div className="searchPagination">
-        <div><Pagination page={page} count={8} totalCount={list.length} setPage={handlePageChange}></Pagination></div>
+        <div><Pagination page={page} count={10} totalCount={list.length} setPage={handlePageChange}></Pagination></div>
       </div>
     </div>
   )
@@ -92,7 +88,7 @@ function Search() {
   }
 
   return (
-    <div className="documentSearch">
+    <div className="faqSearch">
       <div className="searchHeaderBar">
         <input type="text" onChange={getResearchWord} placeholder="검색어를 입력해주세요"/>
         <button onClick={search}>

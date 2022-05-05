@@ -1,4 +1,10 @@
-.policySearch {
+*{
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.policySearch,
+.faqSearch {
   background-color: #c9d3fb;
   width: 100vw;
   height: 100vh;
@@ -30,20 +36,21 @@
   height: 8vh;
   padding: 0;
   margin: auto auto auto 0.5vw;
-  border-radius:50px;
+  border-radius: 50px;
   border: 0;
   outline: 0;
 }
-.searchHeaderBar>button :hover {
+.searchHeaderBar>button:hover {
 	background-color: rgba(0,0,0,0.05);
 }
-.searchHeaderBar>button :active {
+.searchHeaderBar>button:active {
 	background-color: rgba(0,0,0,0.15);
 }
 .searchImg{
   width: 5vh;
   height: 5vh;
   margin: auto auto;
+  border-radius: 50px;
   color: #757575;
 }
 
@@ -53,9 +60,22 @@
   display: flex;
 }
 .searchTable{
+  width: 100vw;
+  height: 82.5vh;
+  display: flex;
+}
+.searchTable > div {
   width: 95vw;
-  height: 80vh;
-  margin: auto auto;
+  margin: 3vh auto auto auto;
+}
+.searchPagination {
+  width: 100vw;
+  height: 7.5vh;
+  display: flex;
+}
+.searchPagination > div {
+  height: auto;
+  margin: 0 auto auto auto;
 }
 
 .NoResults {

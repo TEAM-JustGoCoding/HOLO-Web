@@ -1,34 +1,43 @@
-.tableBody tr{
-    background-color: white;
+.tableBody tr,
+.tableBody.hot tr{
+  background-color: white;
 }
-.tableBody tr:nth-child(1),
-.tableBody tr:nth-child(2),
-.tableBody tr:nth-child(3){
+.tableBody.hot tr:nth-child(1),
+.tableBody.hot tr:nth-child(2),
+.tableBody.hot tr:nth-child(3){
   background-color: #f0f0f0;
 }
 
 .tableTitle{
-    font-family: "aSmile";
-    font-size: 2.75vh;
-    width: 90vw;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  font-family: "aSmile";
+  font-size: 2.75vh;
+  width: 90vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .tableInfo{
-    font-family: "aSmile_L";
-    font-size: 2vh;
-    width: 90vw;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  font-family: "aSmile_L";
+  font-size: 2vh;
+  width: 90vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tableTitle-FAQ{
+  font-family: "aSmile";
+  font-size: 2.75vh;
+  width: 90vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0.5vh 0;
 }
 
 @font-face {
   font-family: "aSmile_L";
   src: url(../fonts/aSmile_L.ttf);
 }
-  
 @font-face {
   font-family: "aSmile";
   src: url(../fonts/aSmile.ttf);

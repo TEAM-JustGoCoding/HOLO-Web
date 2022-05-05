@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import { images } from '../images';
 import { AiOutlineSearch } from "react-icons/ai";
 import BoardTable from '../components/BoardTable';
+import Pagination from '../components/Pagination';
 
 const list = [
   {
@@ -36,21 +37,31 @@ const list = [
     writer: "정책공유봇",
     view: "216",
     like: "112"
-  },
-  {
-    id: 5,
-    title: "보람일자리사업 1인가구 상담헬퍼 모집",
-    date: "2022-09-04",
-    writer: "우네",
-    view: "18",
-    like: "3"
   }
 ]
 
 function ExistResults() {
+  const [page, setPage] = useState(1);
+
+  function sliceList(){
+    if (page === (list.length/8))
+      return list.slice(8*(page-1), list.length)
+    else
+      return list.slice(8*(page-1), 8*page);
+  }
+  const handlePageChange = (page) => {
+    setPage(page); 
+    console.log("page: ",page);
+  };
+
   return(
-    <div className="searchTable">
-      <BoardTable list={list}></BoardTable>
+    <div>
+      <div className="searchTable">
+        <div><BoardTable type="Info" list={sliceList()}></BoardTable></div>
+      </div>
+      <div className="searchPagination">
+        <div><Pagination page={page} count={8} totalCount={list.length} setPage={handlePageChange}></Pagination></div>
+      </div>
     </div>
   )
 }

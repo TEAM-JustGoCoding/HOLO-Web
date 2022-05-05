@@ -4,8 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import Dropdown from '../components/Dropdown';
 import Modal from '../components/Modal';
 import axios from 'axios';
-import { NorthWest, OtherHouses } from '@mui/icons-material';
-import { formDataToBlob } from 'formdata-polyfill/esm.min';
 
 axios.defaults.withCredentials = true;  //axios 전역설정
 
@@ -44,12 +42,10 @@ var Delivery_state = {
 };
 
 function DocumentWrite() {
-  
   const D_titleChange = async (e) =>{
     Document_state.title = e.target.value;
     console.log(Document_state.title);
   };
-
   function D_contentChange (e) {
     Document_state.content = e.target.value;
     console.log(Document_state.content);
@@ -64,32 +60,26 @@ function DocumentWrite() {
 }
 
 function OTTWrite(){
-
   function O_titleChange (e) {
     OTT_state.title = e.target.value;
     console.log(OTT_state.title);
   };
-
   function O_contentChange (e) {
     OTT_state.content = e.target.value;
     console.log(OTT_state.content);
   };
-
   function O_accumulateChange (e) {
     OTT_state.accumulate = e.target.value;
     console.log(OTT_state.accumulate);
   }
-
   function O_buyDateChange (e) {
     OTT_state.buy_date = e.target.value;
     console.log(OTT_state.buy_date);
   }
-
   function O_buyLocationChange (e) {
     OTT_state.buyLocation = e.target.value;
     console.log(OTT_state.buyLocation);
   }
-
 
   return(
     <div className="writeInput">
@@ -107,27 +97,22 @@ function DeliveryWrite() {
     Delivery_state.title = e.target.value;
     console.log(Delivery_state.title);
   };
-
   function G_contentChange (e) {
     Delivery_state.content = e.target.value;
     console.log(Delivery_state.content);
   };
-
   function G_accumulateChange (e) {
     Delivery_state.accumulate = e.target.value;
     console.log(Delivery_state.accumulate);
   }
-
   function G_buyLocationChange (e) {
     Delivery_state.buyLocation = e.target.value;
     console.log(Delivery_state.buyLocation);
   }
-
   function G_buyDateChange (e) {
     Delivery_state.buy_date = e.target.value;
     console.log(Delivery_state.buy_date);
   }
-
   function G_pickupChange (e) {
     Delivery_state.pickupLocation = e.target.value;
     console.log(Delivery_state.pickupLocation);
@@ -146,8 +131,6 @@ function DeliveryWrite() {
 }
 
 function ShowInput(props) {
-  
-
   switch(props.category){
     case "정책":
     case "생활백서":   

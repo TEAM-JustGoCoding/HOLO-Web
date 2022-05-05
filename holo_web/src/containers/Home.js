@@ -13,7 +13,9 @@ function Home() {
                 <button>알아가요</button>
             </Link>
             <button>같이해요</button>
-            <button>궁금해요</button>
+            <Link className="linkMenuButton" to="/faqboard">
+              <button>궁금해요</button>
+            </Link>
         </div>
         <div className="home"></div>
     </div>

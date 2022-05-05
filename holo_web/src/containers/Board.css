@@ -1,3 +1,8 @@
+*{
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
 .boardHeaderBar {
   background-color: #9dc3e6;
   width: 100vw;
@@ -15,9 +20,13 @@
   transform: translate(-50%, -50%);
 }
 
+.linkBackButton {
+  margin: auto auto auto 3vw;
+}
 .linkSearchButton {
   margin: auto 3vw auto auto;
 }
+.linkBackButton > button,
 .linkSearchButton > button {
   background-color: rgba(0,0,0,0);
   width: 8vh;
@@ -27,26 +36,30 @@
   border: 0;
   outline: 0;
 }
+.linkBackButton > button:hover, 
 .linkSearchButton > button:hover {
 	background-color: rgba(0,0,0,0.05);
 }
+.linkBackButton > button:active,
 .linkSearchButton > button:active {
 	background-color: rgba(0,0,0,0.15);
 }
+.moveBackImg,
 .moveSearchImg{
   width: 5vh;
   height: 5vh;
-  margin: auto auto auto auto;
+  margin: auto auto;
+  border-radius: 50px;
   color: #757575;
 }
 
-.boardButtonBar{
+.boardCategoryBar{
+  background-color: #c9d3fb;
   width: 100vw;
   height: 10vh;
   display: flex;
   flex-direction: row;
 }
-
 .leftButton{
   background-color: #c9d3fb;
   width: 50vw;
@@ -71,8 +84,15 @@
   border: 0;
   outline: 0;
 }
+.centerText{
+  margin: auto auto;
+  font-family: "aSmile";
+  font-size: 4vh;
+  color: #1d4999;
+}
 
-.board.left {
+.board.left,
+.boardCenter{
   background-color: #c9d3fb;
   width: 100vw;
   height: 80vh;
@@ -120,7 +140,7 @@
 }
 .boardTable > div {
   width: 95vw;
-  margin: auto;
+  margin: 2.5vh auto auto auto;
 }
 
 .boardPagination {
