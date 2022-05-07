@@ -4,7 +4,11 @@ import { images } from '../images';
 import { AiOutlineSearch } from "react-icons/ai";
 import BoardTable from '../components/BoardTable';
 import Pagination from '../components/Pagination';
+import axios from 'axios';
 
+var result = [];  //결과 저장할 전역변수
+
+/*
 const list = [
   {
     id: 1,
@@ -39,15 +43,16 @@ const list = [
     like: "112"
   }
 ]
+*/
 
 function ExistResults() {
   const [page, setPage] = useState(1);
 
   function sliceList(){
-    if (page === (list.length/8))
-      return list.slice(8*(page-1), list.length)
+    if (page === (result.length/8))
+      return result.slice(8*(page-1), result.length)
     else
-      return list.slice(8*(page-1), 8*page);
+      return result.slice(8*(page-1), 8*page);
   }
   const handlePageChange = (page) => {
     setPage(page); 
@@ -60,7 +65,7 @@ function ExistResults() {
         <div><BoardTable type="Info" list={sliceList()}></BoardTable></div>
       </div>
       <div className="searchPagination">
-        <div><Pagination page={page} count={8} totalCount={list.length} setPage={handlePageChange}></Pagination></div>
+        <div><Pagination page={page} count={8} totalCount={result.length} setPage={handlePageChange}></Pagination></div>
       </div>
     </div>
   )
@@ -88,21 +93,49 @@ function ShowResults(props) {
 function Search() {
   const [searchWord, setSearchWord] = useState(null)
   const [searchResult, setSearchResult] = useState(null)
+  const [resultExist, setResultExist] = useState(null)
+
+  function getResult(){
+    return fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/policyResult.json')
+    .then(response => { return response.json();})
+    .then(response => { 
+                        var result = [];
+                        var obj = response;
+                        for(var i=0; i < obj.length; i++) {
+                          result.push(obj[i]);
+                        }     
+                        setSearchResult(result);
+
+                        console.log(searchResult);
+                      });
+  }
 
   function search(){
-    console.log(searchWord)
-    switch(searchWord){
-      case "No":
-        setSearchResult(0);
-        break;
-      case "Yes":
-        setSearchResult(1);
-        break;
-      default:
-        setSearchResult(null);
-        break;
+        //1. 검색어 json 형식으로 php 서버에 전송
+        axios.post("http://holo.dothome.co.kr/searchPolicy.php", JSON.stringify({word: searchWord}),{
+          withCredentials: false,
+          headers: {"Content-Type": "application/json"}
+        })
+          .then(function(body) {
+            console.log(body);
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+
+    //2. 검색결과 받아오기
+    getResult();
+
+    result = searchResult;
+    //console.log(result);
+
+    if(searchResult.length > 0){
+      setResultExist(1);
+    } else {
+      setResultExist(0);
     }
   }
+
   function getResearchWord(val){
     setSearchWord(val.target.value)
   }
@@ -116,7 +149,7 @@ function Search() {
         </button>
       </div>
       <div className="searchResults">
-        <ShowResults results={searchResult}></ShowResults>
+        <ShowResults results={resultExist}></ShowResults>
       </div>
     </div>
   );
