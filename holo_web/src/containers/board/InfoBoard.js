@@ -50,17 +50,17 @@ function getDocumentJson() {
 }
 
 function ShowBoard() {
-  const [select, setSelect] = useState("left");
+  const [select, setSelect] = useState("policy");
   const [page, setPage] = useState(1);
 
   function sliceList(){
     switch(select){
-      case "left":
+      case "policy":
         if (page === (policyJson.length/7))
           return policyJson.slice(7*(page-1), policyJson.length)
         else
           return policyJson.slice(7*(page-1), 7*page);
-      case "right":
+      case "document":
         if (page === (documentJson.length/7))
           return documentJson.slice(7*(page-1), documentJson.length)
         else
@@ -86,19 +86,19 @@ function ShowBoard() {
           </button>
         </Link>
         <img src={images.logo} alt="Logo"/>
-        <Link className="linkSearchButton" to={select === "left" ? '/policysearch' : '/documentsearch'}>
+        <Link className="linkSearchButton" to={select === "policy" ? '/policysearch' : '/documentsearch'}>
           <button>
             <AiOutlineSearch className="moveSearchImg"/>
           </button>
         </Link>
       </div>
       <div className="boardCategoryBar">
-        <button className="leftButton" onClick={() => { setSelect("left"); setPage(1);/*getPolicyJson();*/}} >정책</button>
-        <button className="rightButton" onClick={() => { setSelect("right"); setPage(1); /*getDocumentJson();*/}}>생활백서</button>
+        <button className="leftButton" onClick={() => { setSelect("policy"); setPage(1);/*getPolicyJson();*/}} >정책</button>
+        <button className="rightButton" onClick={() => { setSelect("document"); setPage(1); /*getDocumentJson();*/}}>생활백서</button>
       </div>
-      <div className={`board ${select === "left" ? 'left' : 'right'}`}>
+      <div className={`board ${select === "policy" ? 'left' : 'right'}`}>
         <div className="boardTable">
-          <div><BoardTable type="Info" list={sliceList()}></BoardTable></div>
+          <div><BoardTable type={`${select === "policy" ? 'Policy' : 'Document'}`} list={sliceList()}></BoardTable></div>
         </div>
         <Link to='/write'>
           <button className="moveWriteButton">
@@ -107,7 +107,7 @@ function ShowBoard() {
         </Link>
         <div className="boardPagination">
           <div>
-            {select === "left"
+            {select === "policy"
               ? <Pagination page={page} count={7} totalCount={policyJson.length} setPage={handlePageChange}></Pagination>
               : <Pagination page={page} count={7} totalCount={documentJson.length} setPage={handlePageChange}></Pagination>
             }

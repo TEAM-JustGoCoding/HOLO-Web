@@ -8,43 +8,6 @@ import axios from 'axios';
 
 var result = [];  //결과 저장할 전역변수
 
-/*
-const list = [
-  {
-    id: 1,
-    title: "1인 가구 맞춤형 주거상담소",
-    date: "2022-03-17",
-    writer: "정리 최고",
-    view: "256",
-    like: "50"
-  },
-  {
-    id: 2,
-    title: "1인 가구를 위한 이벤트",
-    date: "2022-04-06",
-    writer: "라이언",
-    view: "100",
-    like: "12"
-  },
-  {
-    id: 3,
-    title: "1인 가구 정리 수납 컨설팅",
-    date: "2021-11-21",
-    writer: "정책공유봇",
-    view: "78",
-    like: "6"
-  },
-  {
-    id: 4,
-    title: "1인 가구 정책 모음",
-    date: "2022-01-16",
-    writer: "정책공유봇",
-    view: "216",
-    like: "112"
-  }
-]
-*/
-
 function ExistResults() {
   const [page, setPage] = useState(1);
 

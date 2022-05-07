@@ -8,27 +8,6 @@ import axios from 'axios';
 
 var result = [];  //결과를 저장할 전역변수
 
-/*
-const list = [
-  {
-    id: 1,
-    title: "돼지고기 잡냄새 없애는 방법 공유해요",
-    date: "2022-04-11",
-    writer: "옌",
-    view: "13",
-    like: "1"
-  },
-  {
-    id: 2,
-    title: "탄 냄비 세척하는 방법이에용",
-    date: "2022-02-12",
-    writer: "옌",
-    view: "20",
-    like: "2"
-  }
-]
-*/
-
 function ExistResults() {
   const [page, setPage] = useState(1);
 

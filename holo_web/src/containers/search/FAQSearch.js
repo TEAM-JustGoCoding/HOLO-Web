@@ -8,23 +8,6 @@ import axios from 'axios';
 
 var result = [];
 
-/*
-const list = [
-    { id: 0,
-    title: "채팅방을 삭제했어요. 복구할 수 있나요?"},
-    { id: 1,
-      title: "게시글은 어떻게 삭제하나요? (게시글 삭제하기)"},
-    { id: 2,
-    title: "프로필 사진과 닉네임을 변경하고 싶어요."},
-    { id: 3,
-    title: "HOLO 뜻이 뭔가요? (왜 HOLO 인가요?)"},
-    { id: 4,
-    title: "HOLO에서 지켜야 할 매너"},
-    { id: 5,
-    title: "위치 정보를 변경하고 싶어요."}                           
-]
-*/
-
 function ExistResults() {
   const [page, setPage] = useState(1);
 

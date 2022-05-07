@@ -2,6 +2,9 @@ import { Route, Routes } from 'react-router-dom';
 import Home from './home/Home';
 import InfoBoard from './board/InfoBoard';
 import FAQBoard from './board/FAQBoard';
+import PolicyPost from './post/PolicyPost';
+import DocumentPost from './post/DocumentPost';
+import DeliveryPost from './post/DeliveryPost';
 import FAQPost from './post/FAQPost';
 import PolicySearch from './search/PolicySearch';
 import DocumentSearch from './search/DocumentSearch';
@@ -14,6 +17,9 @@ const App = () => {
       <Route path="/" element={<Home/>} />
       <Route path="/infoboard" element={<InfoBoard />} />
       <Route path="/faqboard" element={<FAQBoard/>}/>
+      <Route path="/policypost/:id" element={<PolicyPost/>}/>
+      <Route path="/documentpost/:id" element={<DocumentPost/>}/>
+      <Route path="/deliverypost/:id" element={<DeliveryPost/>}/>
       <Route path="/faqpost/:id" element={<FAQPost/>}/>
       <Route path="/policysearch" element={<PolicySearch />} />
       <Route path="/documentsearch" element={<DocumentSearch />} />

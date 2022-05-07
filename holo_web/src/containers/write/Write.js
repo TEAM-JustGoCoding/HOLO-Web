@@ -7,6 +7,14 @@ import axios from 'axios';
 
 axios.defaults.withCredentials = true;  //axios 전역설정
 
+var Policy_state = {
+  user : '13',
+  title : '',
+  content : '',
+  date : '',
+  view : '0',
+  like : '0'
+};
 var Document_state = {
   user : '13',
   title : '',
@@ -15,7 +23,6 @@ var Document_state = {
   view : '0',
   like : '0'
 };
-
 var OTT_state = {
   user : '13',
   title : '',
@@ -27,7 +34,6 @@ var OTT_state = {
   view : '0',
   like : '0'
 };
-
 var Delivery_state = {
   user : '13',
   title : '',
@@ -40,6 +46,24 @@ var Delivery_state = {
   view : '0',
   like : '0'
 };
+
+function PolicyWrite() {
+  const P_titleChange = async (e) =>{
+    Policy_state.title = e.target.value;
+    console.log(Policy_state.title);
+  };
+  function P_contentChange (e) {
+    Policy_state.content = e.target.value;
+    console.log(Policy_state.content);
+  };
+
+  return(
+    <div className="writeInput">
+      <input type='text' id="title" placeholder='제목' spellCheck="false" onChange={P_titleChange}/>
+      <textarea id="content" className="infoContent" placeholder='내용을 입력하세요.' spellCheck="false" onChange={P_contentChange}/>
+    </div>
+  )
+}
 
 function DocumentWrite() {
   const D_titleChange = async (e) =>{
@@ -54,7 +78,7 @@ function DocumentWrite() {
   return(
     <div className="writeInput">
       <input type='text' id="title" placeholder='제목' spellCheck="false" onChange={D_titleChange}/>
-      <textarea id="content" className="documentContent" placeholder='내용을 입력하세요.' spellCheck="false" onChange={D_contentChange}/>
+      <textarea id="content" className="infoContent" placeholder='내용을 입력하세요.' spellCheck="false" onChange={D_contentChange}/>
     </div>
   )
 }
@@ -133,6 +157,7 @@ function DeliveryWrite() {
 function ShowInput(props) {
   switch(props.category){
     case "정책":
+      return <PolicyWrite/>;
     case "생활백서":   
       return <DocumentWrite/>;
     case "OTT구독":
@@ -150,24 +175,21 @@ function postDB(category){
 
   switch(category){
     case "정책":
-      Document_state.date = date;
-      console.log(JSON.stringify(Document_state));
-      PolicySubmit(Document_state);
+      Policy_state.date = date;
+      console.log(JSON.stringify(Policy_state));
+      PolicySubmit(Policy_state);
       return;
-    case "생활백서":   
-      //console.log("정보게시글~");
+    case "생활백서": 
       Document_state.date = date;
       console.log(JSON.stringify(Document_state));
       DocSubmit(Document_state);
       return;
     case "OTT구독":
-      //console.log("OTT게시글~");
       OTT_state.date = date;
       console.log(JSON.stringify(OTT_state));
       OTTSubmit(OTT_state);
       return;
     case "공동구매":
-      //console.log("공동구매게시글~");
       Delivery_state.date = date;
       console.log(JSON.stringify(Delivery_state));
       DeliverySubmit(Delivery_state);
@@ -176,28 +198,6 @@ function postDB(category){
       return null
   }
 }
-
-function DocSubmit(data){
-  /*
-  fetch("http://localhost:3001/doc", {
-      method : "post", // 통신방법
-      headers : {
-        "content-type" : "application/json",
-      },
-      body : JSON.stringify(data),
-    });
-  */
-    axios.post("http://holo.dothome.co.kr/TestSendDocJson.php", JSON.stringify(data),{
-      withCredentials: false,
-      headers: {"Content-Type": "application/json"}
-    })
-      .then(function(body) {
-        console.log(body);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-}  
 
 function PolicySubmit(data){
   axios.post("http://holo.dothome.co.kr/TestSendPolicyJson.php", JSON.stringify(data),{
@@ -221,6 +221,28 @@ function PolicySubmit(data){
     */
 } 
 
+function DocSubmit(data){
+  /*
+  fetch("http://localhost:3001/doc", {
+      method : "post", // 통신방법
+      headers : {
+        "content-type" : "application/json",
+      },
+      body : JSON.stringify(data),
+    });
+  */
+    axios.post("http://holo.dothome.co.kr/TestSendDocJson.php", JSON.stringify(data),{
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    })
+      .then(function(body) {
+        console.log(body);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+}  
+
 function OTTSubmit(data){
   fetch("http://localhost:3001/ott", {
       method : "post", // 통신방법
@@ -239,8 +261,7 @@ function DeliverySubmit(data){
       },
       body : JSON.stringify(data),
     });
-} 
-
+}
 
 function Write() {
   const navigate = useNavigate();

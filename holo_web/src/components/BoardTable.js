@@ -2,16 +2,47 @@ import './BoardTable.css';
 import { Link } from 'react-router-dom';
 import { Table } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { AiOutlineCalendar, AiOutlineUser, AiOutlineEye, AiFillHeart } from "react-icons/ai";
 
-function InfoTable({list}) {
+function PolicyTable({list}) {
   return(
     <Table bordered hover>
       <tbody className="tableBody">
       {list.map(item=>(
         <tr key={item.id} onClick={()=>search(item.id)}>
           <td>
-            <div className="tableTitle">{item.title}</div>
-            <div className="tableInfo">{item.reg_date} | {item.nick_name} | 👁 {item.view} | ♥ {item.like}</div>
+            <Link className="link" to={`/policypost/${item.id}`}>
+              <div className="tableTitle">{item.title}</div>
+              <div className="tableInfo">
+                <AiOutlineCalendar style={{ fontSize: '2.75vh', marginRight: '0.5vh'}}/>{item.reg_date}
+                <AiOutlineUser style={{ fontSize: '2.75vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.nick_name}
+                <AiOutlineEye style={{ fontSize: '2.75vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.view}
+                <AiFillHeart style={{ fontSize: '2.75vh', margin: '0 0.5vh 0 1.5vh', color: 'red'}}/>{item.like}
+              </div>
+            </Link>
+          </td>
+        </tr>
+      ))}
+      </tbody>
+    </Table>
+  );
+}
+function DocumentTable({list}) {
+  return(
+    <Table bordered hover>
+      <tbody className="tableBody">
+      {list.map(item=>(
+        <tr key={item.id} onClick={()=>search(item.id)}>
+          <td>
+            <Link className="link" to={`/documentpost/${item.id}`}>
+              <div className="tableTitle">{item.title}</div>
+              <div className="tableInfo">
+                <AiOutlineCalendar style={{ fontSize: '2.75vh', marginRight: '0.5vh'}}/>{item.reg_date}
+                <AiOutlineUser style={{ fontSize: '2.75vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.nick_name}
+                <AiOutlineEye style={{ fontSize: '2.75vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.view}
+                <AiFillHeart style={{ fontSize: '2.75vh', margin: '0 0.5vh 0 1.5vh', color: 'red'}}/>{item.like}
+              </div>
+            </Link>
           </td>
         </tr>
       ))}
@@ -38,8 +69,10 @@ function FAQTable({list}) {
 }
 function ShowTable({type, list}) {
   switch(type){
-    case "Info":
-      return <InfoTable list={list}/>;
+    case "Policy":
+      return <PolicyTable list={list}/>;
+    case "Document":
+        return <DocumentTable list={list}/>;  
     case "FAQ":
       return <FAQTable list={list}/>;
     default:
