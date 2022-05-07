@@ -8,6 +8,11 @@
   background-color: #f0f0f0;
 }
 
+.link, .link:hover{
+  text-decoration: none;
+  color: black;
+}
+
 .tableTitle{
   font-family: "aSmile";
   font-size: 2.75vh;

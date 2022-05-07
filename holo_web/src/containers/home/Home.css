@@ -1,0 +1,44 @@
+.homeHeaderBar {
+    background-color: #9dc3e6;
+    width: 100vw;
+    height: 10vh;
+    display: flex;
+    justify-content: flex-start;
+    color: #757575;
+    box-shadow: 0 3px 5px rgba(0,0,0,0.30);
+}
+.homeHeaderBar > img {
+    height: 100%;
+    margin: auto 2.5vw;
+}
+
+.linkMenuButton{
+    margin: auto 0;
+}
+.homeHeaderBar > button,
+.linkMenuButton > button{
+    background-color: transparent;
+    margin: auto 2.5vw;
+    border-radius: 10px;
+    border: 0;
+    outline: 0;
+    font-family: "aSmile";
+    font-size: 3.5vh;
+    color: #1d4999;
+}
+
+.home{
+    background-color: #f4f4f4;
+    width: 100vw;
+    height: 90vh;
+}
+
+@font-face {
+    font-family: "aSmile_L";
+    src: url(../../fonts/aSmile_L.ttf);
+}
+  
+@font-face {
+    font-family: "aSmile";
+    src: url(../../fonts/aSmile.ttf);
+}

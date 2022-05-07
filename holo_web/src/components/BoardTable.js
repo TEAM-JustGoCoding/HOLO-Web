@@ -1,4 +1,5 @@
 import './BoardTable.css';
+import { Link } from 'react-router-dom';
 import { Table } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -25,7 +26,9 @@ function FAQTable({list}) {
       {list.map(item=>(
         <tr key={item.id} onClick={()=>search(item.id)}>
           <td>
-            <div className="tableTitle-FAQ">Q. {item.title}</div>
+            <Link className="link" to={`/faqpost/${item.id}`}>
+              <div className="tableTitle-FAQ">Q. {item.title}</div>
+            </Link>
           </td>
         </tr>
       ))}

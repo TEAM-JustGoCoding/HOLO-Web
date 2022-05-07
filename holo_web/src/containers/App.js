@@ -1,11 +1,12 @@
 import { Route, Routes } from 'react-router-dom';
-import Home from './Home';
-import InfoBoard from './InfoBoard';
-import FAQBoard from './FAQBoard';
-import PolicySearch from './PolicySearch';
-import DocumentSearch from './DocumentSearch';
-import FAQSearch from './FAQSearch';
-import Write from './Write';
+import Home from './home/Home';
+import InfoBoard from './board/InfoBoard';
+import FAQBoard from './board/FAQBoard';
+import FAQPost from './post/FAQPost';
+import PolicySearch from './search/PolicySearch';
+import DocumentSearch from './search/DocumentSearch';
+import FAQSearch from './search/FAQSearch';
+import Write from './write/Write';
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
       <Route path="/" element={<Home/>} />
       <Route path="/infoboard" element={<InfoBoard />} />
       <Route path="/faqboard" element={<FAQBoard/>}/>
+      <Route path="/faqpost/:id" element={<FAQPost/>}/>
       <Route path="/policysearch" element={<PolicySearch />} />
       <Route path="/documentsearch" element={<DocumentSearch />} />
       <Route path="/faqsearch" element={<FAQSearch/>}/>

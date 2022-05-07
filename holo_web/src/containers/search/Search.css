@@ -1,0 +1,109 @@
+*{
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.policySearch,
+.faqSearch {
+  background-color: #c9d3fb;
+  width: 100vw;
+  height: 100vh;
+}
+.documentSearch {
+  background: #ddcafa;
+  width: 100vw;
+  height: 100vh;
+}
+
+.searchHeaderBar{
+  background-color: #9dc3e6;
+  width: 100vw;
+  height: 10vh;
+  display: flex;
+  color: #757575;
+  box-shadow: 0 3px 5px rgba(0,0,0,0.30);
+}
+.searchHeaderBar>input{
+  width: 70vw;
+  height: 5vh;
+  margin: auto 0.5vw auto auto;
+  font-family: "aSmile_L";
+  font-size: 2.5vh;
+}
+.searchHeaderBar>button {
+  background-color: rgba(0,0,0,0);
+  width: 8vh;
+  height: 8vh;
+  padding: 0;
+  margin: auto auto auto 0.5vw;
+  border-radius: 50px;
+  border: 0;
+  outline: 0;
+}
+.searchHeaderBar>button:hover {
+	background-color: rgba(0,0,0,0.05);
+}
+.searchHeaderBar>button:active {
+	background-color: rgba(0,0,0,0.15);
+}
+.searchImg{
+  width: 5vh;
+  height: 5vh;
+  margin: auto auto;
+  border-radius: 50px;
+  color: #757575;
+}
+
+.searchResults{
+  width:100vw;
+  height: 90vh;
+  display: flex;
+}
+.searchTable{
+  width: 100vw;
+  height: 82.5vh;
+  display: flex;
+}
+.searchTable > div {
+  width: 95vw;
+  margin: 3vh auto auto auto;
+}
+.searchPagination {
+  width: 100vw;
+  height: 7.5vh;
+  display: flex;
+}
+.searchPagination > div {
+  height: auto;
+  margin: 0 auto auto auto;
+}
+
+.NoResults {
+  width: 100vw;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+.NoResults > img {
+  max-width: 35vw;
+  max-height: 25vh;
+  margin: auto auto 2.5vh auto;
+}
+.NoResults > h1 {
+  margin: 2.5vh auto auto auto;
+  text-align: center;
+  white-space: pre-line;
+  font-family: "aSmile";
+  font-size: 3.5vh;
+  color: #1d4999;
+}
+
+@font-face {
+  font-family: "aSmile_L";
+  src: url(../../fonts/aSmile_L.ttf);
+}
+
+@font-face {
+  font-family: "aSmile";
+  src: url(../../fonts/aSmile.ttf);
+}
