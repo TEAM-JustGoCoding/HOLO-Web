@@ -25,7 +25,7 @@ function ExistResults() {
   return(
     <div>
       <div className="searchTable">
-        <div><BoardTable type="Policy" list={sliceList()}></BoardTable></div>
+        <div><BoardTable type="Delivery" list={sliceList()}></BoardTable></div>
       </div>
       <div className="searchPagination">
         <div><Pagination page={page} count={8} totalCount={result.length} setPage={handlePageChange}></Pagination></div>

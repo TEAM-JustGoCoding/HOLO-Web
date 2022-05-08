@@ -1,10 +1,10 @@
-.policySearch,
+.leftSearch,
 .faqSearch {
   background-color: #c9d3fb;
   width: 100vw;
   height: 100vh;
 }
-.documentSearch {
+.rightSearch {
   background: #ddcafa;
   width: 100vw;
   height: 100vh;

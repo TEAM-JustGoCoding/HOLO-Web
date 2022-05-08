@@ -295,7 +295,7 @@ function Write() {
         <button className="categoryButton" onClick={openDropdown}>{category}</button>
         <Dropdown open={dropdownOpen} close={closeDropdown}></Dropdown>
         <button className="finButton" onClick={() => {openModal(); postDB(category);}}>완료</button>
-        <Modal open={modalOpen} close={closeModal}>
+        <Modal type="Info" open={modalOpen} close={closeModal}>
           게시글 작성이 완료되었어요!
         </Modal>
       </div>

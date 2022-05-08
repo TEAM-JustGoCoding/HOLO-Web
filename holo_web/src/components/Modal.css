@@ -43,6 +43,7 @@
     font-family: "aSmile";
     font-size: 3vh;
     color: #1d4999;
+    white-space: pre-line;
 }
 .modal.openModal {
     display: flex;

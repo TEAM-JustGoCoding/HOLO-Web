@@ -6,7 +6,7 @@ import BoardTable from '../../components/BoardTable';
 import Pagination from '../../components/Pagination';
 import axios from 'axios';
 
-var result = [];  //결과 저장할 전역변수
+var result = [];  //결과를 저장할 전역변수
 
 function ExistResults() {
   const [page, setPage] = useState(1);
@@ -25,7 +25,7 @@ function ExistResults() {
   return(
     <div>
       <div className="searchTable">
-        <div><BoardTable type="Policy" list={sliceList()}></BoardTable></div>
+        <div><BoardTable type="Ott" list={sliceList()}></BoardTable></div>
       </div>
       <div className="searchPagination">
         <div><Pagination page={page} count={8} totalCount={result.length} setPage={handlePageChange}></Pagination></div>
@@ -59,7 +59,7 @@ function Search() {
   const [resultExist, setResultExist] = useState(null)
 
   function getResult(){
-    return fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/policyResult.json')
+    return fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/docResult.json')
     .then(response => { return response.json();})
     .then(response => { 
                         var result = [];
@@ -74,17 +74,18 @@ function Search() {
   }
 
   function search(){
-        //1. 검색어 json 형식으로 php 서버에 전송
-        axios.post("http://holo.dothome.co.kr/searchPolicy.php", JSON.stringify({word: searchWord}),{
-          withCredentials: false,
-          headers: {"Content-Type": "application/json"}
-        })
-          .then(function(body) {
-            console.log(body);
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
+    //1. 검색어 json 형식으로 php 서버에 전송
+    axios.post("http://holo.dothome.co.kr/searchDoc.php", JSON.stringify({word: searchWord}),{
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    })
+      .then(function(body) {
+        console.log(body);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    
 
     //2. 검색결과 받아오기
     getResult();
@@ -104,7 +105,7 @@ function Search() {
   }
 
   return (
-    <div className="leftSearch">
+    <div className="rightSearch">
       <div className="searchHeaderBar">
         <input type="text" onChange={getResearchWord} placeholder="검색어를 입력해주세요"/>
         <button onClick={search}>

@@ -25,7 +25,7 @@ function ExistResults() {
   return(
     <div>
       <div className="searchTable">
-        <div><BoardTable type="Info" list={sliceList()}></BoardTable></div>
+        <div><BoardTable type="Document" list={sliceList()}></BoardTable></div>
       </div>
       <div className="searchPagination">
         <div><Pagination page={page} count={8} totalCount={result.length} setPage={handlePageChange}></Pagination></div>
@@ -105,7 +105,7 @@ function Search() {
   }
 
   return (
-    <div className="documentSearch">
+    <div className="rightSearch">
       <div className="searchHeaderBar">
         <input type="text" onChange={getResearchWord} placeholder="검색어를 입력해주세요"/>
         <button onClick={search}>
