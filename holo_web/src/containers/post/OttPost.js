@@ -19,8 +19,16 @@ const view = "3"
 function Post() {
   const {id} = useParams();
   const [participation, setParticipation] = useState(false);
-  const [inputModalOpen, setInputModalOpen] = useState(false);
+  const [checkModalOpen, setCheckModalOpen] = useState(false);
   const [infoModalOpen, setInfoModalOpen] = useState(false);
+
+  const msg = "\nOTT 구독자 모집에 참여하시겠습니까?\n추후 취소는 불가능합니다.\n신중하게 결정해주세요!"
+  const submitModal = () => {
+    setCheckModalOpen(false);
+    setParticipation(true);
+    console.log("OTT 구독자 추가!")
+    //OTT 구독자 모집 참여 DB 반영
+  };
 
   return (
     <div>
@@ -40,13 +48,13 @@ function Post() {
         {content}
         <div className="postEtc">
           {participation
-              ? <button className="participationButton pink" onClick={() => { setParticipation(false); setInfoModalOpen(true); }}><FaRegLaughSquint/>   참여 완료!</button>
-              : <button className="participationButton skyblue" onClick={() => { setParticipation(true); setInputModalOpen(true); }}><FaRegLaugh/>   참여 신청!</button>
+              ? <button className="participationButton pink" onClick={() => { setInfoModalOpen(true); }}><FaRegLaughSquint/>   참여 완료!</button>
+              : <button className="participationButton skyblue" onClick={() => { setCheckModalOpen(true); }}><FaRegLaugh/>   참여 신청!</button>
           }
-          <Modal type="Input" open={inputModalOpen} close={() => {setInputModalOpen(false);}}>
-            OTT 구독자 모집 신청 완료!
+          <Modal type="Check" open={checkModalOpen} close={()=>{setCheckModalOpen(false);}} submit={submitModal}>
+            {msg}
           </Modal>
-          <Modal type="Info" open={infoModalOpen} close={() => {setInfoModalOpen(false);}}>
+          <Modal type="Info" open={infoModalOpen} close={()=>{setInfoModalOpen(false);}}>
             이미 참여한 게시글이에요!
           </Modal>
           <AiOutlineEye style={{ fontSize: '3.5vh', marginRight: '1vh'}}/>{view}

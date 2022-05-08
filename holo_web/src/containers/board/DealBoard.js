@@ -6,8 +6,8 @@ import { AiOutlineLeft, AiOutlineSearch, AiOutlinePlus } from "react-icons/ai";
 import BoardTable from '../../components/BoardTable';
 import Pagination from '../../components/Pagination';
 
-var deliveryJson=[{title: "마라탕 먹으실 분", nick_name: "마라탕탕", reg_date: "2022-05-09 12:35", limit_date: "2022-05-09 19:00", buy_location: "라화쿵푸 옥계점", pickup_location: "금오공대 푸름관 3동 앞", goal: 20000, accumulate: 12000, view: 123}];
-var ottJson=[{title: "같이 넷플릭스 봅시당", nick_name: "김태리짱", reg_date: "2022-05-09 12:35", limit_date: "2022-05-09", buy_location: "넷플릭스", goal: 4, accumulate: 3, view: 123}];
+var deliveryJson=[{id: 0, title: "마라탕 먹으실 분", nick_name: "마라탕탕", reg_date: "2022-05-09 12:35", limit_date: "2022-05-09 19:00", buy_location: "라화쿵푸 옥계점", pickup_location: "금오공대 푸름관 3동 앞", goal: 20000, accumulate: 12000, view: 123}];
+var ottJson=[{id: 0, title: "같이 넷플릭스 봅시당", nick_name: "김태리짱", reg_date: "2022-05-09 12:35", limit_date: "2022-05-09", buy_location: "넷플릭스", goal: 4, accumulate: 3, view: 123}];
 
 function getDeliveryJson() {
 
@@ -61,7 +61,7 @@ function ShowBoard() {
       </div>
       <div className="boardCategoryBar">
         <button className="leftButton" onClick={() => { setSelect("delivery"); setPage(1);/*getDeliveryJson();*/}} >공동구매</button>
-        <button className="rightButton" onClick={() => { setSelect("ott"); setPage(1); /*getOttJson();*/}}>OTT 구독자 모집</button>
+        <button className="rightButton" onClick={() => { setSelect("ott"); setPage(1); /*getOttJson();*/}}>OTT 구독</button>
       </div>
       <div className={`board ${select === "delivery" ? 'left' : 'right'}`}>
         <div className="boardTable">

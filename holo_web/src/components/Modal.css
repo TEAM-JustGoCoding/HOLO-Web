@@ -13,8 +13,10 @@
     cursor: pointer;
     border: 0;
 }
-.modal > section {
+.infoModal,
+.checkModal {
     display: flex;
+    flex-direction: column;
     position: relative;
     background-color: #9dc3e6;
     width: 90%;
@@ -26,11 +28,52 @@
     animation: modal-show 0.3s;
     overflow: hidden;
 }
-.modal > section button {
+.inputModal {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: #9dc3e6;
+    width: 90%;
+    max-width: 450px;
+    height: 40%;
+    margin: 0 auto;
+    border-radius: 35px;
+    border: 10px solid #1d4999;
+    animation: modal-show 0.3s;
+    overflow: hidden;
+}
+
+.infoModal > div {
+    margin: auto auto;
+    font-family: "aSmile";
+    font-size: 2.5vh;
+    color: #1d4999;
+    white-space: pre-line;
+}
+.inputModal > div,
+.checkModal > div {
+    margin: auto auto;
+    font-family: "aSmile";
+    font-size: 2vh;
+    color: #1d4999;
+    white-space: pre-line;
+}
+.inputModal > div > input {
+    margin: 0 1vh 0 0;
+    width: 15vh;
+    font-family: "aSmile_L";
+    font-size: 2vh;
+}
+.inputModal > div > input::-webkit-outer-spin-button,
+.inputModal > div > input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.modalCloseButton {
     background-color: transparent;
     position: absolute;
-    top: 10px;
-    right: 20px;
+    top: 5px;
+    right: 5px;
     width: auto;
     height: auto;
     font-size: 5vh;
@@ -38,18 +81,22 @@
     text-align: center;
     color: #1d4999;
 }
-.modal > section div {
-    margin: auto auto;
-    font-family: "aSmile";
-    font-size: 3vh;
-    color: #1d4999;
-    white-space: pre-line;
+.modalFinButton{
+    background-color: #1d4999;
+    padding: 0.5vh 2vh;
+    margin: auto 3.5vh auto 3.5vh;
+    border-radius: 10px;
+    font-family: "aSmile_L";
+    font-size: 2.5vh;
+    color: white;
 }
+
 .modal.openModal {
     display: flex;
     align-items: center;
     animation: modal-bg-show 0.3s;
 }
+
 @keyframes modal-show {
     from {
         opacity: 0;
@@ -68,6 +115,7 @@
         opacity: 1;
     }
 }
+
 @font-face {
     font-family: "aSmile_L";
     src: url(../fonts/aSmile_L.ttf);

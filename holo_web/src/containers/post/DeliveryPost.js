@@ -23,6 +23,14 @@ function Post() {
   const [inputModalOpen, setInputModalOpen] = useState(false);
   const [infoModalOpen, setInfoModalOpen] = useState(false);
 
+  const msg = "\n공동구매에 참여할 금액을 작성해주세요.\n입력하신 금액은 참여 현황에 반영됩니다.\n추후 수정은 불가능합니다.\n신중하게 작성해주세요!";
+  const submitModal = (money) => {
+    setInputModalOpen(false);
+    setParticipation(true);
+    console.log(money+"원! 공동구매 금액 추가!")
+    //공동구매 참여 DB 반영
+  };
+
   return (
     <div>
       <div className="postHeaderBar">
@@ -42,11 +50,11 @@ function Post() {
         {content}
         <div className="postEtc">
           {participation
-              ? <button className="participationButton pink" onClick={() => { setParticipation(false); setInfoModalOpen(true); }}><FaRegLaughSquint/>   참여 완료!</button>
-              : <button className="participationButton skyblue" onClick={() => { setParticipation(true); setInputModalOpen(true); }}><FaRegLaugh/>   참여 신청!</button>
+              ? <button className="participationButton pink" onClick={() => { setInfoModalOpen(true); }}><FaRegLaughSquint/>   참여 완료!</button>
+              : <button className="participationButton skyblue" onClick={() => { setInputModalOpen(true); }}><FaRegLaugh/>   참여 신청!</button>
           }
-          <Modal type="Input" open={inputModalOpen} close={() => {setInputModalOpen(false);}}>
-            공동구매에 참여할 금액을 작성해주세요.
+          <Modal type="Input" open={inputModalOpen} close={() => {setInputModalOpen(false);}} submit={submitModal}>
+            {msg}
           </Modal>
           <Modal type="Info" open={infoModalOpen} close={() => {setInfoModalOpen(false);}}>
             이미 참여한 게시글이에요!
