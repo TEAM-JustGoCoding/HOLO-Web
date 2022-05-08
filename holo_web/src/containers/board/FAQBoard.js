@@ -6,6 +6,9 @@ import {AiOutlineLeft, AiOutlineSearch} from "react-icons/ai";
 import BoardTable from '../../components/BoardTable';
 import Pagination from '../../components/Pagination';
 
+var faqJson = [];
+
+/*
 const faqList = [
     { id: 0,
     title: "채팅방을 삭제했어요. 복구할 수 있나요?"},
@@ -26,15 +29,34 @@ const faqList = [
     { id: 8,
     title: "거래 후기는 어떻게 진행하나요?"}
 ]
+*/
+
+//faq_post 받아오기
+function getFAQ(){
+    return fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/faqJson.json')
+    .then(response => { return response.json();})
+        .then(response => { 
+                        faqJson = [];
+                        var obj = response;
+                        //console.log(obj.length);
+    
+                        for(var i=0; i < obj.length; i++) {
+                            faqJson.push(obj[i]);
+                        }           
+                        console.log(faqJson);
+                        });
+}
+
 
 function ShowBoard() {
+  getFAQ();
   const [page, setPage] = useState(1);
 
   function sliceList(){
-    if (page === (faqList.length/9))
-      return faqList.slice(9*(page-1), faqList.length)
+    if (page === (faqJson.length/9))
+      return faqJson.slice(9*(page-1), faqJson.length)
     else
-      return faqList.slice(9*(page-1), 9*page);
+      return faqJson.slice(9*(page-1), 9*page);
   }
   const handlePageChange = (page) => {
     setPage(page); 
@@ -66,7 +88,7 @@ function ShowBoard() {
           <div><BoardTable type="FAQ" list={sliceList()}></BoardTable></div>
         </div>
         <div className="boardPagination">
-          <div><Pagination page={page} count={9} totalCount={faqList.length} setPage={handlePageChange}></Pagination></div>
+          <div><Pagination page={page} count={9} totalCount={faqJson.length} setPage={handlePageChange}></Pagination></div>
         </div>
       </div>
     </div>
