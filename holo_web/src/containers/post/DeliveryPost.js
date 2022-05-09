@@ -5,23 +5,61 @@ import Modal from '../../components/Modal';
 import {images} from '../../images';
 import { AiOutlineEye } from "react-icons/ai";
 import { FaRegLaugh, FaRegLaughSquint } from "react-icons/fa";
+import axios from 'axios';
 
-const user = "댕댕"
-const title = "오늘밤에 맥도날드 드실 분 ㅠㅅㅠ!"
-const content = "오늘 밤에 맥도날드 드실 분 있나요?\n최소 주문 금액이 부족해서 슬픕니다...\n저는 맥스파이시 상하기 버거 세트 1개랑\n더블 불고기 버거 세트 1개 먹을 거에요 ㅎㅎ"
-const reg_date = "2022-04-06 08:23:17"
-const limit_date = "2022-04-06 20:00"
-const buy_location = "맥도날드"
-const pickup_location = "거의동 금오공대 푸름관 3동 앞"
-const goal = "20,000"
-const accumulate = "12,000"
-const view = "3"
+var user = "댕댕"
+var title = "오늘밤에 맥도날드 드실 분 ㅠㅅㅠ!"
+var content = "오늘 밤에 맥도날드 드실 분 있나요?\n최소 주문 금액이 부족해서 슬픕니다...\n저는 맥스파이시 상하기 버거 세트 1개랑\n더블 불고기 버거 세트 1개 먹을 거에요 ㅎㅎ"
+var reg_date = "2022-04-06 08:23:17"
+var limit_date = "2022-04-06 20:00"
+var buy_location = "맥도날드"
+var pickup_location = "거의동 금오공대 푸름관 3동 앞"
+var goal = "20,000"
+var accumulate = "12,000"
+var view = "3"
+
+function getPost() {
+     return fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/deliPost.json')
+     .then(response => { return response.json();})
+     .then(response => { 
+                         var obj = response;
+                         console.log(obj);
+   
+                         user = obj[0].nick_name;
+                         title = obj[0].title;
+                         content = obj[0].content;
+                         reg_date = obj[0].reg_date;
+                         limit_date = obj[0].limit_date;
+                         buy_location = obj[0].buy_location;
+                         pickup_location = obj[0].pickup_location;
+                         goal = obj[0].goal
+                         view = obj[0].view;
+                         accumulate = obj[0].accumulate;
+                         
+                       });
+}
+
+function requestPost(id){
+  axios.post("http://holo.dothome.co.kr/findDeliveryPost.php", JSON.stringify({postid: id}),{
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    })
+      .then(function(body) {
+        console.log(body);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+}
 
 function Post() {
   const {id} = useParams();
   const [participation, setParticipation] = useState(false);
   const [inputModalOpen, setInputModalOpen] = useState(false);
   const [infoModalOpen, setInfoModalOpen] = useState(false);
+
+  requestPost(id);
+  getPost();
 
   const msg = "\n공동구매에 참여할 금액을 작성해주세요.\n입력하신 금액은 참여 현황에 반영됩니다.\n추후 수정은 불가능합니다.\n신중하게 작성해주세요!";
   const submitModal = (money) => {
