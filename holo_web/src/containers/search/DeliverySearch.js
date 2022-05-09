@@ -59,7 +59,7 @@ function Search() {
   const [resultExist, setResultExist] = useState(null)
 
   function getResult(){
-    return fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/policyResult.json')
+    return fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/deliveryResult.json')
     .then(response => { return response.json();})
     .then(response => { 
                         var result = [];
@@ -75,7 +75,7 @@ function Search() {
 
   function search(){
         //1. 검색어 json 형식으로 php 서버에 전송
-        axios.post("http://holo.dothome.co.kr/searchPolicy.php", JSON.stringify({word: searchWord}),{
+        axios.post("http://holo.dothome.co.kr/searchDelivery.php", JSON.stringify({word: searchWord}),{
           withCredentials: false,
           headers: {"Content-Type": "application/json"}
         })
@@ -92,7 +92,7 @@ function Search() {
     result = searchResult;
     //console.log(result);
 
-    if(searchResult.length > 0){
+    if(result.length > 0){
       setResultExist(1);
     } else {
       setResultExist(0);
