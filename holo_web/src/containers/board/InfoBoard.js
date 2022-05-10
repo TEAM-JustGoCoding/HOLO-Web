@@ -2,7 +2,7 @@ import './Board.css';
 import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import {images} from '../../images';
-import { AiOutlineLeft, AiOutlineSearch, AiOutlinePlus } from "react-icons/ai";
+import { AiOutlineSearch, AiOutlinePlus } from "react-icons/ai";
 import BoardTable from '../../components/BoardTable';
 import Pagination from '../../components/Pagination';
 

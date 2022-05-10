@@ -7,16 +7,7 @@ import { AiOutlineEye } from "react-icons/ai";
 import { FaRegLaugh, FaRegLaughSquint } from "react-icons/fa";
 import axios from 'axios';
 
-var user = "댕댕"
-var title = "오늘밤에 맥도날드 드실 분 ㅠㅅㅠ!"
-var content = "오늘 밤에 맥도날드 드실 분 있나요?\n최소 주문 금액이 부족해서 슬픕니다...\n저는 맥스파이시 상하기 버거 세트 1개랑\n더블 불고기 버거 세트 1개 먹을 거에요 ㅎㅎ"
-var reg_date = "2022-04-06 08:23:17"
-var limit_date = "2022-04-06 20:00"
-var buy_location = "맥도날드"
-var pickup_location = "거의동 금오공대 푸름관 3동 앞"
-var goal = "20,000"
-var accumulate = "12,000"
-var view = "3"
+var user, title, content, reg_date, limit_date, buy_location, pickup_location, goal, accumulate, view;
 
 function getPost() {
      return fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/deliPost.json')

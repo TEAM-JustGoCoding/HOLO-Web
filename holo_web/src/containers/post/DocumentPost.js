@@ -6,12 +6,7 @@ import { AiOutlineEye, AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import axios from 'axios';
 
 
-var user = "구리"
-var title = "주방 청소 유용한 정보 공유합니다."
-var content = "오늘은 주방 청소할 때 유용한 정보를 공유할거에요."
-var reg_date = "2022-04-13 21:23:17"
-var view = "1000"
-var like = 500
+var user, title, content, reg_date, view, like;
 
 function getPost() {
 	return fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/docPost.json')
@@ -26,7 +21,6 @@ function getPost() {
                       reg_date = obj[0].reg_date;
                       view = obj[0].view;
                       like = obj[0].like;
-                      
                     });
 }
 

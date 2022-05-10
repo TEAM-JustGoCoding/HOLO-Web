@@ -5,12 +5,7 @@ import {images} from '../../images';
 import { AiOutlineEye, AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import axios from 'axios';
 
-var user = "구리"
-var title = "구미시 정책"
-var content = "구미시 정책을 공유합니다"
-var reg_date = "2022-04-13 21:23:17"
-var view = "5"
-var like = "5"
+var user, title, content, reg_date, view, like;
 
 function getPost() {
   /*

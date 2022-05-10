@@ -7,15 +7,7 @@ import { AiOutlineEye } from "react-icons/ai";
 import { FaRegLaugh, FaRegLaughSquint } from "react-icons/fa";
 import axios from 'axios';
 
-var user = "김태리짱"
-var title = "넷플릭스 구독하실분!"
-var content = "이번달부터 넷플릭스 같이 구독하실 분 계신가요?\n네 명 모여서 같이 이용해요!\n스물다섯스물하나 보고 싶네요ㅠㅠ"
-var reg_date = "2022-04-06 08:23:17"
-var limit_date = "2022-04-10"
-var buy_location = "넷플릭스"
-var goal = "4"
-var accumulate = "3"
-var view = "3"
+var user, title, content, reg_date, limit_date, buy_location, goal, accumulate, view;
 
 function getPost() {
   return fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/OTTPost.json')

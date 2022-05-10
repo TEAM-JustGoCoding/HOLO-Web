@@ -5,7 +5,6 @@ import {images} from '../../images';
 import { AiOutlineSearch, AiOutlinePlus } from "react-icons/ai";
 import BoardTable from '../../components/BoardTable';
 import Pagination from '../../components/Pagination';
-import axios from 'axios';
 
 var deliveryJson=[];
 var ottJson=[];
