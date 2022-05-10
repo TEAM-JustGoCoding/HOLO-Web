@@ -80,11 +80,7 @@ function ShowBoard() {
   return (
     <div>
       <div className="boardHeaderBar">
-        <Link className="linkBackButton" to='/'>
-          <button>
-            <AiOutlineLeft className="moveBackImg"/>
-          </button>
-        </Link>
+        <div></div>
         <img src={images.logo} alt="Logo"/>
         <Link className="linkSearchButton" to={select === "policy" ? '/policysearch' : '/documentsearch'}>
           <button>

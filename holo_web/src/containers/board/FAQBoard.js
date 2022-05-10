@@ -2,7 +2,7 @@ import './Board.css';
 import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import {images} from '../../images';
-import {AiOutlineLeft, AiOutlineSearch} from "react-icons/ai";
+import {AiOutlineSearch} from "react-icons/ai";
 import BoardTable from '../../components/BoardTable';
 import Pagination from '../../components/Pagination';
 
@@ -66,11 +66,7 @@ function ShowBoard() {
   return (
     <div>
       <div className="boardHeaderBar">
-        <Link className="linkBackButton" to='/'>
-          <button>
-            <AiOutlineLeft className="moveBackImg"/>
-          </button>
-        </Link>
+        <div></div>
         <img src={images.logo} alt="Logo"/>
         <Link className="linkSearchButton" to='/faqsearch'>
           <button>

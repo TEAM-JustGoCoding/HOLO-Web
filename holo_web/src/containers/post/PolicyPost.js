@@ -64,7 +64,7 @@ function Post() {
   return (
     <div>
       <div className="postHeaderBar">
-        <div>생활백서</div>
+        <div>정책</div>
       </div>
       <div className="postTitle">{title}</div>
       <div className="postUser"><img src={images.user} alt="User"/>{user}</div>

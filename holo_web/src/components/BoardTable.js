@@ -17,10 +17,10 @@ function PolicyTable({list}) {
             <Link className="link" to={`/policypost/${item.id}`}>
               <div className="tableTitle">{item.title}</div>
               <div className="tableInfo">
-                <AiOutlineCalendar style={{ fontSize: '2.75vh', marginRight: '0.5vh'}}/>{item.reg_date}
-                <AiOutlineUser style={{ fontSize: '2.75vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.nick_name}
-                <AiOutlineEye style={{ fontSize: '2.75vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.view}
-                <AiFillHeart style={{ fontSize: '2.75vh', margin: '0 0.5vh 0 1.5vh', color: 'red'}}/>{item.like}
+                <AiOutlineCalendar style={{ fontSize: '2.5vh', marginRight: '0.5vh'}}/>{item.reg_date}
+                <AiOutlineUser style={{ fontSize: '2.5vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.nick_name}
+                <AiOutlineEye style={{ fontSize: '2.5vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.view}
+                <AiFillHeart style={{ fontSize: '2.5vh', margin: '0 0.5vh 0 1.5vh', color: 'red'}}/>{item.like}
               </div>
             </Link>
           </td>
@@ -40,10 +40,10 @@ function DocumentTable({list}) {
             <Link className="link" to={`/documentpost/${item.id}`}>
               <div className="tableTitle">{item.title}</div>
               <div className="tableInfo">
-                <AiOutlineCalendar style={{ fontSize: '2.75vh', marginRight: '0.5vh'}}/>{item.reg_date}
-                <AiOutlineUser style={{ fontSize: '2.75vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.nick_name}
-                <AiOutlineEye style={{ fontSize: '2.75vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.view}
-                <AiFillHeart style={{ fontSize: '2.75vh', margin: '0 0.5vh 0 1.5vh', color: 'red'}}/>{item.like}
+                <AiOutlineCalendar style={{ fontSize: '2.5vh', marginRight: '0.5vh'}}/>{item.reg_date}
+                <AiOutlineUser style={{ fontSize: '2.5vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.nick_name}
+                <AiOutlineEye style={{ fontSize: '2.5vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.view}
+                <AiFillHeart style={{ fontSize: '2.5vh', margin: '0 0.5vh 0 1.5vh', color: 'red'}}/>{item.like}
               </div>
             </Link>
           </td>
@@ -63,10 +63,10 @@ function DeliveryTable({list}) {
             <Link className="link" to={`/deliverypost/${item.id}`}>
               <div className="tableTitle">{item.title}</div>
               <div className="tableInfo">
-                <AiOutlineCalendar style={{ fontSize: '2.75vh', marginRight: '0.5vh'}}/>{item.reg_date}
-                <AiOutlineUser style={{ fontSize: '2.75vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.nick_name}
-                <AiOutlineEye style={{ fontSize: '2.75vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.view}
-                <BiCoin style={{ fontSize: '2.75vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.accumulate}/{item.goal}
+                <AiOutlineCalendar style={{ fontSize: '2.5vh', marginRight: '0.5vh'}}/>{item.reg_date}
+                <AiOutlineUser style={{ fontSize: '2.5vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.nick_name}
+                <AiOutlineEye style={{ fontSize: '2.5vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.view}
+                <BiCoin style={{ fontSize: '2.5vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.accumulate}/{item.goal}
               </div>
             </Link>
           </td>
@@ -86,10 +86,10 @@ function OttTable({list}) {
             <Link className="link" to={`/ottpost/${item.id}`}>
               <div className="tableTitle">{item.title}</div>
               <div className="tableInfo">
-                <AiOutlineCalendar style={{ fontSize: '2.75vh', marginRight: '0.5vh'}}/>{item.reg_date}
-                <AiOutlineUser style={{ fontSize: '2.75vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.nick_name}
-                <AiOutlineEye style={{ fontSize: '2.75vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.view}
-                <HiOutlineUserGroup style={{ fontSize: '2.75vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.accumulate}/{item.goal}
+                <AiOutlineCalendar style={{ fontSize: '2.5vh', marginRight: '0.5vh'}}/>{item.reg_date}
+                <AiOutlineUser style={{ fontSize: '2.5vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.nick_name}
+                <AiOutlineEye style={{ fontSize: '2.5vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.view}
+                <HiOutlineUserGroup style={{ fontSize: '2.5vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.accumulate}/{item.goal}
               </div>
             </Link>
           </td>
