@@ -2,54 +2,17 @@ import './Board.css';
 import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import {images} from '../../images';
-import { AiOutlineSearch, AiOutlinePlus } from "react-icons/ai";
+import { AiOutlineLeft, AiOutlineSearch, AiOutlinePlus } from "react-icons/ai";
 import BoardTable from '../../components/BoardTable';
 import Pagination from '../../components/Pagination';
 
-var policyJson=[];
-var documentJson=[];
 
-function getPolicyJson() {
-	return fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/policyJson.json')
-  .then(response => { return response.json();})
-	.then(response => { 
-                      policyJson = [];
-                      var obj = response;
-                      //console.log(obj.length);
-  
-                      for(var i=0; i < obj.length; i++) {
-                        policyJson.push(obj[i]);
-                      }           
-                      console.log(policyJson);
-                    });
-  
- /*
-  axios.get("http://holo.dothome.co.kr/policyJson.json",{
-    withCredentials: false
-  })
-      .then(function(body) {
-        console.log(typeof(body));
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-*/
-}
+function ShowBoard(props) {
+  //const a = await getPolicyJson();
+  //const b = await getDocumentJson();
+  var policyJson = props.poliInfo;
+  var documentJson = props.docInfo;
 
-function getDocumentJson() {
-	return fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/docJson.json')
-	.then(response => { return response.json();})
-	.then(response => { 
-                      documentJson = [];
-                      var obj = response;
-                      for(var i=0; i < obj.length; i++) {
-                        documentJson.push(obj[i]);
-                      }     
-                      console.log(documentJson);
-                    });
-}
-
-function ShowBoard() {
   const [select, setSelect] = useState("policy");
   const [page, setPage] = useState(1);
 
@@ -74,13 +37,17 @@ function ShowBoard() {
     console.log("page: ",page);
   };
 
-  getPolicyJson();
-  getDocumentJson();
+  
+
   
   return (
     <div>
       <div className="boardHeaderBar">
-        <div></div>
+        <Link className="linkBackButton" to='/'>
+          <button>
+            <AiOutlineLeft className="moveBackImg"/>
+          </button>
+        </Link>
         <img src={images.logo} alt="Logo"/>
         <Link className="linkSearchButton" to={select === "policy" ? '/policysearch' : '/documentsearch'}>
           <button>
@@ -116,14 +83,52 @@ function ShowBoard() {
 
 
 class Board extends React.Component {
-  inifunc() {
-    
+  constructor () {
+    super ();
+
+    this.state = {
+      policy: [],
+      document: []
+    };
   }
+
+  componentDidMount(){
+    fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/policy_to_json.php')
+    .then(response => { return response.json();})
+    .then(response => { 
+                        var policyJson = [];
+                        var obj = response;
+                        //console.log(obj.length);
+    
+                        for(var i=0; i < obj.length; i++) {
+                          policyJson.push(obj[i]);
+                        }           
+                       console.log(policyJson);
+
+                       this.setState ({policy: policyJson});
+                      });
+
+    fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/doc_to_json.php')
+     .then(response => { return response.json();})
+    .then(response => { 
+        var documentJson = [];
+         var obj = response;
+         //console.log(obj.length);
+                      
+         for(var i=0; i < obj.length; i++) {
+            documentJson.push(obj[i]);
+          }           
+          console.log(documentJson);
+                  
+         this.setState ({document: documentJson});
+     });                               
+  };
 
   render() {
     return(
-      <ShowBoard/>
+      <ShowBoard poliInfo={this.state.policy} docInfo={this.state.document}/>
     );
   }
 }
+
 export default Board;
