@@ -5,29 +5,31 @@ import {images} from '../../images';
 import { AiOutlineLeft, AiOutlineSearch, AiOutlinePlus } from "react-icons/ai";
 import BoardTable from '../../components/BoardTable';
 import Pagination from '../../components/Pagination';
+import axios from 'axios';
+
+var deliveryJson=[{id: 0, title: "마라탕 먹으실 분", nick_name: "마라탕탕", reg_date: "2022-05-09 12:35", limit_date: "2022-05-09 19:00", buy_location: "라화쿵푸 옥계점", pickup_location: "금오공대 푸름관 3동 앞", goal: 20000, accumulate: 12000, view: 123}];
+var ottJson=[{id: 0, title: "같이 넷플릭스 봅시당", nick_name: "김태리짱", reg_date: "2022-05-09 12:35", limit_date: "2022-05-09", buy_location: "넷플릭스", goal: 4, accumulate: 3, view: 123}];
 
 
 function ShowBoard(props) {
-  //const a = await getPolicyJson();
-  //const b = await getDocumentJson();
-  var policyJson = props.poliInfo;
-  var documentJson = props.docInfo;
+  var deliveryJson = props.deliveryInfo;
+  var ottJson = props.ottInfo;
 
-  const [select, setSelect] = useState("policy");
+  const [select, setSelect] = useState("delivery");
   const [page, setPage] = useState(1);
 
   function sliceList(){
     switch(select){
-      case "policy":
-        if (page === (policyJson.length/7))
-          return policyJson.slice(7*(page-1), policyJson.length)
+      case "delivery":
+        if (page === (deliveryJson.length/7))
+          return deliveryJson.slice(7*(page-1), deliveryJson.length)
         else
-          return policyJson.slice(7*(page-1), 7*page);
-      case "document":
-        if (page === (documentJson.length/7))
-          return documentJson.slice(7*(page-1), documentJson.length)
+          return deliveryJson.slice(7*(page-1), 7*page);
+      case "ott":
+        if (page === (ottJson.length/7))
+          return ottJson.slice(7*(page-1), ottJson.length)
         else
-          return documentJson.slice(7*(page-1), 7*page);
+          return ottJson.slice(7*(page-1), 7*page);
       default:
         return null
     }
@@ -37,9 +39,6 @@ function ShowBoard(props) {
     console.log("page: ",page);
   };
 
-  
-
-  
   return (
     <div>
       <div className="boardHeaderBar">
@@ -49,19 +48,19 @@ function ShowBoard(props) {
           </button>
         </Link>
         <img src={images.logo} alt="Logo"/>
-        <Link className="linkSearchButton" to={select === "policy" ? '/policysearch' : '/documentsearch'}>
+        <Link className="linkSearchButton" to={select === "delivery" ? '/deliverysearch' : '/ottsearch'}>
           <button>
             <AiOutlineSearch className="moveSearchImg"/>
           </button>
         </Link>
       </div>
       <div className="boardCategoryBar">
-        <button className="leftButton" onClick={() => { setSelect("policy"); setPage(1);/*getPolicyJson();*/}} >정책</button>
-        <button className="rightButton" onClick={() => { setSelect("document"); setPage(1); /*getDocumentJson();*/}}>생활백서</button>
+        <button className="leftButton" onClick={() => { setSelect("delivery"); setPage(1);/*getDeliveryJson();*/}} >공동구매</button>
+        <button className="rightButton" onClick={() => { setSelect("ott"); setPage(1); /*getOttJson();*/}}>OTT 구독</button>
       </div>
-      <div className={`board ${select === "policy" ? 'left' : 'right'}`}>
+      <div className={`board ${select === "delivery" ? 'left' : 'right'}`}>
         <div className="boardTable">
-          <div><BoardTable type={`${select === "policy" ? 'Policy' : 'Document'}`} list={sliceList()}></BoardTable></div>
+          <div><BoardTable type={`${select === "delivery" ? 'Delivery' : 'Ott'}`} list={sliceList()}></BoardTable></div>
         </div>
         <Link to='/write'>
           <button className="moveWriteButton">
@@ -70,9 +69,9 @@ function ShowBoard(props) {
         </Link>
         <div className="boardPagination">
           <div>
-            {select === "policy"
-              ? <Pagination page={page} count={7} totalCount={policyJson.length} setPage={handlePageChange}></Pagination>
-              : <Pagination page={page} count={7} totalCount={documentJson.length} setPage={handlePageChange}></Pagination>
+            {select === "delivery"
+              ? <Pagination page={page} count={7} totalCount={deliveryJson.length} setPage={handlePageChange}></Pagination>
+              : <Pagination page={page} count={7} totalCount={ottJson.length} setPage={handlePageChange}></Pagination>
             }
           </div>
         </div>
@@ -87,48 +86,48 @@ class Board extends React.Component {
     super ();
 
     this.state = {
-      policy: [],
-      document: []
+      ott: [],
+      delivery: []
     };
   }
 
   componentDidMount(){
-    fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/policy_to_json.php')
+    fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/ott_to_json.php')
     .then(response => { return response.json();})
     .then(response => { 
-                        var policyJson = [];
+                        var ottJson = [];
                         var obj = response;
                         //console.log(obj.length);
     
                         for(var i=0; i < obj.length; i++) {
-                          policyJson.push(obj[i]);
+                          ottJson.push(obj[i]);
                         }           
-                       console.log(policyJson);
+                       console.log(ottJson);
 
-                       this.setState ({policy: policyJson});
-                      });
-
-    fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/doc_to_json.php')
-     .then(response => { return response.json();})
+                       this.setState ({ott: ottJson});
+                      });   
+  
+   fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/delivery_to_json.php')
+    .then(response => { return response.json();})
     .then(response => { 
-        var documentJson = [];
-         var obj = response;
-         //console.log(obj.length);
-                      
-         for(var i=0; i < obj.length; i++) {
-            documentJson.push(obj[i]);
-          }           
-          console.log(documentJson);
-                  
-         this.setState ({document: documentJson});
-     });                               
-  };
+                        var deliJson = [];
+                        var obj = response;
+                        //console.log(obj.length);
+    
+                        for(var i=0; i < obj.length; i++) {
+                          deliJson.push(obj[i]);
+                        }           
+                       console.log(deliJson);
+
+                       this.setState ({delivery: deliJson});
+                      });                           
+  };                         
+
 
   render() {
     return(
-      <ShowBoard poliInfo={this.state.policy} docInfo={this.state.document}/>
+      <ShowBoard ottInfo={this.state.ott} deliveryInfo={this.state.delivery}/>
     );
   }
 }
-
 export default Board;
