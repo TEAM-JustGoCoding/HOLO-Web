@@ -2,45 +2,18 @@ import './Board.css';
 import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import {images} from '../../images';
-import { AiOutlineSearch, AiOutlinePlus } from "react-icons/ai";
+import { AiOutlineLeft, AiOutlineSearch, AiOutlinePlus } from "react-icons/ai";
 import BoardTable from '../../components/BoardTable';
 import Pagination from '../../components/Pagination';
+import axios from 'axios';
 
-var deliveryJson=[];
-var ottJson=[];
+var deliveryJson=[{id: 0, title: "마라탕 먹으실 분", nick_name: "마라탕탕", reg_date: "2022-05-09 12:35", limit_date: "2022-05-09 19:00", buy_location: "라화쿵푸 옥계점", pickup_location: "금오공대 푸름관 3동 앞", goal: 20000, accumulate: 12000, view: 123}];
+var ottJson=[{id: 0, title: "같이 넷플릭스 봅시당", nick_name: "김태리짱", reg_date: "2022-05-09 12:35", limit_date: "2022-05-09", buy_location: "넷플릭스", goal: 4, accumulate: 3, view: 123}];
 
-function getDeliveryJson() {
-  return fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/deliveryJson.json')
-  .then(response => { return response.json();})
-	.then(response => { 
-                      deliveryJson = [];
-                      var obj = response;
-                      //console.log(obj.length);
-  
-                      for(var i=0; i < obj.length; i++) {
-                        deliveryJson.push(obj[i]);
-                      }           
-                     console.log(deliveryJson);
-                    });
-}
-function getOTTJson() {
-  return fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/ottJson.json')
-  .then(response => { return response.json();})
-	.then(response => { 
-                      ottJson = [];
-                      var obj = response;
-                      //console.log(obj.length);
-  
-                      for(var i=0; i < obj.length; i++) {
-                        ottJson.push(obj[i]);
-                      }           
-                     console.log(ottJson);
-                    });
-}
 
-function ShowBoard() {
-  getDeliveryJson();
-  getOTTJson();
+function ShowBoard(props) {
+  var deliveryJson = props.deliveryInfo;
+  var ottJson = props.ottInfo;
 
   const [select, setSelect] = useState("delivery");
   const [page, setPage] = useState(1);
@@ -69,7 +42,11 @@ function ShowBoard() {
   return (
     <div>
       <div className="boardHeaderBar">
-        <div></div>
+        <Link className="linkBackButton" to='/'>
+          <button>
+            <AiOutlineLeft className="moveBackImg"/>
+          </button>
+        </Link>
         <img src={images.logo} alt="Logo"/>
         <Link className="linkSearchButton" to={select === "delivery" ? '/deliverysearch' : '/ottsearch'}>
           <button>
@@ -105,13 +82,51 @@ function ShowBoard() {
 
 
 class Board extends React.Component {
-  inifunc() {
-    
+  constructor () {
+    super ();
+
+    this.state = {
+      ott: [],
+      delivery: []
+    };
   }
+
+  componentDidMount(){
+    fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/ott_to_json.php')
+    .then(response => { return response.json();})
+    .then(response => { 
+                        var ottJson = [];
+                        var obj = response;
+                        //console.log(obj.length);
+    
+                        for(var i=0; i < obj.length; i++) {
+                          ottJson.push(obj[i]);
+                        }           
+                       console.log(ottJson);
+
+                       this.setState ({ott: ottJson});
+                      });   
+  
+   fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/delivery_to_json.php')
+    .then(response => { return response.json();})
+    .then(response => { 
+                        var deliJson = [];
+                        var obj = response;
+                        //console.log(obj.length);
+    
+                        for(var i=0; i < obj.length; i++) {
+                          deliJson.push(obj[i]);
+                        }           
+                       console.log(deliJson);
+
+                       this.setState ({delivery: deliJson});
+                      });                           
+  };                         
+
 
   render() {
     return(
-      <ShowBoard/>
+      <ShowBoard ottInfo={this.state.ott} deliveryInfo={this.state.delivery}/>
     );
   }
 }
