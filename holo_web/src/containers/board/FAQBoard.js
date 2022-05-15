@@ -2,31 +2,14 @@ import './Board.css';
 import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import {images} from '../../images';
-import {AiOutlineSearch} from "react-icons/ai";
+import {AiOutlineLeft, AiOutlineSearch} from "react-icons/ai";
 import BoardTable from '../../components/BoardTable';
 import Pagination from '../../components/Pagination';
 
-var faqJson = [];
 
-//faq_post 받아오기
-function getFAQ(){
-    return fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/faqJson.json')
-    .then(response => { return response.json();})
-        .then(response => { 
-                        faqJson = [];
-                        var obj = response;
-                        //console.log(obj.length);
-    
-                        for(var i=0; i < obj.length; i++) {
-                            faqJson.push(obj[i]);
-                        }           
-                        console.log(faqJson);
-                        });
-}
+function ShowBoard(props) {
+  var faqJson = props.faqInfo;
 
-
-function ShowBoard() {
-  getFAQ();
   const [page, setPage] = useState(1);
 
   function sliceList(){
@@ -43,7 +26,11 @@ function ShowBoard() {
   return (
     <div>
       <div className="boardHeaderBar">
-        <div></div>
+        <Link className="linkBackButton" to='/'>
+          <button>
+            <AiOutlineLeft className="moveBackImg"/>
+          </button>
+        </Link>
         <img src={images.logo} alt="Logo"/>
         <Link className="linkSearchButton" to='/faqsearch'>
           <button>
@@ -70,9 +57,33 @@ function ShowBoard() {
 
 
 class Board extends React.Component {
+  constructor () {
+    super ();
+
+    this.state = {
+      faq: []
+    };
+  }
+
+  componentDidMount(){
+    fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/faq_to_json.php')
+    .then(response => { return response.json();})
+    .then(response => { 
+                        var faqJson = [];
+                        var obj = response;
+                        //console.log(obj.length);
+    
+                        for(var i=0; i < obj.length; i++) {
+                          faqJson.push(obj[i]);
+                        }           
+                       console.log(faqJson);
+
+                       this.setState ({faq: faqJson});
+                      });                           
+  };
   render() {
     return(
-      <ShowBoard/>
+      <ShowBoard faqInfo={this.state.faq}/>
     );
   }
 }
