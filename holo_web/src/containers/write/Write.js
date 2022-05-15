@@ -8,7 +8,7 @@ import axios from 'axios';
 axios.defaults.withCredentials = true;  //axios 전역설정
 
 var Policy_state = {
-  user : '13',
+  user : '25',
   title : '',
   content : '',
   date : '',
@@ -16,7 +16,7 @@ var Policy_state = {
   like : '0'
 };
 var Document_state = {
-  user : '13',
+  user : '25',
   title : '',
   content : '',
   date : '',
@@ -24,25 +24,25 @@ var Document_state = {
   like : '0'
 };
 var OTT_state = {
-  user : '13',
+  user : '25',
   title : '',
   content : '',
   date : '',
   buy_date : '0',
   buyLocation : '0',
-  accumulate : '0',
+  accumulate : '1',
   view : '0',
   like : '0'
 };
 var Delivery_state = {
-  user : '13',
+  user : '25',
   title : '',
   content : '',
   date : '',
   buy_date : '0',
   buyLocation : '0',
   pickupLocation : '0',
-  accumulate : '0',
+  accumulate : '10000',
   view : '0',
   like : '0'
 };
@@ -210,27 +210,9 @@ function PolicySubmit(data){
       .catch(function(error) {
         console.log(error);
       });
-  /*
-  fetch("http://localhost:3001/policy", {
-      method : "post", // 통신방법
-      headers : {
-        "content-type" : "application/json",
-      },
-      body : JSON.stringify(data),
-    });
-    */
 } 
 
 function DocSubmit(data){
-  /*
-  fetch("http://localhost:3001/doc", {
-      method : "post", // 통신방법
-      headers : {
-        "content-type" : "application/json",
-      },
-      body : JSON.stringify(data),
-    });
-  */
     axios.post("http://holo.dothome.co.kr/TestSendDocJson.php", JSON.stringify(data),{
       withCredentials: false,
       headers: {"Content-Type": "application/json"}
@@ -244,22 +226,28 @@ function DocSubmit(data){
 }  
 
 function OTTSubmit(data){
-  fetch("http://localhost:3001/ott", {
-      method : "post", // 통신방법
-      headers : {
-        "content-type" : "application/json",
-      },
-      body : JSON.stringify(data),
+  axios.post("http://holo.dothome.co.kr/sendOTTjson.php", JSON.stringify(data),{
+    withCredentials: false,
+    headers: {"Content-Type": "application/json"}
+  })
+    .then(function(body) {
+      console.log(body);
+    })
+    .catch(function(error) {
+      console.log(error);
     });
 } 
 
 function DeliverySubmit(data){
-  fetch("http://localhost:3001/delivery", {
-      method : "post", // 통신방법
-      headers : {
-        "content-type" : "application/json",
-      },
-      body : JSON.stringify(data),
+  axios.post("http://holo.dothome.co.kr/sendDeliveryJson.php", JSON.stringify(data),{
+    withCredentials: false,
+    headers: {"Content-Type": "application/json"}
+  })
+    .then(function(body) {
+      console.log(body);
+    })
+    .catch(function(error) {
+      console.log(error);
     });
 }
 
