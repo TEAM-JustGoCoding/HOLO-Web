@@ -4,7 +4,7 @@
     height: 10vh;
     display: flex;
     box-shadow: 0 3px 5px rgba(0,0,0,0.30);
-  }
+}
 .postHeaderBar > div {
     margin: auto auto;
     font-family: "aSmile";
@@ -53,9 +53,6 @@
     font-family: "aSmile_L";
     font-size: 2.5vh;
 }
-.postEtc {
-    margin: 10vh 0 0 0;
-}
 .postDealContent {
     width: 100%;
     height: 100%;
@@ -78,6 +75,22 @@
     font-family: "aSmile_L";
     font-size: 2.5vh;
 }
+
+.postEtc {
+    margin: 10vh 0 0 0;
+}
+.postEtc2 {
+    display: flex;
+    flex-direction: row;
+}
+.postEtc2 > div {
+    margin: auto 0 auto auto;
+}
+.postEtcButton {
+    background-color: white;
+    border: solid 1px #ababab;
+}
+
 .heartIcon{
     margin: 0 1vh 0 3vh;
     cursor: pointer;

@@ -14,6 +14,7 @@ import DeliverySearch from './search/DeliverySearch';
 import OttSearch from './search/OttSearch';
 import FAQSearch from './search/FAQSearch';
 import Write from './write/Write';
+import Edit from './write/Edit';
 
 const App = () => {
   return (
@@ -33,6 +34,10 @@ const App = () => {
       <Route path="/ottsearch" element={<OttSearch/>}/>
       <Route path="/faqsearch" element={<FAQSearch/>}/>
       <Route path="/write" element={<Write />} />
+      <Route path="/edit/policy/:id" element={<Edit />} />
+      <Route path="/edit/document/:id" element={<Edit />} />
+      <Route path="/edit/delivery/:id" element={<Edit />} />
+      <Route path="/edit/ott/:id" element={<Edit />} />
     </Routes>
   );
 };

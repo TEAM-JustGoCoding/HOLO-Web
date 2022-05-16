@@ -1,5 +1,6 @@
 import './Post.css';
 import React, {useState} from 'react';
+import { Link } from 'react-router-dom';
 import Modal from '../../components/Modal';
 import {images} from '../../images';
 import { AiOutlineEye } from "react-icons/ai";
@@ -9,9 +10,11 @@ import axios from 'axios';
 function ShowPost(props) {
   //const {id} = useParams();
   const [participation, setParticipation] = useState(false);
-  const [inputModalOpen, setInputModalOpen] = useState(false);
+  const [participationModalOpen, setParticipationModalOpen] = useState(false);
   const [infoModalOpen, setInfoModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
+  var id = props.id;
   var user = props.user;
   var title = props.title;
   var content = props.content;
@@ -23,13 +26,21 @@ function ShowPost(props) {
   var accumulate = props.accumulate;
   var view = props.view;
 
-  const msg = "\n공동구매에 참여할 금액을 작성해주세요.\n입력하신 금액은 참여 현황에 반영됩니다.\n추후 수정은 불가능합니다.\n신중하게 작성해주세요!";
-  const submitModal = (money) => {
-    setInputModalOpen(false);
+  const participationMsg = "\n공동구매에 참여할 금액을 작성해주세요.\n입력하신 금액은 참여 현황에 반영됩니다.\n신중하게 작성해주세요!";
+  const participationPost = (money) => {
+    setParticipationModalOpen(false);
     setParticipation(true);
     console.log(money+"원! 공동구매 금액 추가!")
     //공동구매 참여 DB 반영
   };
+  
+  const deleteMsg = "\n게시글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
+  const deletePost = () => {
+    setDeleteModalOpen(false);
+    console.log("게시글 삭제!")
+    //게시글 삭제 DB 반영
+  }
+
 
   return (
     <div>
@@ -51,15 +62,26 @@ function ShowPost(props) {
         <div className="postEtc">
           {participation
               ? <button className="participationButton pink" onClick={() => { setInfoModalOpen(true); }}><FaRegLaughSquint/>   참여 완료!</button>
-              : <button className="participationButton skyblue" onClick={() => { setInputModalOpen(true); }}><FaRegLaugh/>   참여 신청!</button>
+              : <button className="participationButton skyblue" onClick={() => { setParticipationModalOpen(true); }}><FaRegLaugh/>   참여 신청!</button>
           }
-          <Modal type="Input" open={inputModalOpen} close={() => {setInputModalOpen(false);}} submit={submitModal}>
-            {msg}
+          <Modal type="Input" open={participationModalOpen} close={() => {setParticipationModalOpen(false);}} submit={participationPost}>
+            {participationMsg}
           </Modal>
           <Modal type="Info" open={infoModalOpen} close={() => {setInfoModalOpen(false);}}>
             이미 참여한 게시글이에요!
           </Modal>
-          <AiOutlineEye style={{ fontSize: '3.5vh', marginRight: '1vh'}}/>{view}
+          <div className="postEtc2">
+            <AiOutlineEye style={{ fontSize: '3.5vh', marginRight: '1vh'}}/>{view}
+            <div>
+              <Link to={`/edit/delivery/${id}`}>
+                <button className="postEtcButton">수정</button>
+              </Link>
+              <button className="postEtcButton" onClick={() => {setDeleteModalOpen(true);}}>삭제</button>
+              <Modal type="Check" open={deleteModalOpen} close={()=>{setDeleteModalOpen(false);}} submit={deletePost}>
+                {deleteMsg}
+              </Modal>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -121,7 +143,7 @@ class Post extends React.Component {
 
   render() {
     return(
-      <ShowPost user={this.state.user} title={this.state.title} content={this.state.content} reg_date={this.state.reg_date}
+      <ShowPost id = {this.state.id} user={this.state.user} title={this.state.title} content={this.state.content} reg_date={this.state.reg_date}
                 limit_date={this.state.limit_date} buy_location={this.state.buy_location} pickup_location={this.state.pickup_location} 
                 goal={this.state.goal} view={this.state.view} accumulate={this.state.accumulate}/>
     );

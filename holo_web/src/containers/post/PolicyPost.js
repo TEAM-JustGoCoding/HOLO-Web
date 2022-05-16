@@ -1,5 +1,7 @@
 import './Post.css';
 import React, {useState} from 'react';
+import { Link } from 'react-router-dom';
+import Modal from '../../components/Modal';
 import {images} from '../../images';
 import { AiOutlineEye, AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import axios from 'axios';
@@ -42,9 +44,9 @@ function decreaseHeart(id){
     });
 }
 
-function ShowPost(props) {
-  
+function ShowPost(props) {  
   const [heart, setHeart] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   var id = props.id;
   var user = props.user;
@@ -53,6 +55,13 @@ function ShowPost(props) {
   var reg_date = props.reg_date;
   var view = props.view;
   var like = props.like;
+
+  const deleteMsg = "\n게시글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
+  const deletePost = () => {
+    setDeleteModalOpen(false);
+    console.log("게시글 삭제!")
+    //게시글 삭제 DB 반영
+  }
 
   return (
     <div>
@@ -65,12 +74,23 @@ function ShowPost(props) {
       <div className="postContent">
         {content}
         <div className="postEtc">
-            <AiOutlineEye style={{ fontSize: '3.5vh', marginRight: '1vh'}}/>{view}
-            {heart
-              ? <AiFillHeart className="heartIcon red" onClick={() => { setHeart(false); decreaseHeart(id);}}/>
-              : <AiOutlineHeart className="heartIcon" onClick={() => { setHeart(true); increaseHeart(id); }}/>
-            }
-            {like}
+          <div className="postEtc2">
+              <AiOutlineEye style={{ fontSize: '3.5vh', marginRight: '1vh'}}/>{view}
+              {heart
+                ? <AiFillHeart className="heartIcon red" onClick={() => { setHeart(false); decreaseHeart(id);}}/>
+                : <AiOutlineHeart className="heartIcon" onClick={() => { setHeart(true); increaseHeart(id); }}/>
+              }
+              {like}
+            <div>
+              <Link to={`/edit/policy/${id}`}>
+                <button className="postEtcButton">수정</button>
+              </Link>
+              <button className="postEtcButton" onClick={() => {setDeleteModalOpen(true);}}>삭제</button>
+              <Modal type="Check" open={deleteModalOpen} close={()=>{setDeleteModalOpen(false);}} submit={deletePost}>
+                {deleteMsg}
+              </Modal>
+            </div>
+          </div>
         </div>
       </div>
     </div>
