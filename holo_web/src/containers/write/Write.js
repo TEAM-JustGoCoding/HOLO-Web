@@ -50,11 +50,9 @@ var Delivery_state = {
 function PolicyWrite() {
   const P_titleChange = async (e) =>{
     Policy_state.title = e.target.value;
-    console.log(Policy_state.title);
   };
   function P_contentChange (e) {
     Policy_state.content = e.target.value;
-    console.log(Policy_state.content);
   };
 
   return(
@@ -68,11 +66,9 @@ function PolicyWrite() {
 function DocumentWrite() {
   const D_titleChange = async (e) =>{
     Document_state.title = e.target.value;
-    console.log(Document_state.title);
   };
   function D_contentChange (e) {
     Document_state.content = e.target.value;
-    console.log(Document_state.content);
   };
 
   return(
@@ -86,23 +82,18 @@ function DocumentWrite() {
 function OTTWrite(){
   function O_titleChange (e) {
     OTT_state.title = e.target.value;
-    console.log(OTT_state.title);
   };
   function O_contentChange (e) {
     OTT_state.content = e.target.value;
-    console.log(OTT_state.content);
   };
   function O_accumulateChange (e) {
     OTT_state.accumulate = e.target.value;
-    console.log(OTT_state.accumulate);
   }
   function O_buyDateChange (e) {
     OTT_state.buy_date = e.target.value;
-    console.log(OTT_state.buy_date);
   }
   function O_buyLocationChange (e) {
     OTT_state.buyLocation = e.target.value;
-    console.log(OTT_state.buyLocation);
   }
 
   return(
@@ -119,27 +110,21 @@ function OTTWrite(){
 function DeliveryWrite() {
   function G_titleChange (e) {
     Delivery_state.title = e.target.value;
-    console.log(Delivery_state.title);
   };
   function G_contentChange (e) {
     Delivery_state.content = e.target.value;
-    console.log(Delivery_state.content);
   };
   function G_accumulateChange (e) {
     Delivery_state.accumulate = e.target.value;
-    console.log(Delivery_state.accumulate);
   }
   function G_buyLocationChange (e) {
     Delivery_state.buyLocation = e.target.value;
-    console.log(Delivery_state.buyLocation);
   }
   function G_buyDateChange (e) {
     Delivery_state.buy_date = e.target.value;
-    console.log(Delivery_state.buy_date);
   }
   function G_pickupChange (e) {
     Delivery_state.pickupLocation = e.target.value;
-    console.log(Delivery_state.pickupLocation);
   }
 
   return(

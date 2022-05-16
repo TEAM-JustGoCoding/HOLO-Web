@@ -1,56 +1,27 @@
 import './Post.css';
 import React, {useState} from 'react';
-import {useParams} from 'react-router-dom';
 import Modal from '../../components/Modal';
 import {images} from '../../images';
 import { AiOutlineEye } from "react-icons/ai";
 import { FaRegLaugh, FaRegLaughSquint } from "react-icons/fa";
 import axios from 'axios';
 
-var user, title, content, reg_date, limit_date, buy_location, pickup_location, goal, accumulate, view;
-
-function getPost() {
-     return fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/deliPost.json')
-     .then(response => { return response.json();})
-     .then(response => { 
-                         var obj = response;
-                         console.log(obj);
-   
-                         user = obj[0].nick_name;
-                         title = obj[0].title;
-                         content = obj[0].content;
-                         reg_date = obj[0].reg_date;
-                         limit_date = obj[0].limit_date;
-                         buy_location = obj[0].buy_location;
-                         pickup_location = obj[0].pickup_location;
-                         goal = obj[0].goal
-                         view = obj[0].view;
-                         accumulate = obj[0].accumulate;
-                         
-                       });
-}
-
-function requestPost(id){
-  axios.post("http://holo.dothome.co.kr/findDeliveryPost.php", JSON.stringify({postid: id}),{
-      withCredentials: false,
-      headers: {"Content-Type": "application/json"}
-    })
-      .then(function(body) {
-        console.log(body);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-}
-
-function Post() {
-  const {id} = useParams();
+function ShowPost(props) {
+  //const {id} = useParams();
   const [participation, setParticipation] = useState(false);
   const [inputModalOpen, setInputModalOpen] = useState(false);
   const [infoModalOpen, setInfoModalOpen] = useState(false);
 
-  requestPost(id);
-  getPost();
+  var user = props.user;
+  var title = props.title;
+  var content = props.content;
+  var reg_date = props.reg_date;
+  var limit_date = props.limit_date;
+  var buy_location = props.buy_location;
+  var pickup_location = props.pickup_location;
+  var goal = props.goal;
+  var accumulate = props.accumulate;
+  var view = props.view;
 
   const msg = "\n공동구매에 참여할 금액을 작성해주세요.\n입력하신 금액은 참여 현황에 반영됩니다.\n추후 수정은 불가능합니다.\n신중하게 작성해주세요!";
   const submitModal = (money) => {
@@ -93,6 +64,68 @@ function Post() {
       </div>
     </div>
   );
+}
+
+class Post extends React.Component {
+  constructor () {
+    super ();
+
+    //console.log(window.location.href); // http://localhost:3000/deliverypost/4
+    var pathname = window.location.pathname;
+    var words = pathname.split('/');
+    console.log(words[2]);
+
+    this.state = {
+       id : words[2],
+       user : "",
+       title : "",
+       content : "",
+       reg_date : "",
+       limit_date : "",
+       buy_location : "",
+       pickup_location : "",
+       goal : "",
+       accumulate : "",
+       view : ""
+    };
+
+    this.componentDidMount = this.componentDidMount.bind(this);
+  }
+
+  componentDidMount(){
+    console.log(this.state.id);
+
+    axios.post("http://holo.dothome.co.kr/findDeliveryPost.php", JSON.stringify({postid: this.state.id}),{
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    })
+      .then(response => {
+        console.log(response.data[0]);
+        this.setState ({
+          user: response.data[0].nick_name,
+          title: response.data[0].title,
+          content: response.data[0].content,
+          reg_date : response.data[0].reg_date,
+          limit_date : response.data[0].limit_date,
+          buy_location :response.data[0].buy_location,
+          pickup_location : response.data[0].pickup_location,
+          goal : response.data[0].goal,
+          view : response.data[0].view,
+          accumulate : response.data[0].accumulate });  
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+                     
+  };                         
+
+  render() {
+    return(
+      <ShowPost user={this.state.user} title={this.state.title} content={this.state.content} reg_date={this.state.reg_date}
+                limit_date={this.state.limit_date} buy_location={this.state.buy_location} pickup_location={this.state.pickup_location} 
+                goal={this.state.goal} view={this.state.view} accumulate={this.state.accumulate}/>
+    );
+  }
 }
 
 export default Post;

@@ -1,60 +1,58 @@
 import './Post.css';
 import React, {useState} from 'react';
-import {useParams} from 'react-router-dom';
 import {images} from '../../images';
 import { AiOutlineEye, AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import axios from 'axios';
 
-var user, title, content, reg_date, view, like;
+var user, like;
 
-function getPost() {
-  /*
-  axios.get('http://holo.dothome.co.kr/policyPost.json', {
-      withCredentials: false,
-      headers: {"Content-Type": "application/json"}
+function increaseHeart(id){
+  var temp = Number(like);
+  temp = temp + 1;
+  like = temp.toString();
+
+  axios.post("http://holo.dothome.co.kr/likeDoc.php", JSON.stringify({id: id, user: user}),{
+    withCredentials: false,
+    headers: {"Content-Type": "application/json"}
+  })
+    .then(function(body) {
+      console.log(body);
     })
-    .then((response) => {
-      console.log("읽어옴");
-      console.log(response);
-     });
-     */
-     return fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/poliPost.json')
-     .then(response => { return response.json();})
-     .then(response => { 
-                         var obj = response;
-                         console.log(obj);
-   
-                         user = obj[0].nick_name;
-                         title = obj[0].title;
-                         content = obj[0].content;
-                         reg_date = obj[0].reg_date;
-                         view = obj[0].view;
-                         like = obj[0].like;
-                         
-                       });
+    .catch(function(error) {
+      console.log(error);
+    });
 }
 
-function requestPost(id){
-  axios.post("http://holo.dothome.co.kr/findPolicyPost.php", JSON.stringify({postid: id}),{
-      withCredentials: false,
-      headers: {"Content-Type": "application/json"}
+function decreaseHeart(id){
+  if(like > 0){
+    var temp = Number(like);
+    temp = temp - 1;
+    like = temp.toString();
+  }
+
+  axios.post("http://holo.dothome.co.kr/likeDocCancel.php", JSON.stringify({id: id, user: user}),{
+    withCredentials: false,
+    headers: {"Content-Type": "application/json"}
+  })
+    .then(function(body) {
+      console.log(body);
     })
-      .then(function(body) {
-        console.log(body);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
+    .catch(function(error) {
+      console.log(error);
+    });
 }
 
-function Post() {
-  const {id} = useParams();
+function ShowPost(props) {
+  
   const [heart, setHeart] = useState(false);
 
-  //console.log(id);
-  requestPost(id);
-
-  getPost();
+  var id = props.id;
+  var user = props.user;
+  var title = props.title;
+  var content = props.content;
+  var reg_date = props.reg_date;
+  var view = props.view;
+  var like = props.like;
 
   return (
     <div>
@@ -69,14 +67,68 @@ function Post() {
         <div className="postEtc">
             <AiOutlineEye style={{ fontSize: '3.5vh', marginRight: '1vh'}}/>{view}
             {heart
-              ? <AiFillHeart className="heartIcon red" onClick={() => { setHeart(false);}}/>
-              : <AiOutlineHeart className="heartIcon" onClick={() => { setHeart(true);}}/>
+              ? <AiFillHeart className="heartIcon red" onClick={() => { setHeart(false); decreaseHeart(id);}}/>
+              : <AiOutlineHeart className="heartIcon" onClick={() => { setHeart(true); increaseHeart(id); }}/>
             }
             {like}
         </div>
       </div>
     </div>
   );
+}
+
+class Post extends React.Component {
+  constructor () {
+    super ();
+
+    var pathname = window.location.pathname;
+    var words = pathname.split('/');
+    console.log(words[2]);
+
+    this.state = {
+       id : words[2],
+       user : "",
+       title : "",
+       content : "",
+       reg_date : "",
+       view : "",
+       like : ""
+    };
+
+    this.componentDidMount = this.componentDidMount.bind(this);
+  }
+
+  componentDidMount(){
+    console.log(this.state.id);
+
+    axios.post("http://holo.dothome.co.kr/findPolicyPost.php", JSON.stringify({postid: this.state.id}),{
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    })
+      .then(response => {
+        console.log(response.data[0]);
+        this.setState ({
+          user: response.data[0].nick_name,
+          title: response.data[0].title,
+          content: response.data[0].content,
+          reg_date : response.data[0].reg_date,
+          view : response.data[0].view,
+          like : response.data[0].like });  
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+                     
+  };                         
+
+
+  render() {
+    return(
+      <ShowPost id = {this.state.id} user={this.state.user} title={this.state.title} 
+                content={this.state.content} reg_date={this.state.reg_date}
+                view={this.state.view} like={this.state.like}/>
+    );
+  }
 }
 
 export default Post;

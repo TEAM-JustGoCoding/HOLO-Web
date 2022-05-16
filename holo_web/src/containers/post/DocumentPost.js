@@ -1,41 +1,10 @@
 import './Post.css';
 import React, {useState} from 'react';
-import {useParams} from 'react-router-dom';
 import {images} from '../../images';
 import { AiOutlineEye, AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import axios from 'axios';
 
-
-var user, title, content, reg_date, view, like;
-
-function getPost() {
-	return fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/docPost.json')
-	.then(response => { return response.json();})
-	.then(response => { 
-                      var obj = response;
-                      console.log(obj);
-
-                      user = obj[0].nick_name;
-                      title = obj[0].title;
-                      content = obj[0].content;
-                      reg_date = obj[0].reg_date;
-                      view = obj[0].view;
-                      like = obj[0].like;
-                    });
-}
-
-function requestPost(id){
-  axios.post("http://holo.dothome.co.kr/findDocPost.php", JSON.stringify({postid: id}),{
-      withCredentials: false,
-      headers: {"Content-Type": "application/json"}
-    })
-      .then(function(body) {
-        console.log(body);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-}
+var user, like;
 
 function increaseHeart(id){
   var temp = Number(like);
@@ -73,14 +42,17 @@ function decreaseHeart(id){
     });
 }
 
-function Post() {
-  const {id} = useParams();
+function ShowPost(props) {
+  
   const [heart, setHeart] = useState(false);
 
-  //console.log(id);
-  requestPost(id);
-
-  getPost();
+  var id = props.id;
+  var user = props.user;
+  var title = props.title;
+  var content = props.content;
+  var reg_date = props.reg_date;
+  var view = props.view;
+  var like = props.like;
 
   return (
     <div>
@@ -103,6 +75,59 @@ function Post() {
       </div>
     </div>
   );
+}
+
+class Post extends React.Component {
+  constructor () {
+    super ();
+
+    var pathname = window.location.pathname;
+    var words = pathname.split('/');
+    console.log(words[2]);
+
+    this.state = {
+       id : words[2],
+       user : "",
+       title : "",
+       content : "",
+       reg_date : "",
+       view : "",
+       like : ""
+    };
+
+    this.componentDidMount = this.componentDidMount.bind(this);
+  }
+
+  componentDidMount(){
+    console.log(this.state.id);
+
+    axios.post("http://holo.dothome.co.kr/findDocPost.php", JSON.stringify({postid: this.state.id}),{
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    })
+      .then(response => {
+        console.log(response.data[0]);
+        this.setState ({
+          user: response.data[0].nick_name,
+          title: response.data[0].title,
+          content: response.data[0].content,
+          reg_date : response.data[0].reg_date,
+          view : response.data[0].view,
+          like : response.data[0].like });  
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+                     
+  };                         
+
+  render() {
+    return(
+      <ShowPost id = {this.state.id} user={this.state.user} title={this.state.title} 
+                content={this.state.content} reg_date={this.state.reg_date}
+                view={this.state.view} like={this.state.like}/>
+    );
+  }
 }
 
 export default Post;
