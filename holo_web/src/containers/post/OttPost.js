@@ -1,6 +1,6 @@
 import './Post.css';
 import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Modal from '../../components/Modal';
 import {images} from '../../images';
 import { AiOutlineEye } from "react-icons/ai";
@@ -8,9 +8,10 @@ import { FaRegLaugh, FaRegLaughSquint } from "react-icons/fa";
 import axios from 'axios';
 
 function ShowPost(props) {
+  const navigate = useNavigate();
   const [participation, setParticipation] = useState(false);
   const [participationModalOpen, setParticipationModalOpen] = useState(false);
-  const [infoModalOpen, setInfoModalOpen] = useState(false);
+  const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   var id = props.id;
@@ -29,14 +30,32 @@ function ShowPost(props) {
     setParticipationModalOpen(false);
     setParticipation(true);
     console.log("OTT 구독자 추가!")
-    //OTT 구독자 모집 참여 DB 반영
-  };
-  
+    //OTT 구독자 참여 DB 반영
+  }
+
+  const cancelMsg = "\n참여를 취소하시겠습니까?\n신중하게 결정해주세요!"
+  const cancelPost = () => {
+    setCancelModalOpen(false);
+    setParticipation(false);
+    console.log("OTT 구독 취소!")
+    //OTT 구독자 참여 취소 DB 반영
+  }
+
   const deleteMsg = "\n게시글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
   const deletePost = () => {
     setDeleteModalOpen(false);
-    console.log("게시글 삭제!")
-    //게시글 삭제 DB 반영
+
+    axios.post("http://holo.dothome.co.kr/deleteOtt.php", JSON.stringify({id: id}),{
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    })
+      .then(response => {
+        console.log(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    navigate(-1)
   }
 
 
@@ -58,14 +77,14 @@ function ShowPost(props) {
         {content}
         <div className="postEtc">
           {participation
-              ? <button className="participationButton pink" onClick={() => { setInfoModalOpen(true); }}><FaRegLaughSquint/>   참여 완료!</button>
+              ? <button className="participationButton pink" onClick={() => { setCancelModalOpen(true); }}><FaRegLaughSquint/>   참여 완료!</button>
               : <button className="participationButton skyblue" onClick={() => { setParticipationModalOpen(true); }}><FaRegLaugh/>   참여 신청!</button>
           }
           <Modal type="Check" open={participationModalOpen} close={()=>{setParticipationModalOpen(false);}} submit={participationPost}>
             {participationMsg}
           </Modal>
-          <Modal type="Info" open={infoModalOpen} close={()=>{setInfoModalOpen(false);}}>
-            이미 참여한 게시글이에요!
+          <Modal type="Check" open={cancelModalOpen} close={()=>{setCancelModalOpen(false);}} submit={cancelPost}>
+            {cancelMsg}
           </Modal>
           <div className="postEtc2">
             <AiOutlineEye style={{ fontSize: '3.5vh', marginRight: '1vh'}}/>{view}

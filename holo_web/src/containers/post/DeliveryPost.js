@@ -1,6 +1,6 @@
 import './Post.css';
 import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Modal from '../../components/Modal';
 import {images} from '../../images';
 import { AiOutlineEye } from "react-icons/ai";
@@ -9,9 +9,10 @@ import axios from 'axios';
 
 function ShowPost(props) {
   //const {id} = useParams();
+  const navigate = useNavigate();
   const [participation, setParticipation] = useState(false);
   const [participationModalOpen, setParticipationModalOpen] = useState(false);
-  const [infoModalOpen, setInfoModalOpen] = useState(false);
+  const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   var id = props.id;
@@ -26,7 +27,7 @@ function ShowPost(props) {
   var accumulate = props.accumulate;
   var view = props.view;
 
-  const participationMsg = "\n공동구매에 참여할 금액을 작성해주세요.\n입력하신 금액은 참여 현황에 반영됩니다.\n신중하게 작성해주세요!";
+  const participationMsg = "\n공동구매에 참여할 금액을 작성해주세요.\n입력하신 금액은 참여 현황에 반영됩니다.\n신중하게 작성해주세요!\n0원 이하는 입력할 수 없습니다.";
   const participationPost = (money) => {
     setParticipationModalOpen(false);
     setParticipation(true);
@@ -34,11 +35,28 @@ function ShowPost(props) {
     //공동구매 참여 DB 반영
   };
   
+  const cancelMsg = "\n참여를 취소하시겠습니까?\n신중하게 결정해주세요!"
+  const cancelPost = () => {
+    setCancelModalOpen(false);
+    setParticipation(false);
+    console.log("공동구매 참여 취소!")
+    //공동구매 참여 취소 DB 반영
+  }
+
   const deleteMsg = "\n게시글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
   const deletePost = () => {
     setDeleteModalOpen(false);
-    console.log("게시글 삭제!")
-    //게시글 삭제 DB 반영
+    axios.post("http://holo.dothome.co.kr/deleteDelivery.php", JSON.stringify({id: id}),{
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    })
+      .then(response => {
+        console.log(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    navigate(-1)
   }
 
 
@@ -61,14 +79,14 @@ function ShowPost(props) {
         {content}
         <div className="postEtc">
           {participation
-              ? <button className="participationButton pink" onClick={() => { setInfoModalOpen(true); }}><FaRegLaughSquint/>   참여 완료!</button>
+              ? <button className="participationButton pink" onClick={() => { setCancelModalOpen(true); }}><FaRegLaughSquint/>   참여 완료!</button>
               : <button className="participationButton skyblue" onClick={() => { setParticipationModalOpen(true); }}><FaRegLaugh/>   참여 신청!</button>
           }
           <Modal type="Input" open={participationModalOpen} close={() => {setParticipationModalOpen(false);}} submit={participationPost}>
             {participationMsg}
           </Modal>
-          <Modal type="Info" open={infoModalOpen} close={() => {setInfoModalOpen(false);}}>
-            이미 참여한 게시글이에요!
+          <Modal type="Check" open={cancelModalOpen} close={()=>{setCancelModalOpen(false);}} submit={cancelPost}>
+            {cancelMsg}
           </Modal>
           <div className="postEtc2">
             <AiOutlineEye style={{ fontSize: '3.5vh', marginRight: '1vh'}}/>{view}

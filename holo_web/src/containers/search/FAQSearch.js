@@ -4,6 +4,7 @@ import { images } from '../../images';
 import { AiOutlineSearch } from "react-icons/ai";
 import BoardTable from '../../components/BoardTable';
 import Pagination from '../../components/Pagination';
+import Modal from '../../components/Modal';
 import axios from 'axios';
 
 var result = [];
@@ -54,7 +55,8 @@ function ShowResults(props) {
 }
 
 function Search() {
-  const [searchWord, setSearchWord] = useState(null)
+  const [modalOpen, setModalOpen] = useState(false)
+  const [searchWord, setSearchWord] = useState("")
   const [searchResult, setSearchResult] = useState(null)
   const [resultExist, setResultExist] = useState(null)
 
@@ -74,29 +76,28 @@ function Search() {
   }
 
   function search(){
-    //1. 검색어 json 형식으로 php 서버에 전송
-    axios.post("http://holo.dothome.co.kr/searchFAQ.php", JSON.stringify({word: searchWord}),{
-      withCredentials: false,
-      headers: {"Content-Type": "application/json"}
-    })
-      .then(function(body) {
-        console.log(body);
+    if(searchWord===""){
+      setModalOpen(true)
+    }
+    else{
+      //1. 검색어 json 형식으로 php 서버에 전송
+      axios.post("http://holo.dothome.co.kr/searchFAQ.php", JSON.stringify({word: searchWord}),{
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
       })
-      .catch(function(error) {
-        console.log(error);
-      });
-    
+        .then(function(body) {
+          console.log(body);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+      
+      //2. 검색결과 받아오기
+      getResult();
+      result = searchResult;
 
-    //2. 검색결과 받아오기
-    getResult();
-
-    result = searchResult;
-    //console.log(result);
-
-    if(result.length > 0){
-      setResultExist(1);
-    } else {
-      setResultExist(0);
+      if(result.length > 0) { setResultExist(1); }
+      else { setResultExist(0); }
     }
   }
 
@@ -114,6 +115,9 @@ function Search() {
       </div>
       <div className="searchResults">
         <ShowResults results={resultExist}></ShowResults>
+        <Modal type="Info" open={modalOpen} close={()=>setModalOpen(false)}>
+          검색어를 입력해주세요!
+        </Modal>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import './Post.css';
 import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Modal from '../../components/Modal';
 import {images} from '../../images';
 import { AiOutlineEye, AiOutlineHeart, AiFillHeart } from "react-icons/ai";
@@ -45,6 +45,7 @@ function decreaseHeart(id){
 }
 
 function ShowPost(props) {
+  const navigate = useNavigate();
   const [heart, setHeart] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
@@ -59,8 +60,18 @@ function ShowPost(props) {
   const deleteMsg = "\n게시글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
   const deletePost = () => {
     setDeleteModalOpen(false);
-    console.log("게시글 삭제!")
-    //게시글 삭제 DB 반영
+
+    axios.post("http://holo.dothome.co.kr/deleteDoc.php", JSON.stringify({id: id}),{
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    })
+      .then(response => {
+        console.log(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    navigate(-1)
   }
 
   return (
