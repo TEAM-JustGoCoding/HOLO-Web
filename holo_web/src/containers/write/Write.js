@@ -154,9 +154,20 @@ function ShowInput(props) {
   }
 }
 
+function getToday(){
+  var date = new Date();
+  var year = date.getFullYear();
+  var month = ("0" + (1 + date.getMonth())).slice(-2);
+  var day = ("0" + date.getDate()).slice(-2);
+
+  var time = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+
+  return year + "-" + month + "-" + day + " " + time;
+}
+
 
 function postDB(category){
-  var date = new Date().toISOString().substr(0, 19).replace('T', ' ');
+  var date = getToday();
 
   switch(category){
     case "정책":
