@@ -30,7 +30,7 @@ var OTT_state = {
   date : '',
   buy_date : '0',
   buyLocation : '0',
-  accumulate : '1',
+  goal : '1',
   view : '0',
   like : '0'
 };
@@ -42,7 +42,7 @@ var Delivery_state = {
   buy_date : '0',
   buyLocation : '0',
   pickupLocation : '0',
-  accumulate : '10000',
+  goal : '10000',
   view : '0',
   like : '0'
 };
@@ -86,8 +86,8 @@ function OTTWrite(){
   function O_contentChange (e) {
     OTT_state.content = e.target.value;
   };
-  function O_accumulateChange (e) {
-    OTT_state.accumulate = e.target.value;
+  function O_goalChange (e) {
+    OTT_state.goal = e.target.value;
   }
   function O_buyDateChange (e) {
     OTT_state.buy_date = e.target.value;
@@ -101,7 +101,7 @@ function OTTWrite(){
       <input type='text' id="title" placeholder='제목' spellCheck="false" onChange={O_titleChange}/>
       <input type='text' id="date" placeholder='구매 일시' spellCheck="false" onChange={O_buyDateChange}/>
       <input type='text' id="buyLocation" className="contentInput" placeholder='OTT 플랫폼' spellCheck="false" onChange={O_buyLocationChange}/>
-      <input type='text' id="accumulate" className="contentInput" placeholder='목표 인원' spellCheck="false" onChange={O_accumulateChange}/>
+      <input type='text' id="accumulate" className="contentInput" placeholder='목표 인원' spellCheck="false" onChange={O_goalChange}/>
       <textarea id="content" className="ottContent" placeholder='내용을 입력하세요.' spellCheck="false" onChange={O_contentChange}/>
     </div>
   )
@@ -114,8 +114,8 @@ function DeliveryWrite() {
   function G_contentChange (e) {
     Delivery_state.content = e.target.value;
   };
-  function G_accumulateChange (e) {
-    Delivery_state.accumulate = e.target.value;
+  function G_goalChange (e) {
+    Delivery_state.goal = e.target.value;
   }
   function G_buyLocationChange (e) {
     Delivery_state.buyLocation = e.target.value;
@@ -132,7 +132,7 @@ function DeliveryWrite() {
       <input type='text' id="title" placeholder='제목' spellCheck="false" onChange={G_titleChange}/>
       <input type='text' id="date" placeholder='구매 일시' spellCheck="false" onChange={G_buyDateChange}/>
       <input type='text' id="buyLocation" placeholder='구매처' spellCheck="false" onChange={G_buyLocationChange}/>
-      <input type='text' id="accumulate" placeholder='목표 금액' spellCheck="false" onChange={G_accumulateChange}/>
+      <input type='text' id="accumulate" placeholder='목표 금액' spellCheck="false" onChange={G_goalChange}/>
       <input type='text' id="pickupLocation" placeholder='픽업 위치' spellCheck="false" onChange={G_pickupChange}/>
       <textarea id="content" className="deliveryContent" placeholder='내용을 입력하세요.' spellCheck="false" onChange={G_contentChange}/>
     </div>
