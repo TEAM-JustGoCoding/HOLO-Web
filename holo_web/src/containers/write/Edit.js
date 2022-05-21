@@ -8,51 +8,43 @@ axios.defaults.withCredentials = true;  //axios 전역설정
 
 var Policy_state = {
   id : '',
-  user : '25',
+  user : '',
   title : '',
   content : '',
-  date : '',
-  view : '0',
-  like : '0'
+  reg_date : ''
 };
 var Document_state = {
   id : '',
-  user : '25',
+  user : '',
   title : '',
   content : '',
-  date : '',
-  view : '0',
-  like : '0'
+  reg_date : ''
 };
 var OTT_state = {
   id : '',
-  user : '25',
+  user : '',
   title : '',
   content : '',
-  date : '',
-  buy_date : '',
-  buyLocation : '',
-  goal : '',
-  view : '0'
+  reg_date : '',
+  limit_date : '',
+  buy_location : '',
+  goal : ''
 };
 var Delivery_state = {
   id : '',
-  user : '25',
+  user : '',
   title : '',
   content : '',
-  date : '',
-  buy_date : '',
-  buyLocation : '',
-  pickupLocation : '',
-  goal : '',
-  view : '0'
+  reg_date : '',
+  limit_date : '',
+  buy_location : '',
+  pickup_location : '',
+  goal : ''
 };
 
 function PolicyWrite(props) {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
-
-  Policy_state.id = props.id;
 
   useEffect(() => {
     setTitle(props.title);
@@ -61,14 +53,13 @@ function PolicyWrite(props) {
     setContent(props.content);
   }, [props.content]);
 
+  Policy_state.id = props.id;
   Policy_state.user = props.user;
   Policy_state.title = title;
   Policy_state.content = content;
-  Policy_state.date = props.reg_date;
-  Policy_state.view = props.view;
-  Policy_state.like = props.like;
+  Policy_state.reg_date = props.reg_date;
 
-  const P_titleChange = async (e) =>{
+  function P_titleChange (e) {
     setTitle(e.target.value)
     Policy_state.title = title;
   };
@@ -89,8 +80,6 @@ function DocumentWrite(props) {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
 
-  Document_state.id = props.id;
-
   useEffect(() => {
     setTitle(props.title);
   }, [props.title]);
@@ -98,12 +87,11 @@ function DocumentWrite(props) {
     setContent(props.content);
   }, [props.content]);
 
+  Document_state.id = props.id;
   Document_state.user = props.user;
   Document_state.title = title;
   Document_state.content = content;
-  Document_state.date = props.reg_date;
-  Document_state.view = props.view;
-  Document_state.like = props.like;
+  Document_state.reg_date = props.reg_date;
 
   const D_titleChange = async (e) =>{
     setTitle(e.target.value)
@@ -129,8 +117,6 @@ function OTTWrite(props){
   const [buy_location, setBuyLocation] = useState('')
   const [goal, setGoal] = useState('')
 
-  OTT_state.id = props.id;
-
   useEffect(() => {
     setTitle(props.title);
   }, [props.title]);
@@ -147,14 +133,14 @@ function OTTWrite(props){
     setGoal(props.goal);
   }, [props.goal]);
 
+  OTT_state.id = props.id;
   OTT_state.user = props.user;
   OTT_state.title = title;
   OTT_state.content = content;
-  OTT_state.date = props.reg_date;
+  OTT_state.reg_date = props.reg_date;
   OTT_state.limit_date = limit_date;
   OTT_state.buy_location = buy_location;
   OTT_state.goal = goal;
-  OTT_state.view = props.view;
 
   function O_titleChange (e) {
     setTitle(e.target.value)
@@ -168,7 +154,7 @@ function OTTWrite(props){
     setGoal(e.target.value)
     OTT_state.goal = goal;
   }
-  function O_buyDateChange (e) {
+  function O_limitDateChange (e) {
     setLimitDate(e.target.value)
     OTT_state.limit_date = limit_date;
   }
@@ -180,7 +166,7 @@ function OTTWrite(props){
   return(
     <div className="writeInput">
       <input type='text' id="title" placeholder='제목' value={title} spellCheck="false" onChange={O_titleChange}/>
-      <input type='text' id="date" placeholder='구매 일시' value={limit_date} spellCheck="false" onChange={O_buyDateChange}/>
+      <input type='text' id="limitDate" placeholder='구매 일시' value={limit_date} spellCheck="false" onChange={O_limitDateChange}/>
       <input type='text' id="buyLocation" className="contentInput" placeholder='OTT 플랫폼' value={buy_location} spellCheck="false" onChange={O_buyLocationChange}/>
       <input type='text' id="goal" className="contentInput" placeholder='목표 인원' value={goal} spellCheck="false" onChange={O_goalChange}/>
       <textarea id="content" className="ottContent" placeholder='내용을 입력하세요.' value={content} spellCheck="false" onChange={O_contentChange}/>
@@ -220,12 +206,11 @@ function DeliveryWrite(props) {
   Delivery_state.user = props.user;
   Delivery_state.title = title;
   Delivery_state.content = content;
-  Delivery_state.date = props.reg_date;
+  Delivery_state.reg_date = props.reg_date;
   Delivery_state.limit_date = limit_date;
   Delivery_state.buy_location = buy_location;
   Delivery_state.pickup_location = pickup_location;
   Delivery_state.goal = goal;
-  Delivery_state.view = props.view;
 
   function G_titleChange (e) {
     setTitle(e.target.value)
@@ -243,19 +228,19 @@ function DeliveryWrite(props) {
     setBuyLocation(e.target.value)
     Delivery_state.buy_location = buy_location;
   }
-  function G_buyDateChange (e) {
+  function G_limitDateChange (e) {
     setLimitDate(e.target.value)
     Delivery_state.limit_date = limit_date;
   }
   function G_pickupChange (e) {
     setPickupLocation(e.target.value)
-    Delivery_state.pickupLocation = pickup_location;
+    Delivery_state.pickup_location = pickup_location;
   }
 
   return(
     <div className="writeInput">
       <input type='text' id="title" placeholder='제목' value={title} spellCheck="false" onChange={G_titleChange}/>
-      <input type='text' id="date" placeholder='구매 일시' value={limit_date} spellCheck="false" onChange={G_buyDateChange}/>
+      <input type='text' id="limitDate" placeholder='구매 일시' value={limit_date} spellCheck="false" onChange={G_limitDateChange}/>
       <input type='text' id="buyLocation" placeholder='구매처' value={buy_location} spellCheck="false" onChange={G_buyLocationChange}/>
       <input type='text' id="goal" placeholder='목표 금액' value={goal} spellCheck="false" onChange={G_goalChange}/>
       <input type='text' id="pickupLocation" placeholder='픽업 위치' value={pickup_location} spellCheck="false" onChange={G_pickupChange}/>
@@ -268,18 +253,18 @@ function ShowInput(props) {
   switch(props.category){
     case "policy":
       return <PolicyWrite category={props.category} id={props.id} user={props.user} title={props.title} 
-                          content={props.content} reg_date={props.reg_date} view={props.view} like={props.like}/>;
+                          content={props.content} reg_date={props.reg_date}/>;
     case "document":   
       return <DocumentWrite category={props.category} id={props.id} user={props.user} title={props.title} 
-                            content={props.content} reg_date={props.reg_date} view={props.view} like={props.like}/>;
+                            content={props.content} reg_date={props.reg_date}/>;
     case "ott":
       return <OTTWrite category={props.category} id={props.id} user={props.user} title={props.title} 
                         content={props.content} reg_date={props.reg_date} limit_date={props.limit_date}
-                        buy_location={props.buy_location} goal={props.goal} accumulate={props.accumulate} view={props.view}/>;
+                        buy_location={props.buy_location} goal={props.goal}/>;
     case "delivery":
       return <DeliveryWrite category={props.category} id={props.id} user={props.user} title={props.title} 
                             content={props.content} reg_date={props.reg_date} limit_date={props.limit_date}
-                            buy_location={props.buy_location} pickup_location={props.pickup_location} goal={props.goal} accumulate={props.accumulate} view={props.view}/>;
+                            buy_location={props.buy_location} pickup_location={props.pickup_location} goal={props.goal}/>;
     default:
       return null
   }
@@ -301,19 +286,19 @@ function postDB(category){
 
   switch(category){
     case "policy":
-      Policy_state.date = date;       
+      Policy_state.reg_date = date;       
       PolicySubmit(Policy_state);
       return;
     case "document": 
-      Document_state.date = date;
+      Document_state.reg_date = date;
       DocSubmit(Document_state);
       return;
     case "ott":
-      OTT_state.date = date;
+      OTT_state.reg_date = date;
       OTTSubmit(OTT_state);
       return;
     case "delivery":
-      Delivery_state.date = date;
+      Delivery_state.reg_date = date;
       DeliverySubmit(Delivery_state);
       return;
     default:
@@ -408,10 +393,9 @@ function ShowEdit(props) {
           게시글 수정이 완료되었어요!
         </Modal>
       </div>
-      <ShowInput category={props.category} id={props.id} user={props.user} title={props.title} 
+      <ShowInput category={props.category} id = {props.id} user={props.user} title={props.title} 
                 content={props.content} reg_date={props.reg_date} limit_date={props.limit_date}
-                buy_location={props.buy_location} pickup_location={props.pickup_location} goal={props.goal} accumulate={props.accumulate}
-                view={props.view} like={props.like}></ShowInput>
+                buy_location={props.buy_location} pickup_location={props.pickup_location} goal={props.goal}/>
     </div>
   );
 }
@@ -433,10 +417,7 @@ class Edit extends React.Component {
       limit_date : "",
       buy_location : "",
       pickup_location : "",
-      goal: "",
-      accumulate : "",
-      view : "",
-      like : ""
+      goal: ""
     };
   
     this.componentDidMount = this.componentDidMount.bind(this);
@@ -456,9 +437,8 @@ class Edit extends React.Component {
             user: response.data[0].nick_name,
             title: response.data[0].title,
             content: response.data[0].content,
-            reg_date : response.data[0].reg_date,
-            view : response.data[0].view,
-            like : response.data[0].like });
+            reg_date : response.data[0].reg_date
+          });
         })
         .catch(function(error) {
           console.log(error);
@@ -475,9 +455,8 @@ class Edit extends React.Component {
             user: response.data[0].nick_name,
             title: response.data[0].title,
             content: response.data[0].content,
-            reg_date : response.data[0].reg_date,
-            view : response.data[0].view,
-            like : response.data[0].like });  
+            reg_date : response.data[0].reg_date
+          });  
         })
         .catch(function(error) {
           console.log(error);
@@ -498,9 +477,8 @@ class Edit extends React.Component {
             limit_date : response.data[0].limit_date,
             buy_location :response.data[0].buy_location,
             pickup_location : response.data[0].pickup_location,
-            goal : response.data[0].goal,
-            view : response.data[0].view,
-            accumulate : response.data[0].accumulate });  
+            goal : response.data[0].goal
+          });  
         })
         .catch(function(error) {
           console.log(error);
@@ -520,9 +498,8 @@ class Edit extends React.Component {
             reg_date : response.data[0].reg_date,
             limit_date : response.data[0].limit_date,
             buy_location :response.data[0].buy_location,
-            goal : response.data[0].goal,
-            view : response.data[0].view,
-            accumulate : response.data[0].accumulate });  
+            goal : response.data[0].goal
+           });  
         })
         .catch(function(error) {
           console.log(error);
@@ -534,8 +511,7 @@ class Edit extends React.Component {
     return(
       <ShowEdit category={this.state.category} id = {this.state.id} user={this.state.user} title={this.state.title} 
                 content={this.state.content} reg_date={this.state.reg_date} limit_date={this.state.limit_date}
-                buy_location={this.state.buy_location} pickup_location={this.state.pickup_location}
-                goal={this.state.goal} accumulate={this.state.accumulate} view={this.state.view} like={this.state.like}/>
+                buy_location={this.state.buy_location} pickup_location={this.state.pickup_location} goal={this.state.goal}/>
     );
   }
 }

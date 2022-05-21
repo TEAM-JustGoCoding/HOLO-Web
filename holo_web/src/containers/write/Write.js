@@ -11,42 +11,36 @@ var Policy_state = {
   user : '25',
   title : '',
   content : '',
-  date : '',
-  view : '0',
-  like : '0'
+  reg_date : ''
 };
 var Document_state = {
   user : '25',
   title : '',
   content : '',
-  date : '',
-  view : '0',
-  like : '0'
+  reg_date : ''
 };
 var OTT_state = {
   user : '25',
   title : '',
   content : '',
-  date : '',
-  buy_date : '0',
-  buyLocation : '0',
-  goal : '0',
-  view : '0'
+  reg_date : '',
+  limit_date : '',
+  buy_location : '',
+  goal : ''
 };
 var Delivery_state = {
   user : '25',
   title : '',
   content : '',
-  date : '',
-  buy_date : '0',
-  buyLocation : '0',
-  pickupLocation : '0',
-  goal : '0',
-  view : '0'
+  reg_date : '',
+  limit_date : '',
+  buy_location : '',
+  pickup_location : '',
+  goal : ''
 };
 
 function PolicyWrite() {
-  const P_titleChange = async (e) =>{
+  function P_titleChange (e) {
     Policy_state.title = e.target.value;
   };
   function P_contentChange (e) {
@@ -62,7 +56,7 @@ function PolicyWrite() {
 }
 
 function DocumentWrite() {
-  const D_titleChange = async (e) =>{
+  function D_titleChange (e) {
     Document_state.title = e.target.value;
   };
   function D_contentChange (e) {
@@ -87,17 +81,17 @@ function OTTWrite(){
   function O_goalChange (e) {
     OTT_state.goal = e.target.value;
   }
-  function O_buyDateChange (e) {
-    OTT_state.buy_date = e.target.value;
+  function O_limitDateChange (e) {
+    OTT_state.limit_date = e.target.value;
   }
   function O_buyLocationChange (e) {
-    OTT_state.buyLocation = e.target.value;
+    OTT_state.buy_location = e.target.value;
   }
 
   return(
     <div className="writeInput">
       <input type='text' id="title" placeholder='제목' spellCheck="false" onChange={O_titleChange}/>
-      <input type='text' id="date" placeholder='구매 일시' spellCheck="false" onChange={O_buyDateChange}/>
+      <input type='text' id="limitDate" placeholder='구매 일시' spellCheck="false" onChange={O_limitDateChange}/>
       <input type='text' id="buyLocation" className="contentInput" placeholder='OTT 플랫폼' spellCheck="false" onChange={O_buyLocationChange}/>
       <input type='text' id="goal" className="contentInput" placeholder='목표 인원' spellCheck="false" onChange={O_goalChange}/>
       <textarea id="content" className="ottContent" placeholder='내용을 입력하세요.' spellCheck="false" onChange={O_contentChange}/>
@@ -116,19 +110,19 @@ function DeliveryWrite() {
     Delivery_state.goal = e.target.value;
   }
   function G_buyLocationChange (e) {
-    Delivery_state.buyLocation = e.target.value;
+    Delivery_state.buy_location = e.target.value;
   }
-  function G_buyDateChange (e) {
-    Delivery_state.buy_date = e.target.value;
+  function G_limitDateChange (e) {
+    Delivery_state.limit_date = e.target.value;
   }
   function G_pickupChange (e) {
-    Delivery_state.pickupLocation = e.target.value;
+    Delivery_state.pickup_location = e.target.value;
   }
 
   return(
     <div className="writeInput">
       <input type='text' id="title" placeholder='제목' spellCheck="false" onChange={G_titleChange}/>
-      <input type='text' id="date" placeholder='구매 일시' spellCheck="false" onChange={G_buyDateChange}/>
+      <input type='text' id="limitDate" placeholder='구매 일시' spellCheck="false" onChange={G_limitDateChange}/>
       <input type='text' id="buyLocation" placeholder='구매처' spellCheck="false" onChange={G_buyLocationChange}/>
       <input type='text' id="goal" placeholder='목표 금액' spellCheck="false" onChange={G_goalChange}/>
       <input type='text' id="pickupLocation" placeholder='픽업 위치' spellCheck="false" onChange={G_pickupChange}/>
@@ -157,34 +151,32 @@ function getToday(){
   var year = date.getFullYear();
   var month = ("0" + (1 + date.getMonth())).slice(-2);
   var day = ("0" + date.getDate()).slice(-2);
-
   var time = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
 
   return year + "-" + month + "-" + day + " " + time;
 }
-
 
 function postDB(category){
   var date = getToday();
 
   switch(category){
     case "정책":
-      Policy_state.date = date;
+      Policy_state.reg_date = date;
       console.log(JSON.stringify(Policy_state));
       PolicySubmit(Policy_state);
       return;
     case "생활백서": 
-      Document_state.date = date;
+      Document_state.reg_date = date;
       console.log(JSON.stringify(Document_state));
       DocSubmit(Document_state);
       return;
     case "OTT구독":
-      OTT_state.date = date;
+      OTT_state.reg_date = date;
       console.log(JSON.stringify(OTT_state));
       OTTSubmit(OTT_state);
       return;
     case "공동구매":
-      Delivery_state.date = date;
+      Delivery_state.reg_date = date;
       console.log(JSON.stringify(Delivery_state));
       DeliverySubmit(Delivery_state);
       return;
@@ -263,7 +255,6 @@ function Write() {
   };
   const openModal = () => {
     setModalOpen(true);
-    console.log(document.getElementById('title').value)
   };
   const closeModal = () => {
     setModalOpen(false);
