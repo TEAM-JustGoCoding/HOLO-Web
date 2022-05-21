@@ -1,11 +1,8 @@
-.tableBody tr,
-.tableBody.hot tr{
+.tableRow{
   background-color: white;
 }
-.tableBody.hot tr:nth-child(1),
-.tableBody.hot tr:nth-child(2),
-.tableBody.hot tr:nth-child(3){
-  background-color: #f0f0f0;
+.tableRow.hot{
+  background-color: #f1f1f1;
 }
 
 .link, .link:hover{

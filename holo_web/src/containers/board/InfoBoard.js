@@ -1,20 +1,26 @@
 import './Board.css';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import {images} from '../../images';
 import { AiOutlineSearch, AiOutlinePlus } from "react-icons/ai";
 import BoardTable from '../../components/BoardTable';
 import Pagination from '../../components/Pagination';
 
-
 function ShowBoard(props) {
-  //const a = await getPolicyJson();
-  //const b = await getDocumentJson();
-  var policyJson = props.poliInfo;
-  var documentJson = props.docInfo;
+  var poliInfo = props.poliInfo;
+  var docInfo = props.docInfo;
+  var hotPoliInfo = props.hotPoliInfo;
+  var hotDocInfo = props.hotDocInfo;
 
   const [select, setSelect] = useState("policy");
   const [page, setPage] = useState(1);
+  const [policyJson, setPolicyJson] = useState([]);
+  const [documentJson, setDocumentJson] = useState([]);
+
+  useEffect(()=> {
+    setPolicyJson([...hotPoliInfo,...poliInfo])
+    setDocumentJson([...hotDocInfo,...docInfo])
+  },[poliInfo, docInfo, hotPoliInfo, hotDocInfo])
 
   function sliceList(){
     switch(select){
@@ -37,9 +43,6 @@ function ShowBoard(props) {
     console.log("page: ",page);
   };
 
-  
-
-  
   return (
     <div>
       <div className="boardHeaderBar">
@@ -77,14 +80,15 @@ function ShowBoard(props) {
   );
 }
 
-
 class Board extends React.Component {
   constructor () {
     super ();
 
     this.state = {
       policy: [],
-      document: []
+      document: [],
+      hotPolicy: [],
+      hotDocument: []
     };
   }
 
@@ -92,37 +96,42 @@ class Board extends React.Component {
     fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/policy_to_json.php')
     .then(response => { return response.json();})
     .then(response => { 
-                        var policyJson = [];
-                        var obj = response;
-                        //console.log(obj.length);
-    
-                        for(var i=0; i < obj.length; i++) {
-                          policyJson.push(obj[i]);
-                        }           
-                       console.log(policyJson);
+          var policyJson = [];
+          var obj = response;
 
-                       this.setState ({policy: policyJson});
-                      });
+          for(var i=0; i < obj.length; i++) {
+            policyJson.push(obj[i]);
+            policyJson[i]['hot']=false
+          }           
+          console.log(policyJson);
+
+          this.setState ({policy: policyJson});
+          this.setState ({hotPolicy: [{id: "12345", title: "정책 핫 게시물 제목 클릭 금지", content: "정책 핫 게시물 내용",  nick_name: "우네",
+                          reg_date: "2022-05-01 12:00:00", like: "10000", view: "50000", hot: true}]}) //핫게시물 구현 후 삭제
+        });
 
     fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/doc_to_json.php')
-     .then(response => { return response.json();})
+    .then(response => { return response.json();})
     .then(response => { 
-        var documentJson = [];
+         var documentJson = [];
          var obj = response;
-         //console.log(obj.length);
                       
          for(var i=0; i < obj.length; i++) {
             documentJson.push(obj[i]);
+            documentJson[i]['hot']=false
           }           
           console.log(documentJson);
                   
          this.setState ({document: documentJson});
+         this.setState ({hotDocument: [{id: "12345", title: "생활 핫 게시물 제목 클릭 금지", content: "생활 핫 게시물 내용",  nick_name: "우네",
+                         reg_date: "2022-05-01 12:00:00", like: "1000", view: "5000", hot: true}]}) //핫게시물 구현 후 삭제
      });                               
   };
 
   render() {
     return(
-      <ShowBoard poliInfo={this.state.policy} docInfo={this.state.document}/>
+      <ShowBoard poliInfo={this.state.policy} docInfo={this.state.document}
+                 hotPoliInfo={this.state.hotPolicy} hotDocInfo={this.state.hotDocument}/>
     );
   }
 }

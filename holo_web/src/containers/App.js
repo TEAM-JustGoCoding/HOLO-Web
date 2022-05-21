@@ -3,6 +3,7 @@ import Home from './home/Home';
 import InfoBoard from './board/InfoBoard';
 import DealBoard from './board/DealBoard';
 import FAQBoard from './board/FAQBoard';
+import LikeBoard from './board/LikeBoard';
 import PolicyPost from './post/PolicyPost';
 import DocumentPost from './post/DocumentPost';
 import DeliveryPost from './post/DeliveryPost';
@@ -23,6 +24,7 @@ const App = () => {
       <Route path="/infoboard" element={<InfoBoard />} />
       <Route path="/dealboard" element={<DealBoard />} />
       <Route path="/faqboard" element={<FAQBoard/>}/>
+      <Route path="/likeboard" element={<LikeBoard/>}/>
       <Route path="/policypost/:id" element={<PolicyPost/>}/>
       <Route path="/documentpost/:id" element={<DocumentPost/>}/>
       <Route path="/deliverypost/:id" element={<DeliveryPost/>}/>

@@ -4,15 +4,20 @@ import Pagination from "react-js-pagination";
 
 const CustomPagination = ({page, count, totalCount, setPage}) => {
     return (
-        <Pagination
-            activePage={page}
-            itemsCountPerPage={count} 
-            totalItemsCount={totalCount} 
-            pageRangeDisplayed={5} 
-            prevPageText={"‹"} 
-            nextPageText={"›"} 
-            onChange={setPage}
-        />
+        <div>
+            {totalCount === 0
+                ? null
+                : <Pagination
+                    activePage={page}
+                    itemsCountPerPage={count} 
+                    totalItemsCount={totalCount} 
+                    pageRangeDisplayed={5} 
+                    prevPageText={"‹"} 
+                    nextPageText={"›"} 
+                    onChange={setPage}
+                    />
+            }
+        </div>
     );
 };
 
