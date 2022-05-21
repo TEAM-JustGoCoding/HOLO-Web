@@ -7,46 +7,52 @@ import axios from 'axios';
 axios.defaults.withCredentials = true;  //axios 전역설정
 
 var Policy_state = {
-  user : '',
+  id : '',
+  user : '25',
   title : '',
   content : '',
   date : '',
-  view : '',
-  like : ''
+  view : '0',
+  like : '0'
 };
 var Document_state = {
-  user : '',
+  id : '',
+  user : '25',
   title : '',
   content : '',
   date : '',
-  view : '',
-  like : ''
+  view : '0',
+  like : '0'
 };
 var OTT_state = {
-  user : '',
+  id : '',
+  user : '25',
   title : '',
   content : '',
   date : '',
-  limit_date : '',
-  buy_location : '',
-  accumulate : '',
-  view : ''
+  buy_date : '',
+  buyLocation : '',
+  goal : '',
+  view : '0'
 };
 var Delivery_state = {
-  user : '',
+  id : '',
+  user : '25',
   title : '',
   content : '',
   date : '',
-  limit_date : '',
-  buy_location : '',
-  pickup_location : '',
-  accumulate : '',
-  view : ''
+  buy_date : '',
+  buyLocation : '',
+  pickupLocation : '',
+  goal : '',
+  view : '0'
 };
 
 function PolicyWrite(props) {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
+
+  Policy_state.id = props.id;
 
   useEffect(() => {
     setTitle(props.title);
@@ -56,19 +62,19 @@ function PolicyWrite(props) {
   }, [props.content]);
 
   Policy_state.user = props.user;
-  Policy_state.title = props.title;
-  Policy_state.content = props.content;
+  Policy_state.title = title;
+  Policy_state.content = content;
   Policy_state.date = props.reg_date;
   Policy_state.view = props.view;
   Policy_state.like = props.like;
 
   const P_titleChange = async (e) =>{
     setTitle(e.target.value)
-    Policy_state.title = e.target.value;
+    Policy_state.title = title;
   };
   function P_contentChange (e) {
     setContent(e.target.value)
-    Policy_state.content = e.target.value;
+    Policy_state.content = content;
   };
 
   return(
@@ -83,6 +89,8 @@ function DocumentWrite(props) {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
 
+  Document_state.id = props.id;
+
   useEffect(() => {
     setTitle(props.title);
   }, [props.title]);
@@ -91,19 +99,19 @@ function DocumentWrite(props) {
   }, [props.content]);
 
   Document_state.user = props.user;
-  Document_state.title = props.title;
-  Document_state.content = props.content;
+  Document_state.title = title;
+  Document_state.content = content;
   Document_state.date = props.reg_date;
   Document_state.view = props.view;
   Document_state.like = props.like;
 
   const D_titleChange = async (e) =>{
     setTitle(e.target.value)
-    Document_state.title = e.target.value;
+    Document_state.title = title;
   };
   function D_contentChange (e) {
     setContent(e.target.value)
-    Document_state.content = e.target.value;
+    Document_state.content = content;
   };
 
   return(
@@ -119,7 +127,9 @@ function OTTWrite(props){
   const [content, setContent] = useState('')
   const [limit_date, setLimitDate] = useState('')
   const [buy_location, setBuyLocation] = useState('')
-  const [accumulate, setAccumulate] = useState('')
+  const [goal, setGoal] = useState('')
+
+  OTT_state.id = props.id;
 
   useEffect(() => {
     setTitle(props.title);
@@ -134,37 +144,37 @@ function OTTWrite(props){
     setBuyLocation(props.buy_location)
   }, [props.buy_location]);
   useEffect(() => {
-    setAccumulate(props.accumulate);
-  }, [props.accumulate]);
+    setGoal(props.goal);
+  }, [props.goal]);
 
   OTT_state.user = props.user;
-  OTT_state.title = props.title;
-  OTT_state.content = props.content;
+  OTT_state.title = title;
+  OTT_state.content = content;
   OTT_state.date = props.reg_date;
-  OTT_state.limit_date = props.limit_date;
-  OTT_state.buy_location = props.buy_location;
-  OTT_state.accumulate = props.accumulate;
+  OTT_state.limit_date = limit_date;
+  OTT_state.buy_location = buy_location;
+  OTT_state.goal = goal;
   OTT_state.view = props.view;
 
   function O_titleChange (e) {
     setTitle(e.target.value)
-    OTT_state.title = e.target.value;
+    OTT_state.title = title;
   };
   function O_contentChange (e) {
     setContent(e.target.value)
-    OTT_state.content = e.target.value;
+    OTT_state.content = content;
   };
-  function O_accumulateChange (e) {
-    setAccumulate(e.target.value)
-    OTT_state.accumulate = e.target.value;
+  function O_goalChange (e) {
+    setGoal(e.target.value)
+    OTT_state.goal = goal;
   }
   function O_buyDateChange (e) {
     setLimitDate(e.target.value)
-    OTT_state.limit_date = e.target.value;
+    OTT_state.limit_date = limit_date;
   }
   function O_buyLocationChange (e) {
     setBuyLocation(e.target.value)
-    OTT_state.buy_location = e.target.value;
+    OTT_state.buy_location = buy_location;
   }
 
   return(
@@ -172,7 +182,7 @@ function OTTWrite(props){
       <input type='text' id="title" placeholder='제목' value={title} spellCheck="false" onChange={O_titleChange}/>
       <input type='text' id="date" placeholder='구매 일시' value={limit_date} spellCheck="false" onChange={O_buyDateChange}/>
       <input type='text' id="buyLocation" className="contentInput" placeholder='OTT 플랫폼' value={buy_location} spellCheck="false" onChange={O_buyLocationChange}/>
-      <input type='text' id="accumulate" className="contentInput" placeholder='목표 인원' value={accumulate} spellCheck="false" onChange={O_accumulateChange}/>
+      <input type='text' id="goal" className="contentInput" placeholder='목표 인원' value={goal} spellCheck="false" onChange={O_goalChange}/>
       <textarea id="content" className="ottContent" placeholder='내용을 입력하세요.' value={content} spellCheck="false" onChange={O_contentChange}/>
     </div>
   )
@@ -184,7 +194,9 @@ function DeliveryWrite(props) {
   const [limit_date, setLimitDate] = useState('')
   const [buy_location, setBuyLocation] = useState('')
   const [pickup_location, setPickupLocation] = useState('')
-  const [accumulate, setAccumulate] = useState('')
+  const [goal, setGoal] = useState('')
+
+  Delivery_state.id = props.id;
 
   useEffect(() => {
     setTitle(props.title);
@@ -202,42 +214,42 @@ function DeliveryWrite(props) {
     setPickupLocation(props.pickup_location)
   }, [props.pickup_location]);
   useEffect(() => {
-    setAccumulate(props.accumulate);
-  }, [props.accumulate]);
+    setGoal(props.goal);
+  }, [props.goal]);
 
   Delivery_state.user = props.user;
-  Delivery_state.title = props.title;
-  Delivery_state.content = props.content;
+  Delivery_state.title = title;
+  Delivery_state.content = content;
   Delivery_state.date = props.reg_date;
-  Delivery_state.limit_date = props.limit_date;
-  Delivery_state.buy_location = props.buy_location;
-  Delivery_state.pickup_location = props.pickup_location;
-  Delivery_state.accumulate = props.accumulate;
+  Delivery_state.limit_date = limit_date;
+  Delivery_state.buy_location = buy_location;
+  Delivery_state.pickup_location = pickup_location;
+  Delivery_state.goal = goal;
   Delivery_state.view = props.view;
 
   function G_titleChange (e) {
     setTitle(e.target.value)
-    Delivery_state.title = e.target.value;
+    Delivery_state.title = title;
   };
   function G_contentChange (e) {
     setContent(e.target.value)
-    Delivery_state.content = e.target.value;
+    Delivery_state.content = content;
   };
-  function G_accumulateChange (e) {
-    setAccumulate(e.target.value)
-    Delivery_state.accumulate = e.target.value;
+  function G_goalChange (e) {
+    setGoal(e.target.value)
+    Delivery_state.goal = goal;
   }
   function G_buyLocationChange (e) {
     setBuyLocation(e.target.value)
-    Delivery_state.buy_location = e.target.value;
+    Delivery_state.buy_location = buy_location;
   }
   function G_buyDateChange (e) {
     setLimitDate(e.target.value)
-    Delivery_state.limit_date = e.target.value;
+    Delivery_state.limit_date = limit_date;
   }
   function G_pickupChange (e) {
     setPickupLocation(e.target.value)
-    Delivery_state.pickupLocation = e.target.value;
+    Delivery_state.pickupLocation = pickup_location;
   }
 
   return(
@@ -245,7 +257,7 @@ function DeliveryWrite(props) {
       <input type='text' id="title" placeholder='제목' value={title} spellCheck="false" onChange={G_titleChange}/>
       <input type='text' id="date" placeholder='구매 일시' value={limit_date} spellCheck="false" onChange={G_buyDateChange}/>
       <input type='text' id="buyLocation" placeholder='구매처' value={buy_location} spellCheck="false" onChange={G_buyLocationChange}/>
-      <input type='text' id="accumulate" placeholder='목표 금액' value={accumulate} spellCheck="false" onChange={G_accumulateChange}/>
+      <input type='text' id="goal" placeholder='목표 금액' value={goal} spellCheck="false" onChange={G_goalChange}/>
       <input type='text' id="pickupLocation" placeholder='픽업 위치' value={pickup_location} spellCheck="false" onChange={G_pickupChange}/>
       <textarea id="content" className="deliveryContent" placeholder='내용을 입력하세요.' value={content} spellCheck="false" onChange={G_contentChange}/>
     </div>
@@ -263,14 +275,106 @@ function ShowInput(props) {
     case "ott":
       return <OTTWrite category={props.category} id={props.id} user={props.user} title={props.title} 
                         content={props.content} reg_date={props.reg_date} limit_date={props.limit_date}
-                        buy_location={props.buy_location} accumulate={props.accumulate} view={props.view}/>;
+                        buy_location={props.buy_location} goal={props.goal} accumulate={props.accumulate} view={props.view}/>;
     case "delivery":
       return <DeliveryWrite category={props.category} id={props.id} user={props.user} title={props.title} 
                             content={props.content} reg_date={props.reg_date} limit_date={props.limit_date}
-                            buy_location={props.buy_location} pickup_location={props.pickup_location} accumulate={props.accumulate} view={props.view}/>;
+                            buy_location={props.buy_location} pickup_location={props.pickup_location} goal={props.goal} accumulate={props.accumulate} view={props.view}/>;
     default:
       return null
   }
+}
+
+
+function getToday(){
+  var date = new Date();
+  var year = date.getFullYear();
+  var month = ("0" + (1 + date.getMonth())).slice(-2);
+  var day = ("0" + date.getDate()).slice(-2);
+  var time = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+
+  return year + "-" + month + "-" + day + " " + time;
+}
+
+function postDB(category){
+  var date = getToday();
+
+  switch(category){
+    case "policy":
+      Policy_state.date = date;       
+      PolicySubmit(Policy_state);
+      return;
+    case "document": 
+      Document_state.date = date;
+      DocSubmit(Document_state);
+      return;
+    case "ott":
+      OTT_state.date = date;
+      OTTSubmit(OTT_state);
+      return;
+    case "delivery":
+      Delivery_state.date = date;
+      DeliverySubmit(Delivery_state);
+      return;
+    default:
+      return null
+  }
+}
+
+function PolicySubmit(data){
+  console.log(JSON.stringify(data));
+  axios.post("http://holo.dothome.co.kr/updatePolicy.php", JSON.stringify(data),{
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    })
+      .then(function(body) {
+        console.log(body);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+} 
+
+function DocSubmit(data){
+  console.log(JSON.stringify(Document_state));
+    axios.post("http://holo.dothome.co.kr/updateDoc.php", JSON.stringify(data),{
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    })
+      .then(function(body) {
+        console.log(body);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+}  
+
+function OTTSubmit(data){
+  console.log(JSON.stringify(OTT_state));
+  axios.post("http://holo.dothome.co.kr/updateOtt.php", JSON.stringify(data),{
+    withCredentials: false,
+    headers: {"Content-Type": "application/json"}
+  })
+    .then(function(body) {
+      console.log(body);
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+} 
+
+function DeliverySubmit(data){
+  console.log(JSON.stringify(Delivery_state));
+  axios.post("http://holo.dothome.co.kr/updateDelivery.php", JSON.stringify(data),{
+    withCredentials: false,
+    headers: {"Content-Type": "application/json"}
+  })
+    .then(function(body) {
+      console.log(body);
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
 }
 
 function ShowEdit(props) {
@@ -297,16 +401,16 @@ function ShowEdit(props) {
   return (
     <div>
       <div className="writeHeaderBar">
-        <button className="finButton" onClick={() => {goBack(); console.log(Policy_state)}}>취소</button>
+        <button className="finButton" onClick={() => {goBack();}}>취소</button>
         <button className="categoryButton">{category}</button>
-        <button className="finButton" onClick={() => {openModal();}}>완료</button>
+        <button className="finButton" onClick={() => {openModal(); postDB(props.category);}}>완료</button>
         <Modal type="Info" open={modalOpen} close={closeModal}>
           게시글 수정이 완료되었어요!
         </Modal>
       </div>
       <ShowInput category={props.category} id={props.id} user={props.user} title={props.title} 
                 content={props.content} reg_date={props.reg_date} limit_date={props.limit_date}
-                buy_location={props.buy_location} pickup_location={props.pickup_location} accumulate={props.accumulate}
+                buy_location={props.buy_location} pickup_location={props.pickup_location} goal={props.goal} accumulate={props.accumulate}
                 view={props.view} like={props.like}></ShowInput>
     </div>
   );
@@ -329,6 +433,7 @@ class Edit extends React.Component {
       limit_date : "",
       buy_location : "",
       pickup_location : "",
+      goal: "",
       accumulate : "",
       view : "",
       like : ""
@@ -393,6 +498,7 @@ class Edit extends React.Component {
             limit_date : response.data[0].limit_date,
             buy_location :response.data[0].buy_location,
             pickup_location : response.data[0].pickup_location,
+            goal : response.data[0].goal,
             view : response.data[0].view,
             accumulate : response.data[0].accumulate });  
         })
@@ -414,6 +520,7 @@ class Edit extends React.Component {
             reg_date : response.data[0].reg_date,
             limit_date : response.data[0].limit_date,
             buy_location :response.data[0].buy_location,
+            goal : response.data[0].goal,
             view : response.data[0].view,
             accumulate : response.data[0].accumulate });  
         })
@@ -427,8 +534,8 @@ class Edit extends React.Component {
     return(
       <ShowEdit category={this.state.category} id = {this.state.id} user={this.state.user} title={this.state.title} 
                 content={this.state.content} reg_date={this.state.reg_date} limit_date={this.state.limit_date}
-                buy_location={this.state.buy_location} pickup_location={this.state.pickup_location} accumulate={this.state.accumulate}
-                view={this.state.view} like={this.state.like}/>
+                buy_location={this.state.buy_location} pickup_location={this.state.pickup_location}
+                goal={this.state.goal} accumulate={this.state.accumulate} view={this.state.view} like={this.state.like}/>
     );
   }
 }

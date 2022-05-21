@@ -30,9 +30,8 @@ var OTT_state = {
   date : '',
   buy_date : '0',
   buyLocation : '0',
-  goal : '1',
-  view : '0',
-  like : '0'
+  goal : '0',
+  view : '0'
 };
 var Delivery_state = {
   user : '25',
@@ -42,9 +41,8 @@ var Delivery_state = {
   buy_date : '0',
   buyLocation : '0',
   pickupLocation : '0',
-  goal : '10000',
-  view : '0',
-  like : '0'
+  goal : '0',
+  view : '0'
 };
 
 function PolicyWrite() {
@@ -101,7 +99,7 @@ function OTTWrite(){
       <input type='text' id="title" placeholder='제목' spellCheck="false" onChange={O_titleChange}/>
       <input type='text' id="date" placeholder='구매 일시' spellCheck="false" onChange={O_buyDateChange}/>
       <input type='text' id="buyLocation" className="contentInput" placeholder='OTT 플랫폼' spellCheck="false" onChange={O_buyLocationChange}/>
-      <input type='text' id="accumulate" className="contentInput" placeholder='목표 인원' spellCheck="false" onChange={O_goalChange}/>
+      <input type='text' id="goal" className="contentInput" placeholder='목표 인원' spellCheck="false" onChange={O_goalChange}/>
       <textarea id="content" className="ottContent" placeholder='내용을 입력하세요.' spellCheck="false" onChange={O_contentChange}/>
     </div>
   )
@@ -132,7 +130,7 @@ function DeliveryWrite() {
       <input type='text' id="title" placeholder='제목' spellCheck="false" onChange={G_titleChange}/>
       <input type='text' id="date" placeholder='구매 일시' spellCheck="false" onChange={G_buyDateChange}/>
       <input type='text' id="buyLocation" placeholder='구매처' spellCheck="false" onChange={G_buyLocationChange}/>
-      <input type='text' id="accumulate" placeholder='목표 금액' spellCheck="false" onChange={G_goalChange}/>
+      <input type='text' id="goal" placeholder='목표 금액' spellCheck="false" onChange={G_goalChange}/>
       <input type='text' id="pickupLocation" placeholder='픽업 위치' spellCheck="false" onChange={G_pickupChange}/>
       <textarea id="content" className="deliveryContent" placeholder='내용을 입력하세요.' spellCheck="false" onChange={G_contentChange}/>
     </div>

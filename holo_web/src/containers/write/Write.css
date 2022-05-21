@@ -50,7 +50,7 @@
 }
 #date,
 #buyLocation,
-#accumulate,
+#goal,
 #pickupLocation{
     width: 100%;
     height: 7vh;
@@ -63,7 +63,7 @@
 #title:focus,
 #date:focus,
 #buyLocation:focus,
-#accumulate:focus,
+#goal:focus,
 #pickupLocation:focus,
 #content:focus{
     outline: none;
