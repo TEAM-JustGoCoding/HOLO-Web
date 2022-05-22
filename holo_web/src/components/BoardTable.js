@@ -128,7 +128,7 @@ function LikeTable({list}) {
       <tbody>
       {list.map(item=>(
         <tr key={[item.id, item.category]} className="tableRow">
-          <td style={{ padding : '1vh'}}>
+          <td style={{ border: '#323232', padding: '1vh'}}>
             <Link className="link" to={`/documentpost/${item.id}`}>
               <div className="tableTitle">[{item.category}] {item.title}</div>
               <div className="tableInfo">
