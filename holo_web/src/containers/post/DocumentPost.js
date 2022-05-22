@@ -6,7 +6,7 @@ import {images} from '../../images';
 import { AiOutlineEye, AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import axios from 'axios';
 
-var likeUser = 32;  //29,32~37  //좋아요를 누르려는 임의의 유저
+//var likeUser = 32;  //29,32~37  //좋아요를 누르려는 임의의 유저
 
 function ShowPost(props) {
   const navigate = useNavigate();
@@ -36,6 +36,7 @@ function ShowPost(props) {
   var content = props.content;
   var reg_date = props.reg_date;
   var view = props.view;
+  var likeUser = props.likeUser;
 
   const deleteMsg = "\n게시글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
   const deletePost = () => {
@@ -193,7 +194,7 @@ class Post extends React.Component {
     return(
       <ShowPost id = {this.state.id} user={this.state.user} title={this.state.title} 
                 content={this.state.content} reg_date={this.state.reg_date}
-                view={this.state.view} like={this.state.like} alreadyLiked = {this.state.alreadyLiked}/>
+                view={this.state.view} like={this.state.like} alreadyLiked = {this.state.alreadyLiked} likeUser = {this.state.likeUser}/>
     );
   }
 }
