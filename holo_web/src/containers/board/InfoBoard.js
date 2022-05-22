@@ -25,15 +25,15 @@ function ShowBoard(props) {
   function sliceList(){
     switch(select){
       case "policy":
-        if (page === (policyJson.length/7))
-          return policyJson.slice(7*(page-1), policyJson.length)
+        if (page === (policyJson.length/10 ))
+          return policyJson.slice(10*(page-1), policyJson.length)
         else
-          return policyJson.slice(7*(page-1), 7*page);
+          return policyJson.slice(10*(page-1), 10*page);
       case "document":
-        if (page === (documentJson.length/7))
-          return documentJson.slice(7*(page-1), documentJson.length)
+        if (page === (documentJson.length/10))
+          return documentJson.slice(10*(page-1), documentJson.length)
         else
-          return documentJson.slice(7*(page-1), 7*page);
+          return documentJson.slice(10*(page-1), 10*page);
       default:
         return null
     }
@@ -60,7 +60,11 @@ function ShowBoard(props) {
       </div>
       <div className={`board ${select === "policy" ? 'left' : 'right'}`}>
         <div className="boardTable">
-          <div><BoardTable type={`${select === "policy" ? 'Policy' : 'Document'}`} list={sliceList()}></BoardTable></div>
+          <div>
+            <div>
+              <BoardTable type={`${select === "policy" ? 'Policy' : 'Document'}`} list={sliceList()}></BoardTable>
+            </div>
+          </div>
         </div>
         <Link to='/write'>
           <button className="moveWriteButton">
@@ -70,8 +74,8 @@ function ShowBoard(props) {
         <div className="boardPagination">
           <div>
             {select === "policy"
-              ? <Pagination page={page} count={7} totalCount={policyJson.length} setPage={handlePageChange}></Pagination>
-              : <Pagination page={page} count={7} totalCount={documentJson.length} setPage={handlePageChange}></Pagination>
+              ? <Pagination page={page} count={10} totalCount={policyJson.length} setPage={handlePageChange}></Pagination>
+              : <Pagination page={page} count={10} totalCount={documentJson.length} setPage={handlePageChange}></Pagination>
             }
           </div>
         </div>

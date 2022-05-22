@@ -1,11 +1,7 @@
 import './Board.css';
 import React, {useState, useEffect} from 'react';
-import { Link } from 'react-router-dom';
-import {images} from '../../images';
-import {AiOutlineSearch} from "react-icons/ai";
 import BoardTable from '../../components/BoardTable';
 import Pagination from '../../components/Pagination';
-
 
 function ShowBoard(props) {
   var poliInfo = props.poliInfo;
@@ -19,10 +15,10 @@ function ShowBoard(props) {
   },[poliInfo, docInfo])
 
   function sliceList(){
-    if (page === (likeJson.length/7))
-      return likeJson.slice(7*(page-1), likeJson.length)
+    if (page === (likeJson.length/10))
+      return likeJson.slice(10*(page-1), likeJson.length)
     else
-      return likeJson.slice(7*(page-1), 7*page);
+      return likeJson.slice(10*(page-1), 10*page);
   }
   const handlePageChange = (page) => {
     setPage(page); 
@@ -32,25 +28,18 @@ function ShowBoard(props) {
   return (
     <div>
       <div className="boardHeaderBar">
-        <div></div>
-        <img src={images.logo} alt="Logo"/>
-        <Link className="linkSearchButton" to='/faqsearch'>
-          <button>
-            <AiOutlineSearch className="moveSearchImg"/>
-          </button>
-        </Link>
+        <div className="leftText">
+          관심글
+        </div>
       </div>
-      <div className="boardCategoryBar">
-          <div className="centerText">
-            관심글
+      <div className='likeBoardCenter'>
+        <div className="likeBoardTable">
+          <div>
+            <div><BoardTable type="Like" list={sliceList()}></BoardTable></div>
           </div>
         </div>
-      <div className='boardCenter'>
-        <div className="boardTable">
-          <div><BoardTable type="Like" list={sliceList()}></BoardTable></div>
-        </div>
         <div className="boardPagination">
-          <div><Pagination page={page} count={9} totalCount={likeJson.length} setPage={handlePageChange}></Pagination></div>
+          <div><Pagination page={page} count={10} totalCount={likeJson.length} setPage={handlePageChange}></Pagination></div>
         </div>
       </div>
     </div>

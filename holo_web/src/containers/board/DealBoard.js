@@ -16,15 +16,15 @@ function ShowBoard(props) {
   function sliceList(){
     switch(select){
       case "delivery":
-        if (page === (deliveryJson.length/7))
-          return deliveryJson.slice(7*(page-1), deliveryJson.length)
+        if (page === (deliveryJson.length/10))
+          return deliveryJson.slice(10*(page-1), deliveryJson.length)
         else
-          return deliveryJson.slice(7*(page-1), 7*page);
+          return deliveryJson.slice(10*(page-1), 10*page);
       case "ott":
-        if (page === (ottJson.length/7))
-          return ottJson.slice(7*(page-1), ottJson.length)
+        if (page === (ottJson.length/10))
+          return ottJson.slice(10*(page-1), ottJson.length)
         else
-          return ottJson.slice(7*(page-1), 7*page);
+          return ottJson.slice(10*(page-1), 10*page);
       default:
         return null
     }
@@ -51,7 +51,9 @@ function ShowBoard(props) {
       </div>
       <div className={`board ${select === "delivery" ? 'left' : 'right'}`}>
         <div className="boardTable">
-          <div><BoardTable type={`${select === "delivery" ? 'Delivery' : 'Ott'}`} list={sliceList()}></BoardTable></div>
+          <div>
+            <div><BoardTable type={`${select === "delivery" ? 'Delivery' : 'Ott'}`} list={sliceList()}></BoardTable></div>
+          </div>
         </div>
         <Link to='/write'>
           <button className="moveWriteButton">
@@ -61,8 +63,8 @@ function ShowBoard(props) {
         <div className="boardPagination">
           <div>
             {select === "delivery"
-              ? <Pagination page={page} count={7} totalCount={deliveryJson.length} setPage={handlePageChange}></Pagination>
-              : <Pagination page={page} count={7} totalCount={ottJson.length} setPage={handlePageChange}></Pagination>
+              ? <Pagination page={page} count={10} totalCount={deliveryJson.length} setPage={handlePageChange}></Pagination>
+              : <Pagination page={page} count={10} totalCount={ottJson.length} setPage={handlePageChange}></Pagination>
             }
           </div>
         </div>

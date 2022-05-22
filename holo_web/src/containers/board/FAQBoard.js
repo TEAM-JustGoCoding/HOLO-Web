@@ -13,10 +13,10 @@ function ShowBoard(props) {
   const [page, setPage] = useState(1);
 
   function sliceList(){
-    if (page === (faqJson.length/9))
-      return faqJson.slice(9*(page-1), faqJson.length)
+    if (page === (faqJson.length/10))
+      return faqJson.slice(10*(page-1), faqJson.length)
     else
-      return faqJson.slice(9*(page-1), 9*page);
+      return faqJson.slice(10*(page-1), 10*page);
   }
   const handlePageChange = (page) => {
     setPage(page); 
@@ -41,10 +41,12 @@ function ShowBoard(props) {
         </div>
       <div className='boardCenter'>
         <div className="boardTable">
-          <div><BoardTable type="FAQ" list={sliceList()}></BoardTable></div>
+          <div>
+            <div><BoardTable type="FAQ" list={sliceList()}></BoardTable></div>
+          </div>
         </div>
         <div className="boardPagination">
-          <div><Pagination page={page} count={9} totalCount={faqJson.length} setPage={handlePageChange}></Pagination></div>
+          <div><Pagination page={page} count={10} totalCount={faqJson.length} setPage={handlePageChange}></Pagination></div>
         </div>
       </div>
     </div>

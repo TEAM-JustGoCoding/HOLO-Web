@@ -9,21 +9,21 @@ import { HiOutlineUserGroup } from "react-icons/hi";
 
 function PolicyTable({list}) {
   return(
-    <Table bordered hover>
+    <Table bordered hover style={{ marginBottom: '0'}}>
       <tbody>
       {list.map(item=>(
         <tr key={item.id} className={`tableRow ${item.hot ? 'hot' : ''}`}>
-          <td>
+          <td style={{ padding : '0.75vh'}}>
             <Link className="link" to={`/policypost/${item.id}`}>
               <div className="tableTitle">
-                {item.hot?<AiFillFire style={{ fontSize: '3vh', marginRight: '0.5vh', color: 'red'}}/>:null}
+                {item.hot?<AiFillFire style={{ fontSize: '2.5vh', marginRight: '2px', color: 'red'}}/>:null}
                 {item.title}
               </div>
               <div className="tableInfo">
-                <AiOutlineCalendar style={{ fontSize: '2vh', marginRight: '0.5vh'}}/>{item.reg_date}
-                <AiOutlineUser style={{ fontSize: '2vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.nick_name}
-                <AiOutlineEye style={{ fontSize: '2vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.view}
-                <AiFillHeart style={{ fontSize: '2vh', margin: '0 0.5vh 0 1.5vh', color: 'red'}}/>{item.like}
+                <AiOutlineCalendar style={{ fontSize: '1.5vh', marginRight: '2px'}}/>{item.reg_date}
+                <AiOutlineUser style={{ fontSize: '1.5vh', margin: '0 2px 0 7.5px'}}/>{item.nick_name}
+                <AiOutlineEye style={{ fontSize: '1.5vh', margin: '0 2px 0 7.5px'}}/>{item.view}
+                <AiFillHeart style={{ fontSize: '1.5vh', margin: '0 2px 0 7.5px', color: 'red'}}/>{item.like}
               </div>
             </Link>
           </td>
@@ -35,21 +35,21 @@ function PolicyTable({list}) {
 }
 function DocumentTable({list}) {
   return(
-    <Table bordered hover>
+    <Table bordered hover style={{ marginBottom: '0'}}>
       <tbody>
       {list.map(item=>(
         <tr key={item.id} className={`tableRow ${item.hot ? 'hot' : ''}`}>
-          <td>
+          <td style={{ padding : '0.75vh'}}>
             <Link className="link" to={`/documentpost/${item.id}`}>
               <div className="tableTitle">
-                {item.hot?<AiFillFire style={{ fontSize: '3vh', marginRight: '0.5vh', color: 'red'}}/>:null}
+                {item.hot?<AiFillFire style={{ fontSize: '2.5vh', marginRight: '2px', color: 'red'}}/>:null}
                 {item.title}
               </div>
               <div className="tableInfo">
-                <AiOutlineCalendar style={{ fontSize: '2vh', marginRight: '0.5vh'}}/>{item.reg_date}
-                <AiOutlineUser style={{ fontSize: '2vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.nick_name}
-                <AiOutlineEye style={{ fontSize: '2vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.view}
-                <AiFillHeart style={{ fontSize: '2vh', margin: '0 0.5vh 0 1.5vh', color: 'red'}}/>{item.like}
+                <AiOutlineCalendar style={{ fontSize: '1.5vh', marginRight: '2px'}}/>{item.reg_date}
+                <AiOutlineUser style={{ fontSize: '1.5vh', margin: '0 2px 0 7.5px'}}/>{item.nick_name}
+                <AiOutlineEye style={{ fontSize: '1.5vh', margin: '0 2px 0 7.5px'}}/>{item.view}
+                <AiFillHeart style={{ fontSize: '1.5vh', margin: '0 2px 0 7.5px', color: 'red'}}/>{item.like}
               </div>
             </Link>
           </td>
@@ -61,18 +61,18 @@ function DocumentTable({list}) {
 }
 function DeliveryTable({list}) {
   return(
-    <Table bordered hover>
+    <Table bordered hover style={{ marginBottom: '0'}}>
       <tbody>
       {list.map(item=>(
         <tr key={item.id} className="tableRow">
-          <td>
+          <td style={{ padding : '0.75vh'}}>
             <Link className="link" to={`/deliverypost/${item.id}`}>
               <div className="tableTitle">{item.title}</div>
               <div className="tableInfo">
-                <AiOutlineCalendar style={{ fontSize: '2vh', marginRight: '0.5vh'}}/>{item.reg_date}
-                <AiOutlineUser style={{ fontSize: '2vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.nick_name}
-                <AiOutlineEye style={{ fontSize: '2vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.view}
-                <BiCoin style={{ fontSize: '2vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.accumulate}/{item.goal}
+                <AiOutlineCalendar style={{ fontSize: '1.5vh', marginRight: '2px'}}/>{item.reg_date}
+                <AiOutlineUser style={{ fontSize: '1.5vh', margin: '0 2px 0 7.5px'}}/>{item.nick_name}
+                <AiOutlineEye style={{ fontSize: '1.5vh', margin: '0 2px 0 7.5px'}}/>{item.view}
+                <BiCoin style={{ fontSize: '1.5vh', margin: '0 2px 0 7.5px'}}/>{item.accumulate}/{item.goal}
               </div>
             </Link>
           </td>
@@ -84,18 +84,18 @@ function DeliveryTable({list}) {
 }
 function OttTable({list}) {
   return(
-    <Table bordered hover>
+    <Table bordered hover style={{ marginBottom: '0'}}>
       <tbody>
       {list.map(item=>(
         <tr key={item.id} className="tableRow">
-          <td>
+          <td style={{ padding : '0.75vh'}}>
             <Link className="link" to={`/ottpost/${item.id}`}>
               <div className="tableTitle">{item.title}</div>
               <div className="tableInfo">
-                <AiOutlineCalendar style={{ fontSize: '2vh', marginRight: '0.5vh'}}/>{item.reg_date}
-                <AiOutlineUser style={{ fontSize: '2vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.nick_name}
-                <AiOutlineEye style={{ fontSize: '2vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.view}
-                <HiOutlineUserGroup style={{ fontSize: '2vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.accumulate}/{item.goal}
+                <AiOutlineCalendar style={{ fontSize: '1.5vh', marginRight: '2px'}}/>{item.reg_date}
+                <AiOutlineUser style={{ fontSize: '1.5vh', margin: '0 2px 0 7.5px'}}/>{item.nick_name}
+                <AiOutlineEye style={{ fontSize: '1.5vh', margin: '0 2px 0 7.5px'}}/>{item.view}
+                <HiOutlineUserGroup style={{ fontSize: '1.5vh', margin: '0 2px 0 7.5px'}}/>{item.accumulate}/{item.goal}
               </div>
             </Link>
           </td>
@@ -107,7 +107,7 @@ function OttTable({list}) {
 }
 function FAQTable({list}) {
   return(
-    <Table bordered hover>
+    <Table bordered hover style={{ marginBottom: '0'}}>
       <tbody>
       {list.map(item=>(
         <tr key={item.id} className="tableRow">
@@ -124,11 +124,11 @@ function FAQTable({list}) {
 }
 function LikeTable({list}) {
   return(
-    <Table bordered hover>
+    <Table bordered hover style={{ marginBottom: '0'}}>
       <tbody>
       {list.map(item=>(
         <tr key={[item.id, item.category]} className="tableRow">
-          <td>
+          <td style={{ padding : '1vh'}}>
             <Link className="link" to={`/documentpost/${item.id}`}>
               <div className="tableTitle">[{item.category}] {item.title}</div>
               <div className="tableInfo">

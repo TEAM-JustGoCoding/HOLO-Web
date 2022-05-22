@@ -1,8 +1,10 @@
 .tableRow{
   background-color: white;
+  height: 7vh;
 }
 .tableRow.hot{
   background-color: #f1f1f1;
+  height: 7vh;
 }
 
 .link, .link:hover{
@@ -12,7 +14,7 @@
 
 .tableTitle{
   font-family: "aSmile";
-  font-size: 2.5vh;
+  font-size: 2vh;
   width: 90vw;
   white-space: nowrap;
   overflow: hidden;

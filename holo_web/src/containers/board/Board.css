@@ -16,10 +16,10 @@
 }
 
 .linkBackButton {
-  margin: auto auto auto 3vw;
+  margin: auto auto auto 30px;
 }
 .linkSearchButton {
-  margin: auto 3vw auto auto;
+  margin: auto 30px auto auto;
 }
 .linkBackButton > button,
 .linkSearchButton > button {
@@ -51,18 +51,18 @@
 .boardCategoryBar{
   background-color: #c9d3fb;
   width: 100vw;
-  height: 10vh;
+  height: 7.5vh;
   display: flex;
   flex-direction: row;
 }
 .leftButton{
   background-color: #c9d3fb;
   width: 50vw;
-  height: 10vh;
+  height: 7.5vh;
   padding: 0;
   margin: 0 auto 0 0;
   font-family: "aSmile";
-  font-size: 4vh;
+  font-size: 3.5vh;
   color: #1d4999;
   border: 0;
   outline: 0;
@@ -70,11 +70,11 @@
 .rightButton{
   background-color: #ddcafa;
   width: 50vw;
-  height: 10vh;
+  height: 7.5vh;
   padding: 0;
   margin: 0 0 0 auto;
   font-family: "aSmile";
-  font-size: 4vh;
+  font-size: 3.5vh;
   color: #1d4999;
   border: 0;
   outline: 0;
@@ -82,22 +82,35 @@
 .centerText{
   margin: auto auto;
   font-family: "aSmile";
-  font-size: 4vh;
+  font-size: 3.5vh;
+  color: #1d4999;
+}
+.leftText{
+  margin: auto auto auto 20px;
+  font-family: "aSmile";
+  font-size: 5vh;
   color: #1d4999;
 }
 
-.board.left,
-.boardCenter{
+.boardCenter,
+.board.left{
   background-color: #c9d3fb;
   width: 100vw;
-  height: 80vh;
+  height: 82.5vh;
   display: flex;
   flex-direction: column;
 }
 .board.right {
   background-color: #ddcafa;
   width: 100vw;
-  height: 80vh;
+  height: 82.5vh;
+  display: flex;
+  flex-direction: column;
+}
+.likeBoardCenter{
+  background-color: skyblue;
+  width: 100vw;
+  height: 90vh;
   display: flex;
   flex-direction: column;
 }
@@ -115,9 +128,7 @@
   outline: 0;
   box-shadow: 0 4px 7px rgba(0,0,0,0.30);
 }
-.moveWriteButton:hover {
-	background-color: #183c80;
-}
+.moveWriteButton:hover,
 .moveWriteButton:active {
 	background-color: #183c80;
 }
@@ -135,7 +146,25 @@
 }
 .boardTable > div {
   width: 95vw;
-  margin: 2.5vh auto auto auto;
+  height: 70vh;
+  margin: auto auto;
+  display: flex;
+}
+.likeBoardTable {
+  width: 100vw;
+  height: 82.5vh;
+  display: flex;
+}
+.likeBoardTable > div {
+  width: 95vw;
+  height: 75vh;
+  margin: auto auto;
+  display: flex;
+}
+.boardTable > div > div,
+.likeBoardTable > div > div {
+  width: 95vw;
+  margin: 0 auto auto auto;
 }
 
 .boardPagination {
@@ -145,7 +174,7 @@
 }
 .boardPagination > div {
   height: auto;
-  margin: 0 auto auto auto;
+  margin: auto auto auto auto;
 }
 
 @font-face {
