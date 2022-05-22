@@ -1,61 +1,41 @@
 import './Post.css';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Modal from '../../components/Modal';
 import {images} from '../../images';
 import { AiOutlineEye, AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import axios from 'axios';
 
-var user, like;
-
-function increaseHeart(id){
-  var temp = Number(like);
-  temp = temp + 1;
-  like = temp.toString();
-
-  axios.post("http://holo.dothome.co.kr/likeDoc.php", JSON.stringify({id: id, user: user}),{
-    withCredentials: false,
-    headers: {"Content-Type": "application/json"}
-  })
-    .then(function(body) {
-      console.log(body);
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
-}
-
-function decreaseHeart(id){
-  if(like > 0){
-    var temp = Number(like);
-    temp = temp - 1;
-    like = temp.toString();
-  }
-
-  axios.post("http://holo.dothome.co.kr/likeDocCancel.php", JSON.stringify({id: id, user: user}),{
-    withCredentials: false,
-    headers: {"Content-Type": "application/json"}
-  })
-    .then(function(body) {
-      console.log(body);
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
-}
+var likeUser = 32;  //29,32~37  //좋아요를 누르려는 임의의 유저
 
 function ShowPost(props) {
   const navigate = useNavigate();
   const [heart, setHeart] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [like, setLike] =useState('');
 
+  console.log(typeof(props.alreadyLiked));
+  
+  if(props.alreadyLiked === true){
+    console.log('이미 좋아요 누름!');
+    //setHeart(true); //이 코드를 넣으면 에러가 남...왜지?  //무한루프에 빠져버림
+    
+  }
+
+  useEffect(() => {
+    setHeart(props.alreadyLiked);
+  }, [props.alreadyLiked]);
+
+  useEffect(() => {
+    setLike(props.like);
+  }, [props.like]);
+  
   var id = props.id;
   var user = props.user;
   var title = props.title;
   var content = props.content;
   var reg_date = props.reg_date;
   var view = props.view;
-  var like = props.like;
 
   const deleteMsg = "\n게시글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
   const deletePost = () => {
@@ -74,6 +54,43 @@ function ShowPost(props) {
     navigate(-1)
   }
 
+  function increaseHeart(){
+    var temp = Number(like);
+    temp = temp + 1;
+    setLike(temp.toString());
+  
+    axios.post("http://holo.dothome.co.kr/likeDoc.php", JSON.stringify({id: id, user: likeUser}),{
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    })
+      .then(function(body) {
+        console.log(body);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  }
+  
+  function decreaseHeart(){
+    if(like > 0){
+      var temp = Number(like);
+      temp = temp - 1;
+     // like = temp.toString();
+      setLike(temp.toString());
+    }
+  
+    axios.post("http://holo.dothome.co.kr/likeDocCancel.php", JSON.stringify({id: id, user: likeUser}),{
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    })
+      .then(function(body) {
+        console.log(body);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  }
+
   return (
     <div>
       <div className="postHeaderBar">
@@ -88,8 +105,8 @@ function ShowPost(props) {
           <div className="postEtc2">
             <AiOutlineEye style={{ fontSize: '3.5vh', marginRight: '1vh'}}/>{view}
             {heart
-              ? <AiFillHeart className="heartIcon red" onClick={() => { setHeart(false); decreaseHeart(id);}}/>
-              : <AiOutlineHeart className="heartIcon" onClick={() => { setHeart(true); increaseHeart(id); }}/>
+              ? <AiFillHeart className="heartIcon red" onClick={() => { setHeart(false); decreaseHeart();}}/>
+              : <AiOutlineHeart className="heartIcon" onClick={() => { setHeart(true); increaseHeart(); }}/>
             }
             {like}
             <div>
@@ -119,11 +136,13 @@ class Post extends React.Component {
     this.state = {
        id : words[2],
        user : "",
+       likeUser : 32,
        title : "",
        content : "",
        reg_date : "",
        view : "",
-       like : ""
+       like : "",
+       alreadyLiked: ""
     };
 
     this.componentDidMount = this.componentDidMount.bind(this);
@@ -149,14 +168,32 @@ class Post extends React.Component {
       .catch(function(error) {
         console.log(error);
       });
+
+    //게시글을 이용하려는 사용자가 이미 좋아요를 눌렀는지 검사
+    //이미 눌렀으면 true를, 아니면 false라는 응답을 얻게됨
+    axios.post("http://holo.dothome.co.kr/alreadyLikeDoc.php", JSON.stringify({id: this.state.id, user: this.state.likeUser}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {    
+        this.setState({
+          alreadyLiked : response.data
+        });
+        
+        console.log(this.state.alreadyLiked);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
                      
-  };                         
+  };  
+                                             
 
   render() {
     return(
       <ShowPost id = {this.state.id} user={this.state.user} title={this.state.title} 
                 content={this.state.content} reg_date={this.state.reg_date}
-                view={this.state.view} like={this.state.like}/>
+                view={this.state.view} like={this.state.like} alreadyLiked = {this.state.alreadyLiked}/>
     );
   }
 }
