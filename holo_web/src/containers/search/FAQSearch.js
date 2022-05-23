@@ -1,5 +1,5 @@
 import './Search.css';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { images } from '../../images';
 import { AiOutlineSearch } from "react-icons/ai";
 import BoardTable from '../../components/BoardTable';
@@ -7,16 +7,20 @@ import Pagination from '../../components/Pagination';
 import Modal from '../../components/Modal';
 import axios from 'axios';
 
-var result = [];
+var result = [];  //결과를 저장할 전역변수
 
-function ExistResults() {
+function ExistResults(props) {
   const [page, setPage] = useState(1);
+  //const [result, setResults] = useState(null);
+
+  //setResults(props.resultList);
+  result = props.resultList;
 
   function sliceList(){
-    if (page === (result.length/10))
-      return result.slice(10*(page-1), result.length)
+    if (page === (result.length/8))
+      return result.slice(8*(page-1), result.length)
     else
-      return result.slice(10*(page-1), 10*page);
+      return result.slice(8*(page-1), 8*page);
   }
   const handlePageChange = (page) => {
     setPage(page); 
@@ -29,7 +33,7 @@ function ExistResults() {
         <div><BoardTable type="FAQ" list={sliceList()}></BoardTable></div>
       </div>
       <div className="searchPagination">
-        <div><Pagination page={page} count={10} totalCount={result.length} setPage={handlePageChange}></Pagination></div>
+        <div><Pagination page={page} count={8} totalCount={result.length} setPage={handlePageChange}></Pagination></div>
       </div>
     </div>
   )
@@ -48,7 +52,7 @@ function ShowResults(props) {
     case 0:
       return <NoResults/>;
     case 1:
-      return <ExistResults/>;
+      return <ExistResults resultList={props.resultList}/>;
     default:
       return null
   }
@@ -60,40 +64,28 @@ function Search() {
   const [searchResult, setSearchResult] = useState(null)
   const [resultExist, setResultExist] = useState(null)
 
-  function getResult(){
-    return fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/faqResult.json')
-    .then(response => { return response.json();})
-    .then(response => { 
-                        var result = [];
-                        var obj = response;
-                        for(var i=0; i < obj.length; i++) {
-                          result.push(obj[i]);
-                        }     
-                        setSearchResult(result);
-
-                        console.log(searchResult);
-                      });
-  }
-
   function search(){
     if(searchWord===""){
       setModalOpen(true)
     }
     else{
+      console.log("검색어: ",searchWord);
       //1. 검색어 json 형식으로 php 서버에 전송
       axios.post("http://holo.dothome.co.kr/searchFAQ.php", JSON.stringify({word: searchWord}),{
         withCredentials: false,
         headers: {"Content-Type": "application/json"}
       })
-        .then(function(body) {
-          console.log(body);
+        .then(response => {
+          console.log(response.data);
+          setSearchResult(response.data);
         })
         .catch(function(error) {
           console.log(error);
         });
       
+
       //2. 검색결과 받아오기
-      getResult();
+      //getResult();
       result = searchResult;
 
       if(result.length > 0) { setResultExist(1); }
@@ -106,7 +98,7 @@ function Search() {
   }
 
   return (
-    <div className="faqSearch">
+    <div className="rightSearch">
       <div className="searchHeaderBar">
         <input type="text" onChange={getResearchWord} placeholder="검색어를 입력해주세요"/>
         <button onClick={search}>
@@ -114,7 +106,7 @@ function Search() {
         </button>
       </div>
       <div className="searchResults">
-        <ShowResults results={resultExist}></ShowResults>
+        <ShowResults results={resultExist} resultList={searchResult}></ShowResults>
         <Modal type="Info" open={modalOpen} close={()=>setModalOpen(false)}>
           검색어를 입력해주세요!
         </Modal>
