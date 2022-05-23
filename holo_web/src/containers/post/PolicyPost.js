@@ -2,34 +2,34 @@ import './Post.css';
 import React, {useState, useEffect} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Modal from '../../components/Modal';
+import ReplyTable from '../../components/ReplyTable';
 import {images} from '../../images';
 import { AiOutlineEye, AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { BiMessageDetail } from "react-icons/bi";
 import axios from 'axios';
 
-//var likeUser = 32;
+var replyList = [{id: 1, user: "우네", content: "안녕하세용", date: "2022-05-23 05:08:00"},
+{id: 2, user: "먼지", content: "와! 이건 정말 대박 정보!", date: "2022-05-23 05:08:00"},
+{id: 3, user: "구리", content: "와 진짜 짱이에용 ㅠ\n감사합니당~", date: "2022-05-23 05:08:00"},
+{id: 4, user: "옌", content: "무야호~", date: "2022-05-23 05:08:00"}]
 
 function ShowPost(props) {
   const navigate = useNavigate();
   const [heart, setHeart] = useState(false);
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [like, setLike] =useState('');
-
-  console.log(typeof(props.alreadyLiked));
-  
-  if(props.alreadyLiked === true){
-    console.log('이미 좋아요 누름!');
-    //setHeart(true); //이 코드를 넣으면 에러가 남...왜지?  //무한루프에 빠져버림
-    
-  }
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [replyDeleteModalOpen, setReplyDeleteModalOpen] = useState(false);
+  const [reply, setReply] = useState('');
+  const [replyNum, setReplyNum] = useState(0);
+  const [replyEdit, setReplyEdit] = useState(false);
 
   useEffect(() => {
     setHeart(props.alreadyLiked);
   }, [props.alreadyLiked]);
-
   useEffect(() => {
     setLike(props.like);
   }, [props.like]);
-  
+
   var id = props.id;
   var user = props.user;
   var title = props.title;
@@ -38,6 +38,9 @@ function ShowPost(props) {
   var view = props.view;
   var likeUser = props.likeUser;
   
+  function replyChange (e) {
+    setReply(e.target.value)
+  };
 
   const deleteMsg = "\n게시글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
   const deletePost = () => {
@@ -93,6 +96,31 @@ function ShowPost(props) {
       });
   }
 
+  function submitReply(){
+    setReply('');
+    setReplyNum(replyNum+1);  //댓글 개수 증가
+    console.log("댓글 등록")
+    //댓글 작성 구현 (reply 변수값 등록)
+  }
+  
+  const setEditReply = (replyContent) => {
+    setReplyEdit(true);
+    setReply(replyContent);
+  }
+  const editReply = () => {
+    setReplyEdit(false);
+    setReply('');
+    console.log("댓글 수정")
+    //댓글 수정 구현 (reply 변수값 반영)
+  }
+
+  const replyDeleteMsg = "\n댓글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
+  const deleteReply = () => {
+    setReplyDeleteModalOpen(false);
+    console.log("댓글 삭제")
+    //댓글 삭제 구현
+  }
+
   return (
     <div>
       <div className="postHeaderBar">
@@ -122,6 +150,29 @@ function ShowPost(props) {
             </div>
           </div>
         </div>
+      </div>
+      <div className="postReply">
+        <div><BiMessageDetail style={{fontSize: '3.5vh'}}/> 댓글 {replyNum}</div>
+        {replyEdit
+          ? <div className="replyEditInput">
+              <textarea placeholder='수정할 댓글을 입력해주세요.' value={reply} spellCheck="false"  onChange={replyChange}></textarea>
+              <div className="replyEditButton">
+                <button onClick={() => {editReply();}} style={{marginBottom: '3px'}}>수정</button>
+                <button onClick={() => {setReplyEdit(false); setReply('');}}>취소</button>
+              </div>
+            </div>
+          : <div className="replyInput">
+              <textarea placeholder='댓글을 입력해주세요.' value={reply} spellCheck="false" onChange={replyChange}></textarea>
+              <button onClick={() => {submitReply()}}>등록</button>
+            </div>
+        }
+
+        <div className="replyTable">
+          <ReplyTable type="Reply" list={replyList} editFuc={setEditReply} deleteFuc={()=>{setReplyDeleteModalOpen(true);}}/>
+        </div>
+        <Modal type="Check" open={replyDeleteModalOpen} close={()=>{setReplyDeleteModalOpen(false);}} submit={deleteReply}>
+          {replyDeleteMsg}
+        </Modal>
       </div>
     </div>
   );

@@ -1,0 +1,51 @@
+.replyTitle{
+    padding: 3px;
+    display:flex;
+    flex-direction: row;
+}
+.replyUser {
+    height: 100%;
+    margin: auto auto auto 0;
+    font-family: "aSmile_L";
+    font-size: 2vh;
+}
+.replyUser > img {
+    width: 5vh;
+    height: 5vh;
+    margin: 0 5px 0 0;
+}
+.replyDate {
+    height: 100%;
+    margin: auto 0 auto auto;
+    font-family: "aSmile_L";
+    font-size: 1.5vh;
+    color: #a5a5a5;
+}
+.replyContent {
+    width: 100%;
+    height: 100%;
+    padding: 3px;
+    margin: auto;
+    white-space: pre-line;
+    font-family: "aSmile_L";
+    font-size: 2vh;
+}
+.replyButton {
+    padding: 3px;
+    display:flex;
+    flex-direction: row;
+    font-family: "aSmile_L";
+    font-size: 1.75vh;
+}
+.replyButton > button {
+    margin: auto auto auto 0;
+    background-color: white;
+    border: solid 1px #ababab;
+}
+.replyButton > div {
+    margin: auto 0 auto auto;
+}
+.replyButton > div > button {
+    background-color: white;
+    border: solid 1px #ababab;
+}

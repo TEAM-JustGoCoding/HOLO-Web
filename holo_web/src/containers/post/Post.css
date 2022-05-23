@@ -6,7 +6,7 @@
     box-shadow: 0 3px 5px rgba(0,0,0,0.30);
 }
 .postHeaderBar > div {
-    margin: auto auto;
+    margin: auto;
     font-family: "aSmile";
     font-size: 4.5vh;
     color: white;
@@ -16,7 +16,7 @@
     width: 90vw;
     height: 100%;
     padding: 5vh 0 2.5vh 0;
-    margin: auto auto;
+    margin: auto;
     border: none;
     font-family: "aSmile";
     font-size: 3.5vh;
@@ -24,7 +24,7 @@
 .postUser {
     width: 90vw;
     height: 100%;
-    margin: auto auto;
+    margin: auto;
     font-family: "aSmile_L";
     font-size: 2.5vh;
 }
@@ -36,7 +36,7 @@
 .postRegDate {
     width: 90vw;
     height: 100%;
-    margin: auto auto;
+    margin: auto;
     text-align: right;
     font-family: "aSmile_L";
     font-size: 2.5vh;
@@ -45,7 +45,7 @@
     width: 90vw;
     height: 100%;
     padding: 2.5vh 0 2.5vh 0;
-    margin: auto auto;
+    margin: auto;
     border: none;
     border-top: solid 1px #ababab;
     border-bottom: solid 1px #ababab;
@@ -68,7 +68,7 @@
     width: 90vw;
     height: 100%;
     padding: 2.5vh 0 2.5vh 0;
-    margin: auto auto;
+    margin: auto;
     border: none;
     border-top: solid 1px #ababab;
     white-space: pre-line;
@@ -91,6 +91,68 @@
     border: solid 1px #ababab;
 }
 
+.postReply {
+    width: 90vw;
+    height: 100%;
+    padding: 2.5vh 0 2.5vh 0;
+    margin: auto;
+    font-family: "aSmile_L";
+    font-size: 2.5vh;
+}
+.replyInput,
+.replyEditInput {
+    background-color: #f0f0f0;
+    width: 90vw;
+    height: 15vh;
+    margin: 1vh auto auto auto;
+    display: flex;
+    flex-direction: row;
+}
+.replyInput > textarea,
+.replyEditInput > textarea {
+    background-color: #f0f0f0;
+    width: 70vw;
+    height: 10vh;
+    margin: auto 1% auto auto;
+    border: none;
+    resize: none;
+    font-family: "aSmile_L";
+    font-size: 2vh;
+}
+.replyInput > textarea:focus,
+.replyEditInput > textarea:focus {
+    outline: none;
+}
+.replyInput > button {
+    background-color: #ababab;
+    width: 15%;
+    max-width: 10vh;
+    height: 10vh;
+    margin: auto auto auto 1%;
+    border: none;
+}
+.replyEditButton > button {
+    background-color: #ababab;
+    width: 100%;
+    height: 5vh;
+    border: none;
+}
+.replyInput > button:active,
+.replyEditButton > button:active {
+    background-color: #848484;
+}
+.replyEditButton {
+    width: 15%;
+    max-width: 10vh;
+    height: 10vh;
+    margin: auto auto auto 1%;
+    display: flex;
+    flex-direction: column;
+}
+.replyTable {
+    margin-top: 1%;
+}
+
 .heartIcon{
     margin: 0 1vh 0 3vh;
     cursor: pointer;
@@ -103,8 +165,8 @@
 .participationButton{
     background-color: #e7ebfd;
     display: block;
-    padding: 2vh 2vh 2vh 2vh;
-    margin: auto auto;
+    padding: 2vh;
+    margin: auto;
     border: 5px solid;
     border-radius: 15px;
     font-family: "aSmile";
