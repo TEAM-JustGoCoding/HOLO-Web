@@ -9,10 +9,6 @@ import { BiMessageDetail } from "react-icons/bi";
 import axios from 'axios';
 
 //var likeUser = 32;  //29,32~37  //좋아요를 누르려는 임의의 유저
-var replyList = [{id: 1, user: "우네", content: "안녕하세용", date: "2022-05-23 05:08:00"},
-{id: 2, user: "먼지", content: "와! 이건 정말 대박 정보!", date: "2022-05-23 05:08:00"},
-{id: 3, user: "구리", content: "와 진짜 짱이에용 ㅠ\n감사합니당~", date: "2022-05-23 05:08:00"},
-{id: 4, user: "옌", content: "무야호~", date: "2022-05-23 05:08:00"}]
 
 function ShowPost(props) {
   const navigate = useNavigate();
@@ -41,7 +37,9 @@ function ShowPost(props) {
   var reg_date = props.reg_date;
   var view = props.view;
   var likeUser = props.likeUser;
-
+  
+  var replyList = props.replyList;
+  
   function replyChange (e) {
     setReply(e.target.value)
   };
@@ -199,7 +197,11 @@ class Post extends React.Component {
        reg_date : "",
        view : "",
        like : "",
-       alreadyLiked: ""
+       alreadyLiked: "",
+       replyList : [{id: 1, user: "우네", content: "안녕하세용", date: "2022-05-23 05:08:00"},
+       {id: 2, user: "먼지", content: "와! 이건 정말 대박 정보!", date: "2022-05-23 05:08:00"},
+       {id: 3, user: "구리", content: "와 진짜 짱이에용 ㅠ\n감사합니당~", date: "2022-05-23 05:08:00"},
+       {id: 4, user: "옌", content: "무야호~", date: "2022-05-23 05:08:00"}]   //임의 댓글 데이터
     };
 
     this.componentDidMount = this.componentDidMount.bind(this);
@@ -250,7 +252,8 @@ class Post extends React.Component {
     return(
       <ShowPost id = {this.state.id} user={this.state.user} title={this.state.title} 
                 content={this.state.content} reg_date={this.state.reg_date}
-                view={this.state.view} like={this.state.like} alreadyLiked = {this.state.alreadyLiked} likeUser = {this.state.likeUser}/>
+                view={this.state.view} like={this.state.like} alreadyLiked = {this.state.alreadyLiked} likeUser = {this.state.likeUser}
+                replyList={this.state.replyList}/>
     );
   }
 }

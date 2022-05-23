@@ -1,5 +1,5 @@
 import './Search.css';
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import { images } from '../../images';
 import { AiOutlineSearch } from "react-icons/ai";
 import BoardTable from '../../components/BoardTable';

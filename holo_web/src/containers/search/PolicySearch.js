@@ -1,5 +1,5 @@
 import './Search.css';
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import { images } from '../../images';
 import { AiOutlineSearch } from "react-icons/ai";
 import BoardTable from '../../components/BoardTable';
@@ -98,7 +98,7 @@ function Search() {
   }
 
   return (
-    <div className="rightSearch">
+    <div className="leftSearch">
       <div className="searchHeaderBar">
         <input type="text" onChange={getResearchWord} placeholder="검색어를 입력해주세요"/>
         <button onClick={search}>
