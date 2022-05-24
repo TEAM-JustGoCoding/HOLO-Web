@@ -11,7 +11,7 @@ function Reply({list, editFuc, deleteFuc}) {
         <tr key={item.id}>
           <td>
             <div className="replyTitle">
-                <div className="replyUser"><img src={images.user} alt="User"/>{item.user}</div>
+                <div className="replyUser"><img src={images.user} alt="User"/>{item.nick_name}</div>
                 <div className="replyDate">{item.date}</div>
             </div>
             <div className="replyContent">{item.content}</div>
