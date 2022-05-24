@@ -2,6 +2,7 @@ import './Board.css';
 import React, {useState, useEffect} from 'react';
 import BoardTable from '../../components/BoardTable';
 import Pagination from '../../components/Pagination';
+import axios from 'axios';
 
 function ShowBoard(props) {
   var poliInfo = props.poliInfo;
@@ -52,16 +53,42 @@ class Board extends React.Component {
     super ();
 
     this.state = {
+      user: 32,  //29 시도해볼 것
       policy: [],
       document: []
     };
   }
 
   componentDidMount(){
-    this.setState ({policy: [{id: "12345", title: "정책 좋아요 게시물 제목 클릭 금지", content: "정책 좋아요 게시물 내용",  nick_name: "우네",
-    reg_date: "2022-05-01 12:00:00", like: "10000", view: "50000", category: "정책"}]}) //좋아요 게시물 구현 후 삭제
-    this.setState ({document: [{id: "12345", title: "생활 좋아요 게시물 제목 클릭 금지", content: "생활 좋아요 게시물 내용",  nick_name: "우네",
-    reg_date: "2022-05-01 12:00:00", like: "1", view: "5", category: "생활백서"}]}) //좋아요 게시물 구현 후 삭제   
+    //정책 관심글 가져오기
+    axios.post("http://holo.dothome.co.kr/getLikedPolicy.php", JSON.stringify({user: this.state.user}),{
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    })
+      .then(response => {
+        console.log(response.data);
+        this.setState ({
+          policy: response.data
+        });  
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    
+    //생활백서 관심글 가져오기
+    axios.post("http://holo.dothome.co.kr/getLikedDoc.php", JSON.stringify({user: this.state.user}),{
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    })
+      .then(response => {
+        console.log(response.data);
+        this.setState ({
+          document: response.data
+        });  
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   };
   render() {
     return(
