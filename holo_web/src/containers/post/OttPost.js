@@ -1,5 +1,5 @@
 import './Post.css';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Modal from '../../components/Modal';
 import ReplyTable from '../../components/ReplyTable';
@@ -19,6 +19,14 @@ function ShowPost(props) {
   const [reply, setReply] = useState('');
   const [replyNum, setReplyNum] = useState(0);
   const [replyEdit, setReplyEdit] = useState(false);
+  const [replyList, setReplyList] = useState([]);
+
+  useEffect(()=>{
+    setReplyList(props.replyList);
+  }, [props.replyList]);
+  useEffect(()=>{
+    setReplyNum(props.replyList.length);
+  }, [props.replyList]);
 
   var id = props.id;
   var user = props.user;
@@ -30,9 +38,9 @@ function ShowPost(props) {
   var goal = props.goal;
   var accumulate = props.accumulate;
   var view = props.view;
+  var likeUser = props.likeUser;
 
-  var replyList = props.replyList;
-
+  
   function replyChange (e) {
     setReply(e.target.value)
   };
@@ -70,11 +78,51 @@ function ShowPost(props) {
     navigate(-1)
   }
 
+  function getToday(){
+    var date = new Date();
+    var year = date.getFullYear();
+    var month = ("0" + (1 + date.getMonth())).slice(-2);
+    var day = ("0" + date.getDate()).slice(-2);
+    var time = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+  
+    return year + "-" + month + "-" + day + " " + time;
+  }
+
   function submitReply(){
     setReply('');
     setReplyNum(replyNum+1);  //댓글 개수 증가
-    console.log("댓글 등록")
+    console.log("댓글 등록");
+    var date = getToday();
+
     //댓글 작성 구현 (reply 변수값 등록)
+    axios.post("http://holo.dothome.co.kr/commentOtt.php", JSON.stringify({post: id, user: likeUser, content: reply, date: date}),{
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    })
+      .then(function(body) {
+        console.log(body);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    
+    //댓글업데이트
+      axios.post("http://holo.dothome.co.kr/getCommentOtt.php", JSON.stringify({post: id}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {
+        //console.log(response.data);
+        
+        setReplyList(response.data);
+        console.log(replyList);
+        //setReplyNum(replyList.length);
+        
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  
   }
   
   const setEditReply = (replyContent) => {
@@ -174,6 +222,7 @@ class Post extends React.Component {
     this.state = {
        id : words[2],
        user : "",
+       likeUser : 33, //외부유저
        title : "",
        content : "",
        reg_date : "",
@@ -182,10 +231,7 @@ class Post extends React.Component {
        goal : "",
        accumulate : "",
        view : "",
-       replyList : [{id: 1, user: "우네", content: "안녕하세용", date: "2022-05-23 05:08:00"},
-       {id: 2, user: "먼지", content: "와! 이건 정말 대박 정보!", date: "2022-05-23 05:08:00"},
-       {id: 3, user: "구리", content: "와 진짜 짱이에용 ㅠ\n감사합니당~", date: "2022-05-23 05:08:00"},
-       {id: 4, user: "옌", content: "무야호~", date: "2022-05-23 05:08:00"}]   //임의 댓글 데이터
+       replyList : []   //임의 댓글 데이터
     };
 
     this.componentDidMount = this.componentDidMount.bind(this);
@@ -214,6 +260,23 @@ class Post extends React.Component {
       .catch(function(error) {
         console.log(error);
       });
+
+    //게시글에 달린 댓글 불러오는 부분
+    axios.post("http://holo.dothome.co.kr/getCommentOtt.php", JSON.stringify({post: this.state.id}),
+    {
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    }).then(response => {
+      console.log(response.data);
+      
+      this.setState({
+        replyList : response.data
+      });
+      
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
                      
   };                         
 
@@ -222,7 +285,8 @@ class Post extends React.Component {
     return(
       <ShowPost id = {this.state.id} user={this.state.user} title={this.state.title} content={this.state.content} reg_date={this.state.reg_date}
                 limit_date={this.state.limit_date} buy_location={this.state.buy_location} 
-                goal={this.state.goal} view={this.state.view} accumulate={this.state.accumulate} replyList={this.state.replyList}/>
+                goal={this.state.goal} view={this.state.view} accumulate={this.state.accumulate} replyList={this.state.replyList}
+                likeUser={this.state.likeUser}/>
     );
   }
 }
