@@ -19,17 +19,21 @@ function ShowPost(props) {
   const [reply, setReply] = useState('');
   const [replyNum, setReplyNum] = useState(0);
   const [replyEdit, setReplyEdit] = useState(false);
-
-  console.log(typeof(props.alreadyLiked));
+  const [replyList, setReplyList] = useState([]);
 
   useEffect(() => {
     setHeart(props.alreadyLiked);
   }, [props.alreadyLiked]);
-
   useEffect(() => {
     setLike(props.like);
   }, [props.like]);
-  
+  useEffect(()=>{
+    setReplyList(props.replyList);
+  }, [props.replyList]);
+  useEffect(()=>{
+    setReplyNum(props.replyList.length);
+  }, [props.replyList]);
+
   var id = props.id;
   var user = props.user;
   var title = props.title;
@@ -37,8 +41,6 @@ function ShowPost(props) {
   var reg_date = props.reg_date;
   var view = props.view;
   var likeUser = props.likeUser;
-  
-  var replyList = props.replyList;
   
   function replyChange (e) {
     setReply(e.target.value)
@@ -98,11 +100,49 @@ function ShowPost(props) {
       });
   }
 
+  function getToday(){
+    var date = new Date();
+    var year = date.getFullYear();
+    var month = ("0" + (1 + date.getMonth())).slice(-2);
+    var day = ("0" + date.getDate()).slice(-2);
+    var time = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+  
+    return year + "-" + month + "-" + day + " " + time;
+  }
+
   function submitReply(){
     setReply('');
     setReplyNum(replyNum+1);  //댓글 개수 증가
-    console.log("댓글 등록")
+    console.log("댓글 등록");
+    var date = getToday();
+
     //댓글 작성 구현 (reply 변수값 등록)
+    axios.post("http://holo.dothome.co.kr/commentDoc.php", JSON.stringify({post: id, user: likeUser, content: reply, date: date}),{
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    })
+      .then(function(body) {
+        console.log(body);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    
+    //댓글업데이트
+      axios.post("http://holo.dothome.co.kr/getCommentDoc.php", JSON.stringify({post: id}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {        
+        setReplyList(response.data);
+        console.log(replyList);
+        //setReplyNum(replyList.length);
+        
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  
   }
   
   const setEditReply = (replyContent) => {
@@ -191,17 +231,14 @@ class Post extends React.Component {
     this.state = {
        id : words[2],
        user : "",
-       likeUser : 32,
+       likeUser : 32, //외부유저
        title : "",
        content : "",
        reg_date : "",
        view : "",
        like : "",
        alreadyLiked: "",
-       replyList : [{id: 1, user: "우네", content: "안녕하세용", date: "2022-05-23 05:08:00"},
-       {id: 2, user: "먼지", content: "와! 이건 정말 대박 정보!", date: "2022-05-23 05:08:00"},
-       {id: 3, user: "구리", content: "와 진짜 짱이에용 ㅠ\n감사합니당~", date: "2022-05-23 05:08:00"},
-       {id: 4, user: "옌", content: "무야호~", date: "2022-05-23 05:08:00"}]   //임의 댓글 데이터
+       replyList : []
     };
 
     this.componentDidMount = this.componentDidMount.bind(this);
@@ -244,6 +281,24 @@ class Post extends React.Component {
       .catch(function(error) {
         console.log(error);
       });
+    
+    //게시글에 달린 댓글 불러오는 부분
+    axios.post("http://holo.dothome.co.kr/getCommentDoc.php", JSON.stringify({post: this.state.id}),
+    {
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    }).then(response => {
+      console.log(response.data);
+      
+      this.setState({
+        replyList : response.data
+      });
+      
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+
                      
   };  
                                              
