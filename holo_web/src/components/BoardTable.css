@@ -37,6 +37,20 @@
   text-overflow: ellipsis;
   padding: 0.5vh 0;
 }
+.tableTitle-Like{
+  font-family: "aSmile";
+  font-size: 2vh;
+  width: 90vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  flex-direction: row;
+}
+.tableTitle-Like > div{
+  color: #1d4999;
+  margin-right: 5px;
+}
 
 @font-face {
   font-family: "aSmile_L";

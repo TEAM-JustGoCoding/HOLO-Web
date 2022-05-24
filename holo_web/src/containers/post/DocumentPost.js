@@ -20,6 +20,7 @@ function ShowPost(props) {
   const [replyNum, setReplyNum] = useState(0);
   const [replyEdit, setReplyEdit] = useState(false);
   const [replyList, setReplyList] = useState([]);
+  const [replyId, setReplyId] = useState(null);
 
   useEffect(() => {
     setHeart(props.alreadyLiked);
@@ -142,10 +143,10 @@ function ShowPost(props) {
       .catch(function(error) {
         console.log(error);
       });
-  
   }
   
-  const setEditReply = (replyContent) => {
+  const setEditReply = (replyId, replyContent) => {
+    setReplyId(replyId)
     setReplyEdit(true);
     setReply(replyContent);
   }
@@ -157,6 +158,10 @@ function ShowPost(props) {
   }
 
   const replyDeleteMsg = "\n댓글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
+  const setDeleteReply = (replyId) => {
+    setDeleteModalOpen(true);
+    setReplyId(replyId);
+  }
   const deleteReply = () => {
     setReplyDeleteModalOpen(false);
     console.log("댓글 삭제")
@@ -210,7 +215,7 @@ function ShowPost(props) {
         }
 
         <div className="replyTable">
-          <ReplyTable type="Reply" list={replyList} editFuc={setEditReply} deleteFuc={()=>{setReplyDeleteModalOpen(true);}}/>
+          <ReplyTable type="Reply" list={replyList} editFunc={setEditReply} deleteFunc={setDeleteReply}/>
         </div>
         <Modal type="Check" open={replyDeleteModalOpen} close={()=>{setReplyDeleteModalOpen(false);}} submit={deleteReply}>
           {replyDeleteMsg}

@@ -3,7 +3,7 @@ import { Table } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {images} from '../images';
 
-function Reply({list, editFuc, deleteFuc}) {
+function Reply({list, editFunc, deleteFunc}) {
   return(
     <Table bordered>
       <tbody>
@@ -18,8 +18,8 @@ function Reply({list, editFuc, deleteFuc}) {
             <div className="replyButton">
                 <button>답글</button>
                 <div>
-                    <button onClick={()=>{editFuc(item.content)}}>수정</button>
-                    <button onClick={deleteFuc}>삭제</button>
+                    <button onClick={()=>{editFunc(item.id, item.content);}}>수정</button>
+                    <button onClick={()=>{deleteFunc(item.id)}}>삭제</button>
                 </div>
             </div>
           </td>
@@ -29,26 +29,26 @@ function Reply({list, editFuc, deleteFuc}) {
     </Table>
   );
 }
-function ReReply({list, editFuc, deleteFuc}){
+function ReReply({list, editFunc, deleteFunc}){
     return(
         null
     );
 }
 
-function ShowTable({type, list, editFuc, deleteFuc}) {
+function ShowTable({type, list, editFunc, deleteFunc}) {
   switch(type){
     case "Reply":
-      return <Reply list={list} editFuc={editFuc} deleteFuc={deleteFuc}/>;
+      return <Reply list={list} editFunc={editFunc} deleteFunc={deleteFunc}/>;
     case "ReReply":
-      return <ReReply list={list} editFuc={editFuc} deleteFuc={deleteFuc}/>;
+      return <ReReply list={list} editFunc={editFunc} deleteFunc={deleteFunc}/>;
     default:
       return null
   }
 }
 
-const ReplyTable = ({type, list, editFuc, deleteFuc}) => {
+const ReplyTable = ({type, list, editFunc, deleteFunc}) => {
   return (
-    <ShowTable type={type} list={list} editFuc={editFuc} deleteFuc={deleteFuc}></ShowTable>
+    <ShowTable type={type} list={list} editFunc={editFunc} deleteFunc={deleteFunc}></ShowTable>
   );
 }
 

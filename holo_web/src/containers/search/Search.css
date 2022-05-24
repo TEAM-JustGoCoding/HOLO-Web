@@ -61,7 +61,13 @@
 }
 .searchTable > div {
   width: 95vw;
-  margin: 3vh auto auto auto;
+  height: 75vh;
+  margin: auto auto;
+  display: flex;
+}
+.searchTable > div > div {
+  width: 95vw;
+  margin: 0 auto auto auto;
 }
 .searchPagination {
   width: 100vw;
@@ -70,7 +76,7 @@
 }
 .searchPagination > div {
   height: auto;
-  margin: 0 auto auto auto;
+  margin: auto auto;
 }
 
 .NoResults {

@@ -1,5 +1,5 @@
 import './Search.css';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { images } from '../../images';
 import { AiOutlineSearch } from "react-icons/ai";
 import BoardTable from '../../components/BoardTable';
@@ -7,24 +7,25 @@ import Pagination from '../../components/Pagination';
 import Modal from '../../components/Modal';
 import axios from 'axios';
 
-var result = [];  //결과를 저장할 전역변수
-
 function ExistResults(props) {
   const [page, setPage] = useState(1);
-  //const [result, setResults] = useState(null);
+  const [result, setResult] = useState([]);
 
-  //setResults(props.resultList);
-  result = props.resultList;
+  useEffect(()=> {
+    setResult(props.searchResult);
+  },[props.searchResult])
+  useEffect(()=> {
+    setPage(1)
+  },[result])
 
   function sliceList(){
-    if (page === (result.length/8))
-      return result.slice(8*(page-1), result.length)
+    if (page === (result.length/10))
+      return result.slice(10*(page-1), result.length)
     else
-      return result.slice(8*(page-1), 8*page);
+      return result.slice(10*(page-1), 10*page);
   }
   const handlePageChange = (page) => {
-    setPage(page); 
-    console.log("page: ",page);
+    setPage(page);
   };
 
   return(
@@ -33,7 +34,7 @@ function ExistResults(props) {
         <div><BoardTable type="Ott" list={sliceList()}></BoardTable></div>
       </div>
       <div className="searchPagination">
-        <div><Pagination page={page} count={8} totalCount={result.length} setPage={handlePageChange}></Pagination></div>
+        <div><Pagination page={page} count={10} totalCount={result.length} setPage={handlePageChange}></Pagination></div>
       </div>
     </div>
   )
@@ -48,11 +49,11 @@ function NoResults() {
   );
 }
 function ShowResults(props) {
-  switch(props.results){
+  switch(props.resultExist){
     case 0:
       return <NoResults/>;
     case 1:
-      return <ExistResults resultList={props.resultList}/>;
+      return <ExistResults searchResult={props.searchResult}/>;
     default:
       return null
   }
@@ -82,13 +83,9 @@ function Search() {
         .catch(function(error) {
           console.log(error);
         });
-      
-
-      //2. 검색결과 받아오기
-      //getResult();
-      result = searchResult;
-
-      if(result.length > 0) { setResultExist(1); }
+    
+      if(searchResult === null) { return; } //검색 결과 동기화 해결 후 삭제
+      else if(searchResult.length > 0) { setResultExist(1); }
       else { setResultExist(0); }
     }
   }
@@ -106,7 +103,7 @@ function Search() {
         </button>
       </div>
       <div className="searchResults">
-        <ShowResults results={resultExist} resultList={searchResult}></ShowResults>
+        <ShowResults resultExist={resultExist} searchResult={searchResult}></ShowResults>
         <Modal type="Info" open={modalOpen} close={()=>setModalOpen(false)}>
           검색어를 입력해주세요!
         </Modal>

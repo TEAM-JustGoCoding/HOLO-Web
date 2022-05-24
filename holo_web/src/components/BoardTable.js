@@ -129,8 +129,11 @@ function LikeTable({list}) {
       {list.map(item=>(
         <tr key={[item.id, item.category]} className="tableRow">
           <td style={{ border: '#323232', padding: '1vh'}}>
-            <Link className="link" to={`/documentpost/${item.id}`}>
-              <div className="tableTitle">[{item.category}] {item.title}</div>
+            <Link className="link" to={`/${item.category==="policy"?"policypost":"documentpost"}/${item.id}`}>
+              <div className="tableTitle-Like">
+                <div>[{item.category==="policy"?"정책":"생활백서"}]</div>
+                {item.title}
+              </div>
               <div className="tableInfo">
                 <AiOutlineCalendar style={{ fontSize: '2vh', marginRight: '0.5vh'}}/>{item.reg_date}
                 <AiOutlineUser style={{ fontSize: '2vh', margin: '0 0.5vh 0 1.5vh'}}/>{item.nick_name}
