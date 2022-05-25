@@ -155,7 +155,8 @@ function OTTWrite(props){
     OTT_state.goal = goal;
   }
   function O_limitDateChange (e) {
-    setLimitDate(e.target.value)
+    var temp_limit_date = e.target.value.replace('T',' ')+':00';
+    setLimitDate(temp_limit_date)
     OTT_state.limit_date = limit_date;
   }
   function O_buyLocationChange (e) {
@@ -166,7 +167,7 @@ function OTTWrite(props){
   return(
     <div className="writeInput">
       <input type='text' id="title" placeholder='제목' value={title} spellCheck="false" onChange={O_titleChange}/>
-      <input type='text' id="limitDate" placeholder='구매 일시' value={limit_date} spellCheck="false" onChange={O_limitDateChange}/>
+      <input type="datetime-local" id="limitDate" data-placeholder="구매 일시" value={limit_date.replace(" ","T").slice(0,16)} required aria-required="true" onChange={O_limitDateChange}/>
       <input type='text' id="buyLocation" className="contentInput" placeholder='OTT 플랫폼' value={buy_location} spellCheck="false" onChange={O_buyLocationChange}/>
       <input type='number' id="goal" className="contentInput" min="0" placeholder='목표 인원' value={goal} onInput={(e)=>{e.target.value=e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1')}} onChange={O_goalChange}/>
       <textarea id="content" className="ottContent" placeholder='내용을 입력하세요.' value={content} spellCheck="false" onChange={O_contentChange}/>
@@ -229,7 +230,8 @@ function DeliveryWrite(props) {
     Delivery_state.buy_location = buy_location;
   }
   function G_limitDateChange (e) {
-    setLimitDate(e.target.value)
+    var temp_limit_date = e.target.value.replace('T',' ')+':00';
+    setLimitDate(temp_limit_date)
     Delivery_state.limit_date = limit_date;
   }
   function G_pickupChange (e) {
@@ -240,7 +242,7 @@ function DeliveryWrite(props) {
   return(
     <div className="writeInput">
       <input type='text' id="title" placeholder='제목' value={title} spellCheck="false" onChange={G_titleChange}/>
-      <input type='text' id="limitDate" placeholder='구매 일시' value={limit_date} spellCheck="false" onChange={G_limitDateChange}/>
+      <input type="datetime-local" id="limitDate" data-placeholder="구매 일시" value={limit_date.replace(" ","T").slice(0,16)} required aria-required="true" onChange={G_limitDateChange}/>
       <input type='text' id="buyLocation" placeholder='구매처' value={buy_location} spellCheck="false" onChange={G_buyLocationChange}/>
       <input type='number' id="goal" min="0" placeholder='목표 금액' value={goal} onInput={(e)=>{e.target.value=e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1')}} onChange={G_goalChange}/>
       <input type='text' id="pickupLocation" placeholder='픽업 위치' value={pickup_location} spellCheck="false" onChange={G_pickupChange}/>

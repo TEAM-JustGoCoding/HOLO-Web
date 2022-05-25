@@ -38,6 +38,10 @@
     height: 90vh;
     margin: auto auto;
 }
+.writeInput > input,
+.writeInput > textarea{
+    background-color: white;
+}
 
 #title{
     width: 100%;
@@ -98,6 +102,15 @@
 #goal::-webkit-outer-spin-button,
 #goal::-webkit-inner-spin-button {
     -webkit-appearance: none;
+}
+#limitDate::before{
+    color: gray;
+    content: attr(data-placeholder);
+    width: 100%;
+}
+#limitDate:focus::before,
+#limitDate:valid::before{
+    display:none;
 }
 
 @font-face {

@@ -90,7 +90,8 @@ function OTTWrite(){
     OTT_state.goal = e.target.value;
   }
   function O_limitDateChange (e) {
-    OTT_state.limit_date = e.target.value;
+    var temp_limit_date = e.target.value.replace('T',' ')+':00';
+    OTT_state.limit_date = temp_limit_date;
   }
   function O_buyLocationChange (e) {
     OTT_state.buy_location = e.target.value;
@@ -99,7 +100,7 @@ function OTTWrite(){
   return(
     <div className="writeInput">
       <input type='text' id="title" placeholder='제목' spellCheck="false" onChange={O_titleChange}/>
-      <input type='text' id="limitDate" placeholder='구매 일시' spellCheck="false" onChange={O_limitDateChange}/>
+      <input type="datetime-local" id="limitDate" data-placeholder="구매 일시" required aria-required="true" onChange={O_limitDateChange}/>
       <input type='text' id="buyLocation" className="contentInput" placeholder='OTT 플랫폼' spellCheck="false" onChange={O_buyLocationChange}/>
       <input type='number' id="goal" className="contentInput" min="0" placeholder='목표 인원' onInput={(e)=>{e.target.value=e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1')}} onChange={O_goalChange}/>
       <textarea id="content" className="ottContent" placeholder='내용을 입력하세요.' spellCheck="false" onChange={O_contentChange}/>
@@ -121,7 +122,8 @@ function DeliveryWrite() {
     Delivery_state.buy_location = e.target.value;
   }
   function G_limitDateChange (e) {
-    Delivery_state.limit_date = e.target.value;
+    var temp_limit_date = e.target.value.replace('T',' ')+':00';
+    Delivery_state.limit_date = temp_limit_date;
   }
   function G_pickupChange (e) {
     Delivery_state.pickup_location = e.target.value;
@@ -130,7 +132,7 @@ function DeliveryWrite() {
   return(
     <div className="writeInput">
       <input type='text' id="title" placeholder='제목' spellCheck="false" onChange={G_titleChange}/>
-      <input type='text' id="limitDate" placeholder='구매 일시' spellCheck="false" onChange={G_limitDateChange}/>
+      <input type="datetime-local" id="limitDate" data-placeholder="구매 일시" required aria-required="true" onChange={G_limitDateChange}/>
       <input type='text' id="buyLocation" placeholder='구매처' spellCheck="false" onChange={G_buyLocationChange}/>
       <input type='number' id="goal" min="0" placeholder='목표 금액' onInput={(e)=>{e.target.value=e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1')}} onChange={G_goalChange}/>
       <input type='text' id="pickupLocation" placeholder='픽업 위치' spellCheck="false" onChange={G_pickupChange}/>
@@ -172,21 +174,25 @@ function postDB(category){
       Policy_state.reg_date = date;
       console.log(JSON.stringify(Policy_state));
       PolicySubmit(Policy_state);
+      initState();
       return;
     case "생활백서": 
       Document_state.reg_date = date;
       console.log(JSON.stringify(Document_state));
       DocSubmit(Document_state);
+      initState();
       return;
     case "OTT구독":
       OTT_state.reg_date = date;
       console.log(JSON.stringify(OTT_state));
       OTTSubmit(OTT_state);
+      initState();
       return;
     case "공동구매":
       Delivery_state.reg_date = date;
       console.log(JSON.stringify(Delivery_state));
       DeliverySubmit(Delivery_state);
+      initState();
       return;
     default:
       return null
