@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import {images} from '../../images';
 
 function Home() {
+  //window.sessionStorage.clear();
 
   return (
     <div>

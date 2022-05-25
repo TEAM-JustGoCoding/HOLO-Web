@@ -31,7 +31,9 @@ function ExistResults(props) {
   return(
     <div>
       <div className="searchTable">
-        <div><BoardTable type="Document" list={sliceList()}></BoardTable></div>
+        <div>
+          <div><BoardTable type="Document" list={sliceList()}></BoardTable></div>
+        </div>
       </div>
       <div className="searchPagination">
         <div><Pagination page={page} count={10} totalCount={result.length} setPage={handlePageChange}></Pagination></div>

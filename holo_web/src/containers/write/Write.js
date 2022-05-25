@@ -1,6 +1,7 @@
 import './Write.css';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
+import queryString from 'query-string';
 import Dropdown from '../../components/Dropdown';
 import Modal from '../../components/Modal';
 import axios from 'axios';
@@ -242,6 +243,29 @@ function Write() {
   const [category, setCategory] = useState("정책");
   const [dropdownOpen, setDropdown] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+
+  useEffect(()=>{
+    switch(queryString.parse(window.location.search).select){
+      case 'policy':
+        setCategory("정책");
+        console.log("!")
+        break;
+      case 'document':
+        setCategory("생활백서");
+        console.log("!")
+        break;
+      case 'delivery':
+        setCategory("공동구매");
+        console.log("!")
+        break;
+      case 'ott':
+        setCategory("OTT구독");
+        console.log("!")
+        break;
+      default:
+        return null;
+    }
+  }, []);
 
   const goBack = () => {
     navigate(-1)

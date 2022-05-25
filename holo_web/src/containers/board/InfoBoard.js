@@ -1,6 +1,7 @@
 import './Board.css';
 import React, {useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
+import queryString from 'query-string';
 import {images} from '../../images';
 import { AiOutlineSearch, AiOutlinePlus } from "react-icons/ai";
 import BoardTable from '../../components/BoardTable';
@@ -12,10 +13,16 @@ function ShowBoard(props) {
   var hotPoliInfo = props.hotPoliInfo;
   var hotDocInfo = props.hotDocInfo;
 
-  const [select, setSelect] = useState("policy");
+  const [select, setSelect] = useState("policy")
   const [page, setPage] = useState(1);
   const [policyJson, setPolicyJson] = useState([]);
   const [documentJson, setDocumentJson] = useState([]);
+
+  useEffect(()=> {
+    if(window.location.search){
+        setSelect(queryString.parse(window.location.search).select)
+      }
+  },[])
 
   useEffect(()=> {
     setPolicyJson([...hotPoliInfo,...poliInfo])
@@ -48,7 +55,7 @@ function ShowBoard(props) {
       <div className="boardHeaderBar">
         <div></div>
         <img src={images.logo} alt="Logo"/>
-        <Link className="linkSearchButton" to={select === "policy" ? '/policysearch' : '/documentsearch'}>
+        <Link className="linkSearchButton" to={select==="policy"?'/policysearch':'/documentsearch'}>
           <button>
             <AiOutlineSearch className="moveSearchImg"/>
           </button>
@@ -66,7 +73,7 @@ function ShowBoard(props) {
             </div>
           </div>
         </div>
-        <Link to='/write'>
+        <Link to={`/write?select=${select==="policy"?"policy":"document"}`}>
           <button className="moveWriteButton">
             <AiOutlinePlus className="moveWriteImg"/>
           </button>

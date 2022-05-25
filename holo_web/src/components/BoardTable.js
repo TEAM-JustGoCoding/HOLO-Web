@@ -131,7 +131,7 @@ function LikeTable({list}) {
           <td style={{ border: '#323232', padding: '1vh'}}>
             <Link className="link" to={`/${item.category==="policy"?"policypost":"documentpost"}/${item.id}`}>
               <div className="tableTitle-Like">
-                <div>[{item.category==="policy"?"정책":"생활백서"}]</div>
+                <span>[{item.category==="policy"?"정책":"생활백서"}]</span>
                 {item.title}
               </div>
               <div className="tableInfo">

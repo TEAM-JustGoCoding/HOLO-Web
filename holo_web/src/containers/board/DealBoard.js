@@ -1,6 +1,7 @@
 import './Board.css';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
+import queryString from 'query-string';
 import {images} from '../../images';
 import { AiOutlineSearch, AiOutlinePlus } from "react-icons/ai";
 import BoardTable from '../../components/BoardTable';
@@ -12,6 +13,12 @@ function ShowBoard(props) {
 
   const [select, setSelect] = useState("delivery");
   const [page, setPage] = useState(1);
+
+  useEffect(()=> {
+    if(window.location.search){
+        setSelect(queryString.parse(window.location.search).select)
+      }
+  },[])
 
   function sliceList(){
     switch(select){
@@ -55,7 +62,7 @@ function ShowBoard(props) {
             <div><BoardTable type={`${select === "delivery" ? 'Delivery' : 'Ott'}`} list={sliceList()}></BoardTable></div>
           </div>
         </div>
-        <Link to='/write'>
+        <Link  to={`/write?select=${select==="delivery"?"delivery":"ott"}`}>
           <button className="moveWriteButton">
             <AiOutlinePlus className="moveWriteImg"/>
           </button>
