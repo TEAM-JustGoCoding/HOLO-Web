@@ -134,19 +134,69 @@ function ShowPost(props) {
   const editReply = () => {
     setReplyEdit(false);
     setReply('');
-    console.log("댓글 수정")
+    var date = getToday();
+
     //댓글 수정 구현 (reply 변수값 반영)
+    axios.post("http://holo.dothome.co.kr/updateCommentOtt.php", JSON.stringify({id: replyId, content: reply, date: date}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {   
+        console.log(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    
+    //댓글 업데이트
+    axios.post("http://holo.dothome.co.kr/getCommentOtt.php", JSON.stringify({post: id}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {   
+        setReplyList(response.data);  
+        console.log(replyList);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   }
 
   const replyDeleteMsg = "\n댓글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
   const setDeleteReply = (replyId) => {
-    setDeleteModalOpen(true);
+    setReplyDeleteModalOpen(true);
     setReplyId(replyId);
   }
   const deleteReply = () => {
     setReplyDeleteModalOpen(false);
     console.log("댓글 삭제")
+
     //댓글 삭제 구현
+    axios.post("http://holo.dothome.co.kr/deleteCommentOtt.php", JSON.stringify({replyId: replyId}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {        
+        console.log(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    
+    //댓글업데이트
+    axios.post("http://holo.dothome.co.kr/getCommentOtt.php", JSON.stringify({post: id}),
+    {
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    }).then(response => {        
+      setReplyList(response.data);
+      console.log(replyList);
+      //setReplyNum(replyList.length);
+      
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
   }
 
   return (
