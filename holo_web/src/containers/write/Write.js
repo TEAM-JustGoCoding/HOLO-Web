@@ -40,6 +40,13 @@ var Delivery_state = {
   goal : ''
 };
 
+function initState() {
+  Policy_state.title=''; Policy_state.content='';
+  Document_state.title=''; Document_state.content='';
+  OTT_state.title=''; OTT_state.content=''; OTT_state.limit_date=''; OTT_state.buy_location=''; OTT_state.goal='';
+  Delivery_state.title='';Delivery_state.content='';Delivery_state.limit_date=''; Delivery_state.buy_location='';Delivery_state.pickup_location='';Delivery_state.goal='';
+}
+
 function PolicyWrite() {
   function P_titleChange (e) {
     Policy_state.title = e.target.value;
@@ -94,7 +101,7 @@ function OTTWrite(){
       <input type='text' id="title" placeholder='제목' spellCheck="false" onChange={O_titleChange}/>
       <input type='text' id="limitDate" placeholder='구매 일시' spellCheck="false" onChange={O_limitDateChange}/>
       <input type='text' id="buyLocation" className="contentInput" placeholder='OTT 플랫폼' spellCheck="false" onChange={O_buyLocationChange}/>
-      <input type='text' id="goal" className="contentInput" placeholder='목표 인원' spellCheck="false" onChange={O_goalChange}/>
+      <input type='number' id="goal" className="contentInput" min="0" placeholder='목표 인원' onInput={(e)=>{e.target.value=e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1')}} onChange={O_goalChange}/>
       <textarea id="content" className="ottContent" placeholder='내용을 입력하세요.' spellCheck="false" onChange={O_contentChange}/>
     </div>
   )
@@ -125,7 +132,7 @@ function DeliveryWrite() {
       <input type='text' id="title" placeholder='제목' spellCheck="false" onChange={G_titleChange}/>
       <input type='text' id="limitDate" placeholder='구매 일시' spellCheck="false" onChange={G_limitDateChange}/>
       <input type='text' id="buyLocation" placeholder='구매처' spellCheck="false" onChange={G_buyLocationChange}/>
-      <input type='text' id="goal" placeholder='목표 금액' spellCheck="false" onChange={G_goalChange}/>
+      <input type='number' id="goal" min="0" placeholder='목표 금액' onInput={(e)=>{e.target.value=e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1')}} onChange={G_goalChange}/>
       <input type='text' id="pickupLocation" placeholder='픽업 위치' spellCheck="false" onChange={G_pickupChange}/>
       <textarea id="content" className="deliveryContent" placeholder='내용을 입력하세요.' spellCheck="false" onChange={G_contentChange}/>
     </div>
@@ -242,25 +249,22 @@ function Write() {
   const navigate = useNavigate();
   const [category, setCategory] = useState("정책");
   const [dropdownOpen, setDropdown] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [checkModalOpen, setCheckModalOpen] = useState(false);
+  const [finModalOpen, setFinModalOpen] = useState(false);
 
   useEffect(()=>{
     switch(queryString.parse(window.location.search).select){
       case 'policy':
         setCategory("정책");
-        console.log("!")
         break;
       case 'document':
         setCategory("생활백서");
-        console.log("!")
         break;
       case 'delivery':
         setCategory("공동구매");
-        console.log("!")
         break;
       case 'ott':
         setCategory("OTT구독");
-        console.log("!")
         break;
       default:
         return null;
@@ -276,14 +280,39 @@ function Write() {
   const closeDropdown = (selectCategory) => {
     setDropdown(false);
     setCategory(selectCategory);
+    initState();
   };
-  const openModal = () => {
-    setModalOpen(true);
+  const openFinModal = () => {
+    setFinModalOpen(true);
   };
-  const closeModal = () => {
-    setModalOpen(false);
+  const closeFinModal = () => {
+    setFinModalOpen(false);
     goBack();
   };
+  const checkFin = (category) => {
+    switch(category){
+      case "정책":
+        if(Policy_state.title===''||Policy_state.content===''){setCheckModalOpen(true)}
+        else{openFinModal(); postDB(category);}
+        return;
+      case "생활백서": 
+        if(Document_state.title===''||Document_state.content===''){setCheckModalOpen(true)}
+        else{openFinModal(); postDB(category);}
+      return;
+      case "OTT구독":
+        if(OTT_state.title===''||OTT_state.content===''||OTT_state.limit_date===''||OTT_state.buy_location===''
+          ||OTT_state.goal===''){setCheckModalOpen(true)}
+        else{openFinModal(); postDB(category);}
+        return;
+      case "공동구매":
+        if(Delivery_state.title===''||Delivery_state.content===''||Delivery_state.limit_date===''||Delivery_state.buy_location===''
+          ||Delivery_state.pickup_location===''||Delivery_state.goal===''){setCheckModalOpen(true)}
+        else{openFinModal(); postDB(category);}
+        return;
+      default:
+        return null
+    }
+  }
 
   return (
     <div>
@@ -291,8 +320,11 @@ function Write() {
         <button className="finButton" onClick={goBack}>취소</button>
         <button className="categoryButton" onClick={openDropdown}>{category}</button>
         <Dropdown open={dropdownOpen} close={closeDropdown}></Dropdown>
-        <button className="finButton" onClick={() => {openModal(); postDB(category);}}>완료</button>
-        <Modal type="Info" open={modalOpen} close={closeModal}>
+        <button className="finButton" onClick={() => {checkFin(category);}}>완료</button>
+        <Modal type="Info" open={checkModalOpen} close={()=>setCheckModalOpen(false)}>
+          내용을 모두 입력해주세요!
+        </Modal>
+        <Modal type="Info" open={finModalOpen} close={closeFinModal}>
           게시글 작성이 완료되었어요!
         </Modal>
       </div>

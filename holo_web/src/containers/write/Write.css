@@ -95,6 +95,10 @@
     font-family: "aSmile_L";
     font-size: 3vh;
 }
+#goal::-webkit-outer-spin-button,
+#goal::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
 
 @font-face {
     font-family: "aSmile_L";

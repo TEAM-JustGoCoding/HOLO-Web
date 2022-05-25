@@ -168,7 +168,7 @@ function OTTWrite(props){
       <input type='text' id="title" placeholder='제목' value={title} spellCheck="false" onChange={O_titleChange}/>
       <input type='text' id="limitDate" placeholder='구매 일시' value={limit_date} spellCheck="false" onChange={O_limitDateChange}/>
       <input type='text' id="buyLocation" className="contentInput" placeholder='OTT 플랫폼' value={buy_location} spellCheck="false" onChange={O_buyLocationChange}/>
-      <input type='text' id="goal" className="contentInput" placeholder='목표 인원' value={goal} spellCheck="false" onChange={O_goalChange}/>
+      <input type='number' id="goal" className="contentInput" min="0" placeholder='목표 인원' value={goal} onInput={(e)=>{e.target.value=e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1')}} onChange={O_goalChange}/>
       <textarea id="content" className="ottContent" placeholder='내용을 입력하세요.' value={content} spellCheck="false" onChange={O_contentChange}/>
     </div>
   )
@@ -242,7 +242,7 @@ function DeliveryWrite(props) {
       <input type='text' id="title" placeholder='제목' value={title} spellCheck="false" onChange={G_titleChange}/>
       <input type='text' id="limitDate" placeholder='구매 일시' value={limit_date} spellCheck="false" onChange={G_limitDateChange}/>
       <input type='text' id="buyLocation" placeholder='구매처' value={buy_location} spellCheck="false" onChange={G_buyLocationChange}/>
-      <input type='text' id="goal" placeholder='목표 금액' value={goal} spellCheck="false" onChange={G_goalChange}/>
+      <input type='number' id="goal" min="0" placeholder='목표 금액' value={goal} onInput={(e)=>{e.target.value=e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1')}} onChange={G_goalChange}/>
       <input type='text' id="pickupLocation" placeholder='픽업 위치' value={pickup_location} spellCheck="false" onChange={G_pickupChange}/>
       <textarea id="content" className="deliveryContent" placeholder='내용을 입력하세요.' value={content} spellCheck="false" onChange={G_contentChange}/>
     </div>
@@ -364,7 +364,8 @@ function DeliverySubmit(data){
 
 function ShowEdit(props) {
   const navigate = useNavigate();
-  const [modalOpen, setModalOpen] = useState(false);
+  const [checkModalOpen, setCheckModalOpen] = useState(false);
+  const [finModalOpen, setFinModalOpen] = useState(false);
 
   var category = "";
   if(props.category==="policy"){category="정책"}
@@ -375,22 +376,49 @@ function ShowEdit(props) {
   const goBack = () => {
     navigate(-1)
   };
-  const openModal = () => {
-    setModalOpen(true);
+  const openFinModal = () => {
+    setFinModalOpen(true);
   };
-  const closeModal = () => {
-    setModalOpen(false);
+  const closeFinModal = () => {
+    setFinModalOpen(false);
     goBack();
   };
+  const checkFin = (category) => {
+    switch(category){
+      case "policy":
+        if(Policy_state.title===''||Policy_state.content===''){setCheckModalOpen(true)}
+        else{openFinModal(); postDB(category);}
+        return;
+      case "document": 
+        if(Document_state.title===''||Document_state.content===''){setCheckModalOpen(true)}
+        else{openFinModal(); postDB(category);}
+      return;
+      case "ott":
+        if(OTT_state.title===''||OTT_state.content===''||OTT_state.limit_date===''||OTT_state.buy_location===''
+          ||OTT_state.goal===''){setCheckModalOpen(true)}
+        else{openFinModal(); postDB(category);}
+        return;
+      case "delivery":
+        if(Delivery_state.title===''||Delivery_state.content===''||Delivery_state.limit_date===''||Delivery_state.buy_location===''
+          ||Delivery_state.pickup_location===''||Delivery_state.goal===''){setCheckModalOpen(true)}
+        else{openFinModal(); postDB(category);}
+        return;
+      default:
+        return null
+    }
+  }
 
   return (
     <div>
       <div className="writeHeaderBar">
         <button className="finButton" onClick={() => {goBack();}}>취소</button>
-        <button className="categoryButton">{category}</button>
-        <button className="finButton" onClick={() => {openModal(); postDB(props.category);}}>완료</button>
-        <Modal type="Info" open={modalOpen} close={closeModal}>
-          게시글 수정이 완료되었어요!
+        <button className="categoryButton" disabled>{category}</button>
+        <button className="finButton" onClick={() => {checkFin(props.category);}}>완료</button>
+        <Modal type="Info" open={checkModalOpen} close={()=>setCheckModalOpen(false)}>
+          내용을 모두 입력해주세요!
+        </Modal>
+        <Modal type="Info" open={finModalOpen} close={closeFinModal}>
+          게시글 작성이 완료되었어요!
         </Modal>
       </div>
       <ShowInput category={props.category} id = {props.id} user={props.user} title={props.title} 

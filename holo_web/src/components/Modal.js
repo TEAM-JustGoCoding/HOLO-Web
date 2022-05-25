@@ -28,7 +28,7 @@ function InputModal({open, close, submit, msg}){
           <button className="modalCloseButton" onClick={close}>&times;</button>
           <div>{msg}</div>
           <div>
-            <input type="number" min="0" onInput={(e)=>{e.target.value=e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1')}}  onChange={moneyChange}></input>원
+            <input type="number" min="0" onInput={(e)=>{e.target.value=e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1')}} onChange={moneyChange}></input>원
           </div>
           <div>
             <button className="modalFinButton" onClick={()=> {if(money>0){submit(money);}}}>확인</button>
