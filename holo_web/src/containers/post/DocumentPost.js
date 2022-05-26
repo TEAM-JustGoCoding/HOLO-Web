@@ -1,6 +1,7 @@
 import './Post.css';
 import React, {useState, useEffect} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import {Cookies} from "react-cookie";
 import Modal from '../../components/Modal';
 import ReplyTable from '../../components/ReplyTable';
 import {images} from '../../images';
@@ -8,10 +9,9 @@ import { AiOutlineEye, AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BiMessageDetail } from "react-icons/bi";
 import axios from 'axios';
 
-//var likeUser = 32;  //29,32~37  //좋아요를 누르려는 임의의 유저
-
 function ShowPost(props) {
   const navigate = useNavigate();
+  const [currentUser, setCurrentUser] = useState(34); //초기값 수정 필요
   const [heart, setHeart] = useState(false);
   const [like, setLike] =useState('');
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -23,6 +23,9 @@ function ShowPost(props) {
   const [replyList, setReplyList] = useState([]);
   const [replyId, setReplyId] = useState(null);
 
+  useEffect(() => {
+    setCurrentUser(props.currentUser);
+  }, [props.currentUser])
   useEffect(() => {
     setHeart(props.alreadyLiked);
   }, [props.alreadyLiked]);
@@ -42,7 +45,6 @@ function ShowPost(props) {
   var content = props.content;
   var reg_date = props.reg_date;
   var view = props.view;
-  var likeUser = props.likeUser;
   
   function replyChange (e) {
     setReply(e.target.value)
@@ -70,7 +72,7 @@ function ShowPost(props) {
     temp = temp + 1;
     setLike(temp.toString());
   
-    axios.post("http://holo.dothome.co.kr/likeDoc.php", JSON.stringify({id: id, user: likeUser}),{
+    axios.post("http://holo.dothome.co.kr/likeDoc.php", JSON.stringify({id: id, user: currentUser}),{
       withCredentials: false,
       headers: {"Content-Type": "application/json"}
     })
@@ -90,7 +92,7 @@ function ShowPost(props) {
       setLike(temp.toString());
     }
   
-    axios.post("http://holo.dothome.co.kr/likeDocCancel.php", JSON.stringify({id: id, user: likeUser}),{
+    axios.post("http://holo.dothome.co.kr/likeDocCancel.php", JSON.stringify({id: id, user: currentUser}),{
       withCredentials: false,
       headers: {"Content-Type": "application/json"}
     })
@@ -113,16 +115,20 @@ function ShowPost(props) {
   }
 
   function submitReply(){
+    try {Android.showToast("게시글에 댓글 작성!");}
+    catch (e) {console.log("Android 없음!");}
+
     if(reply===''){
       setCheckModalOpen(true)
     }
     else{
+      
       setReply('');
       setReplyNum(replyNum+1);  //댓글 개수 증가
       console.log("댓글 등록");
       var date = getToday();
 
-      axios.post("http://holo.dothome.co.kr/commentDoc.php", JSON.stringify({post: id, user: likeUser, content: reply, date: date}),{
+      axios.post("http://holo.dothome.co.kr/commentDoc.php", JSON.stringify({post: id, user: currentUser, content: reply, date: date}),{
         withCredentials: false,
         headers: {"Content-Type": "application/json"}
       })
@@ -288,27 +294,33 @@ class Post extends React.Component {
 
     var pathname = window.location.pathname;
     var words = pathname.split('/');
-    console.log(words[2]);
 
+     
     this.state = {
        id : words[2],
        user : "",
-       likeUser : 32, //외부유저
        title : "",
        content : "",
        reg_date : "",
        view : "",
        like : "",
        alreadyLiked: "",
-       replyList : []
+       replyList : [],
+       currentUser: 34, //초기값 수정 필요  
     };
+
+    var cookies = new Cookies()
+
+    if(cookies.get('uid')){
+      this.state.currentUser = cookies.get('uid')
+    }
 
     this.componentDidMount = this.componentDidMount.bind(this);
   }
 
   componentDidMount(){
     console.log(this.state.id);
-
+    
     axios.post("http://holo.dothome.co.kr/findDocPost.php", JSON.stringify({postid: this.state.id}),{
       withCredentials: false,
       headers: {"Content-Type": "application/json"}
@@ -329,7 +341,7 @@ class Post extends React.Component {
 
     //게시글을 이용하려는 사용자가 이미 좋아요를 눌렀는지 검사
     //이미 눌렀으면 true를, 아니면 false라는 응답을 얻게됨
-    axios.post("http://holo.dothome.co.kr/alreadyLikeDoc.php", JSON.stringify({id: this.state.id, user: this.state.likeUser}),
+    axios.post("http://holo.dothome.co.kr/alreadyLikeDoc.php", JSON.stringify({id: this.state.id, user: this.state.currentUser}),
       {
         withCredentials: false,
         headers: {"Content-Type": "application/json"}
@@ -359,9 +371,7 @@ class Post extends React.Component {
     })
     .catch(function(error) {
       console.log(error);
-    });
-
-                     
+    });       
   };  
                                              
 
@@ -369,7 +379,7 @@ class Post extends React.Component {
     return(
       <ShowPost id = {this.state.id} user={this.state.user} title={this.state.title} 
                 content={this.state.content} reg_date={this.state.reg_date}
-                view={this.state.view} like={this.state.like} alreadyLiked = {this.state.alreadyLiked} likeUser = {this.state.likeUser}
+                view={this.state.view} like={this.state.like} alreadyLiked = {this.state.alreadyLiked} currentUser = {this.state.currentUser}
                 replyList={this.state.replyList}/>
     );
   }
