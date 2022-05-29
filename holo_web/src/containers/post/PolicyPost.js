@@ -7,9 +7,11 @@ import {images} from '../../images';
 import { AiOutlineEye, AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BiMessageDetail } from "react-icons/bi";
 import axios from 'axios';
+import {Cookies} from "react-cookie";
 
 function ShowPost(props) {
   const navigate = useNavigate();
+  const [currentUser, setCurrentUser] = useState(34); //초기값 수정 필요
   const [heart, setHeart] = useState(false);
   const [like, setLike] =useState('');
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -21,6 +23,9 @@ function ShowPost(props) {
   const [replyList, setReplyList] = useState([]);
   const [replyId, setReplyId] = useState(null);
 
+  useEffect(() => {
+    setCurrentUser(props.currentUser);
+  }, [props.currentUser])
   useEffect(() => {
     setHeart(props.alreadyLiked);
   }, [props.alreadyLiked]);
@@ -40,7 +45,6 @@ function ShowPost(props) {
   var content = props.content;
   var reg_date = props.reg_date;
   var view = props.view;
-  var likeUser = props.likeUser;
   
   function replyChange (e) {
     setReply(e.target.value)
@@ -68,7 +72,7 @@ function ShowPost(props) {
     temp = temp + 1;
     setLike(temp.toString());
   
-    axios.post("http://holo.dothome.co.kr/likePolicy.php", JSON.stringify({id: id, user: likeUser}),{
+    axios.post("http://holo.dothome.co.kr/likePolicy.php", JSON.stringify({id: id, user: currentUser}),{
       withCredentials: false,
       headers: {"Content-Type": "application/json"}
     })
@@ -88,7 +92,7 @@ function ShowPost(props) {
       setLike(temp.toString());
     }
   
-    axios.post("http://holo.dothome.co.kr/likePolicyCancel.php", JSON.stringify({id: id, user: likeUser}),{
+    axios.post("http://holo.dothome.co.kr/likePolicyCancel.php", JSON.stringify({id: id, user: currentUser}),{
       withCredentials: false,
       headers: {"Content-Type": "application/json"}
     })
@@ -120,7 +124,7 @@ function ShowPost(props) {
       console.log("댓글 등록");
       var date = getToday();
   
-      axios.post("http://holo.dothome.co.kr/commentPolicy.php", JSON.stringify({post: id, user: likeUser, content: reply, date: date}),{
+      axios.post("http://holo.dothome.co.kr/commentPolicy.php", JSON.stringify({post: id, user: currentUser, content: reply, date: date}),{
         withCredentials: false,
         headers: {"Content-Type": "application/json"}
       })
@@ -289,15 +293,21 @@ class Post extends React.Component {
     this.state = {
        id : words[2],
        user : "",
-       likeUser : 35, //외부유저
        title : "",
        content : "",
        reg_date : "",
        view : "",
        like : "",
        alreadyLiked : '', //이 글을 보는 사용자가 이전에 이미 좋아요를 눌렀는지 체크하는 변수
-       replyList : []   //임의 댓글 데이터
+       replyList : [],   //임의 댓글 데이터
+       currentUser: 34, //초기값 수정 필요  
     };
+
+    var cookies = new Cookies()
+
+    if(cookies.get('uid')){
+      this.state.currentUser = cookies.get('uid')
+    }
 
     this.componentDidMount = this.componentDidMount.bind(this);
   }
@@ -325,7 +335,7 @@ class Post extends React.Component {
 
     //게시글을 이용하려는 사용자가 이미 좋아요를 눌렀는지 검사
     //이미 눌렀으면 true를, 아니면 false라는 응답을 얻게됨
-    axios.post("http://holo.dothome.co.kr/alreadyLikePolicy.php", JSON.stringify({id: this.state.id, user: this.state.likeUser}),
+    axios.post("http://holo.dothome.co.kr/alreadyLikePolicy.php", JSON.stringify({id: this.state.id, user: this.state.currentUser}),
       {
         withCredentials: false,
         headers: {"Content-Type": "application/json"}
@@ -364,7 +374,7 @@ class Post extends React.Component {
     return(
       <ShowPost id = {this.state.id} user={this.state.user} title={this.state.title} 
                 content={this.state.content} reg_date={this.state.reg_date}
-                view={this.state.view} like={this.state.like} alreadyLiked={this.state.alreadyLiked} likeUser = {this.state.likeUser}
+                view={this.state.view} like={this.state.like} alreadyLiked={this.state.alreadyLiked} currentUser = {this.state.currentUser}
                 replyList={this.state.replyList}/>
     );
   }
