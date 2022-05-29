@@ -8,9 +8,11 @@ import { AiOutlineEye } from "react-icons/ai";
 import { FaRegLaugh, FaRegLaughSquint } from "react-icons/fa";
 import { BiMessageDetail } from "react-icons/bi";
 import axios from 'axios';
+import {Cookies} from "react-cookie";
 
 function ShowPost(props) {
   const navigate = useNavigate();
+  const [currentUser, setCurrentUser] = useState(34); //초기값 수정 필요
   const [participation, setParticipation] = useState(false);
   const [participationModalOpen, setParticipationModalOpen] = useState(false);
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
@@ -23,12 +25,18 @@ function ShowPost(props) {
   const [replyList, setReplyList] = useState([]);
   const [replyId, setReplyId] = useState(null);
 
+  useEffect(() => {
+    setCurrentUser(props.currentUser);
+  }, [props.currentUser])
   useEffect(()=>{
     setReplyList(props.replyList);
   }, [props.replyList]);
   useEffect(()=>{
     setReplyNum(props.replyList.length);
   }, [props.replyList]);
+  useEffect(()=>{
+    setParticipation(props.alreadyParticipated);
+  }, [props.alreadyParticipated]);
 
 
   var id = props.id;
@@ -42,7 +50,6 @@ function ShowPost(props) {
   var goal = props.goal;
   var accumulate = props.accumulate;
   var view = props.view;
-  var likeUser = props.likeUser;
   
   
   function replyChange (e) {
@@ -55,6 +62,16 @@ function ShowPost(props) {
     setParticipation(true);
     console.log(money+"원! 공동구매 금액 추가!")
     //공동구매 참여 DB 반영
+    axios.post("http://holo.dothome.co.kr/DeliveryParticipate.php", JSON.stringify({id: id, user: currentUser, money: money}),{
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    })
+      .then(response => {
+        console.log(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   };
   
   const cancelMsg = "\n참여를 취소하시겠습니까?\n신중하게 결정해주세요!"
@@ -63,6 +80,16 @@ function ShowPost(props) {
     setParticipation(false);
     console.log("공동구매 참여 취소!")
     //공동구매 참여 취소 DB 반영
+    axios.post("http://holo.dothome.co.kr/DeliveryCancelParticipate.php", JSON.stringify({id: id, user: currentUser}),{
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    })
+      .then(function(body) {
+        console.log(body);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   }
 
   const deleteMsg = "\n게시글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
@@ -101,7 +128,7 @@ function ShowPost(props) {
       console.log("댓글 등록");
       var date = getToday();
   
-      axios.post("http://holo.dothome.co.kr/commentDelivery.php", JSON.stringify({post: id, user: likeUser, content: reply, date: date}),{
+      axios.post("http://holo.dothome.co.kr/commentDelivery.php", JSON.stringify({post: id, user: currentUser, content: reply, date: date}),{
         withCredentials: false,
         headers: {"Content-Type": "application/json"}
       })
@@ -284,7 +311,6 @@ class Post extends React.Component {
     this.state = {
        id : words[2],
        user : "",
-       likeUser : 33, //외부유저
        title : "",
        content : "",
        reg_date : "",
@@ -294,8 +320,16 @@ class Post extends React.Component {
        goal : "",
        accumulate : "",
        view : "",
-       replyList : []   //임의 댓글 데이터
+       replyList : [],   //임의 댓글 데이터
+       currentUser : 35,
+       alreadyParticipated : "false"
     };
+
+    var cookies = new Cookies()
+
+    if(cookies.get('uid')){
+      this.state.currentUser = cookies.get('uid')
+    }
 
     this.componentDidMount = this.componentDidMount.bind(this);
   }
@@ -320,6 +354,23 @@ class Post extends React.Component {
           goal : response.data[0].goal,
           view : response.data[0].view,
           accumulate : response.data[0].accumulate });  
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+
+    //게시글을 이용하려는 사용자가 이미 참여를 했는지 검사
+    //이미 눌렀으면 true를, 아니면 false라는 응답을 얻게됨
+    axios.post("http://holo.dothome.co.kr/DeliveryAlreadyParticipated.php", JSON.stringify({id: this.state.id, user: this.state.currentUser}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {    
+        this.setState({
+          alreadyParticipated : response.data
+        });
+        
+        console.log(this.state.alreadyParticipated);
       })
       .catch(function(error) {
         console.log(error);
@@ -349,7 +400,7 @@ class Post extends React.Component {
       <ShowPost id = {this.state.id} user={this.state.user} title={this.state.title} content={this.state.content} reg_date={this.state.reg_date}
                 limit_date={this.state.limit_date} buy_location={this.state.buy_location} pickup_location={this.state.pickup_location} 
                 goal={this.state.goal} view={this.state.view} accumulate={this.state.accumulate}
-                replyList={this.state.replyList} likeUser={this.state.likeUser}/>
+                replyList={this.state.replyList} currentUser={this.state.currentUser} alreadyParticipated = {this.state.alreadyParticipated}/>
     );
   }
 }
