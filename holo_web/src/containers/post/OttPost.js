@@ -62,12 +62,26 @@ function ShowPost(props) {
     console.log("OTT 구독자 추가!")
     //OTT 구독자 참여 DB 반영
 
-    axios.post("http://holo.dothome.co.kr/OttParticipate.php", JSON.stringify({id: id, user: currentUser}),{
+    axios.post("http://holo.dothome.co.kr/OttParticipate.php", JSON.stringify({id: id, starter: user, user: currentUser}),{
       withCredentials: false,
       headers: {"Content-Type": "application/json"}
     })
       .then(response => {
-        console.log(response);
+        //채팅방 개설하는 코드를 여기에다 작성        
+        if(response.data['complete'] == "true"){
+          console.log("거래 다 완료됨!");
+
+          var hostEmail = response.data['starter'];
+          var partner = response.data['mates'];
+          var boardTitle = title;
+
+          try {
+            Android.createChatRoom(hostEmail, partner, boardTitle);
+          }
+          catch (e) {
+            console.log("Android 없음!");
+          }
+        }
       })
       .catch(function(error) {
         console.log(error);
@@ -320,7 +334,7 @@ class Post extends React.Component {
        accumulate : "",
        view : "",
        replyList : [],   //임의 댓글 데이터
-       currentUser : 38,
+       currentUser : 35,
        alreadyParticipated : "false"
     };
 
