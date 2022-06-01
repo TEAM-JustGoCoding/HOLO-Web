@@ -9,6 +9,7 @@ import { FaRegLaugh, FaRegLaughSquint } from "react-icons/fa";
 import { BiMessageDetail } from "react-icons/bi";
 import axios from 'axios';
 import {Cookies} from "react-cookie";
+import { ConstructionOutlined } from '@mui/icons-material';
 
 function ShowPost(props) {
   const navigate = useNavigate();
@@ -62,12 +63,27 @@ function ShowPost(props) {
     setParticipation(true);
     console.log(money+"원! 공동구매 금액 추가!")
     //공동구매 참여 DB 반영
-    axios.post("http://holo.dothome.co.kr/DeliveryParticipate.php", JSON.stringify({id: id, user: currentUser, money: money}),{
+    axios.post("http://holo.dothome.co.kr/DeliveryParticipate.php", JSON.stringify({id: id, starter: user, user: currentUser, money: money}),{
       withCredentials: false,
       headers: {"Content-Type": "application/json"}
     })
       .then(response => {
-        console.log(response);
+        //채팅방 개설하는 코드를 여기에다 작성        
+        if(response.data['complete'] == "true"){
+          console.log("거래 다 완료됨!");
+
+          var hostEmail = response.data['starter'];
+          var partner = response.data['mates'];
+          var boardTitle = title;
+
+          try {
+            Android.createChatRoom(hostEmail, partner, boardTitle);
+          }
+          catch (e) {
+            console.log("Android 없음!");
+          }
+        }
+        
       })
       .catch(function(error) {
         console.log(error);
@@ -321,7 +337,7 @@ class Post extends React.Component {
        accumulate : "",
        view : "",
        replyList : [],   //임의 댓글 데이터
-       currentUser : 35,
+       currentUser : 25,
        alreadyParticipated : "false"
     };
 
