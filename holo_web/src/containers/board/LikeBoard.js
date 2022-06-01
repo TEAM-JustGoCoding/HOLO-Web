@@ -3,6 +3,7 @@ import React, {useState, useEffect} from 'react';
 import BoardTable from '../../components/BoardTable';
 import Pagination from '../../components/Pagination';
 import axios from 'axios';
+import {Cookies} from "react-cookie";
 
 function ShowBoard(props) {
   var poliInfo = props.poliInfo;
@@ -53,15 +54,22 @@ class Board extends React.Component {
     super ();
 
     this.state = {
-      user: 32,  //29 시도해볼 것
+      //user: 32,  //29 시도해볼 것
       policy: [],
-      document: []
+      document: [],
+      currentUser: 35 //임의의 사용자
     };
+
+    var cookies = new Cookies()
+
+    if(cookies.get('uid')){
+      this.state.currentUser = cookies.get('uid')
+    }
   }
 
   componentDidMount(){
     //정책 관심글 가져오기
-    axios.post("http://holo.dothome.co.kr/getLikedPolicy.php", JSON.stringify({user: this.state.user}),{
+    axios.post("http://holo.dothome.co.kr/getLikedPolicy.php", JSON.stringify({user: this.state.currentUser}),{
       withCredentials: false,
       headers: {"Content-Type": "application/json"}
     })
@@ -76,7 +84,7 @@ class Board extends React.Component {
       });
     
     //생활백서 관심글 가져오기
-    axios.post("http://holo.dothome.co.kr/getLikedDoc.php", JSON.stringify({user: this.state.user}),{
+    axios.post("http://holo.dothome.co.kr/getLikedDoc.php", JSON.stringify({user: this.state.currentUser}),{
       withCredentials: false,
       headers: {"Content-Type": "application/json"}
     })
