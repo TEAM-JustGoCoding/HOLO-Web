@@ -144,7 +144,7 @@
 .heartIcon:hover{
     transform: scale(1.1);
 }
-.participationButton{
+.dealButton{
     background-color: #e7ebfd;
     display: block;
     padding: 2vh;
@@ -165,6 +165,10 @@
 .skyblue{
     color: #9dc3e6;
     border-color: #9dc3e6;
+}
+.purple{
+    color: #ca9de6;
+    border-color: #ca9de6;
 }
 
 @font-face {

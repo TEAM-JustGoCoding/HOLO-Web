@@ -5,19 +5,21 @@ import Modal from '../../components/Modal';
 import ReplyTable from '../../components/ReplyTable';
 import {images} from '../../images';
 import { AiOutlineEye } from "react-icons/ai";
-import { FaRegLaugh, FaRegLaughSquint } from "react-icons/fa";
+import { FaRegLaughWink, FaRegLaugh, FaRegLaughSquint } from "react-icons/fa";
 import { BiMessageDetail } from "react-icons/bi";
 import axios from 'axios';
 import {Cookies} from "react-cookie";
 
 var reReplyList = [
-  {id: 1, reply_id: '18', nick_name: "해서", user_id: 28, content: "나두", date: "2022-05-23 17:12:04"}
+  {id: 1, reply_id: '18', nick_name: "해서", user_id: 28, content: "나두", date: "2022-05-23 17:12:04"},
+  {id: 2, reply_id: '18', nick_name: "예은", user_id: 25, content: "무야호!", date: "2022-05-23 17:12:04"}
 ]
 
 function ShowPost(props) {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState(34); //초기값 수정 필요
   const [participation, setParticipation] = useState(false);
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [participationModalOpen, setParticipationModalOpen] = useState(false);
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -43,8 +45,8 @@ function ShowPost(props) {
     setParticipation(props.alreadyParticipated);
   }, [props.alreadyParticipated]);
 
-
   var id = props.id;
+  var user_id = props.user_id;
   var user = props.user;
   var title = props.title;
   var content = props.content;
@@ -57,10 +59,16 @@ function ShowPost(props) {
   var view = props.view;
   var url = props.path;
   
-  
   function replyChange (e) {
     setReply(e.target.value)
   };
+
+  const successMsg = "\n모집을 마감하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
+  const successPost = () => {
+    setSuccessModalOpen(false);
+    console.log("공동구매 모집 마감!")
+    //공동구매 모집 마감
+  }
 
   const participationMsg = "\n공동구매에 참여할 금액을 작성해주세요.\n입력하신 금액은 참여 현황에 반영됩니다.\n신중하게 작성해주세요!\n0원 이하는 입력할 수 없습니다.";
   const participationPost = (money) => {
@@ -287,18 +295,26 @@ function ShowPost(props) {
         </div>
         {content}
         <div className="postEtc">
-          {participation
-              ? <button className="participationButton pink" onClick={() => { setCancelModalOpen(true); }}><FaRegLaughSquint/>   참여 완료!</button>
-              : <button className="participationButton skyblue" onClick={() => { setParticipationModalOpen(true); }}><FaRegLaugh/>   참여 신청!</button>
+          {currentUser===user_id
+            ?<button className="dealButton purple" onClick={() => { setSuccessModalOpen(true); }}><FaRegLaughWink/>   모집 마감!</button>
+            :<div>
+              {participation
+              ? <button className="dealButton pink" onClick={() => { setCancelModalOpen(true); }}><FaRegLaughSquint/>   참여 완료!</button>
+              : <button className="dealButton skyblue" onClick={() => { setParticipationModalOpen(true); }}><FaRegLaugh/>   참여 신청!</button>
+              }
+             </div>
           }
           <div className="postEtc2">
             <AiOutlineEye style={{ fontSize: '3.5vh', marginRight: '1vh'}}/>{view}
-            <div>
-              <Link to={`/edit/delivery/${id}`}>
-                <button className="postEtcButton">수정</button>
-              </Link>
-              <button className="postEtcButton" onClick={() => {setDeleteModalOpen(true);}}>삭제</button>
-            </div>
+            {currentUser===user_id
+             ?<div>
+                <Link to={`/edit/delivery/${id}`}>
+                  <button className="postEtcButton">수정</button>
+                </Link>
+                <button className="postEtcButton" onClick={() => {setDeleteModalOpen(true);}}>삭제</button>
+              </div>
+             :<div/>
+            }
           </div>
         </div>
       </div>
@@ -309,10 +325,13 @@ function ShowPost(props) {
           <button onClick={() => {submitReply()}}>등록</button>
         </div>
         <div className="replyTable">
-          <ReplyTable replyList={replyList} replyEditFunc={editReply} replyDeleteFunc={setDeleteReply}
+          <ReplyTable currentUser={currentUser} replyList={replyList} replyEditFunc={editReply} replyDeleteFunc={setDeleteReply}
                       reReplyList={reReplyList} reReplySubmitFunc={submitReReply} reReplyEditFunc={editReReply} reReplyDeleteFunc={setDeleteReReply}/>
         </div>
       </div>
+      <Modal type="Check" open={successModalOpen} close={()=>{setSuccessModalOpen(false);}} submit={successPost}>
+        {successMsg}
+      </Modal>
       <Modal type="Input" open={participationModalOpen} close={() => {setParticipationModalOpen(false);}} submit={participationPost}>
         {participationMsg}
       </Modal>
@@ -346,6 +365,7 @@ class Post extends React.Component {
     this.state = {
        pathname : pathname,
        id : words[2],
+       user_id : 37,  //작성자 id
        user : "",
        title : "",
        content : "",
@@ -433,10 +453,11 @@ class Post extends React.Component {
 
   render() {
     return(
-      <ShowPost path = {this.state.pathname} id = {this.state.id} user={this.state.user} title={this.state.title} content={this.state.content} reg_date={this.state.reg_date}
-                limit_date={this.state.limit_date} buy_location={this.state.buy_location} pickup_location={this.state.pickup_location} 
+      <ShowPost path = {this.state.pathname} id = {this.state.id} user_id={this.state.user_id} user={this.state.user} title={this.state.title}
+                content={this.state.content} reg_date={this.state.reg_date} limit_date={this.state.limit_date}
+                buy_location={this.state.buy_location} pickup_location={this.state.pickup_location} 
                 goal={this.state.goal} view={this.state.view} accumulate={this.state.accumulate}
-                replyList={this.state.replyList} currentUser={this.state.currentUser} alreadyParticipated = {this.state.alreadyParticipated}/>
+                replyList={this.state.replyList} currentUser={this.state.currentUser} alreadyParticipated={this.state.alreadyParticipated}/>
     );
   }
 }

@@ -420,7 +420,7 @@ function ShowEdit(props) {
           내용을 모두 입력해주세요!
         </Modal>
         <Modal type="Info" open={finModalOpen} close={closeFinModal}>
-          게시글 작성이 완료되었어요!
+          게시글 수정이 완료되었어요!
         </Modal>
       </div>
       <ShowInput category={props.category} id = {props.id} user={props.user} title={props.title} 

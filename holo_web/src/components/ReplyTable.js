@@ -6,7 +6,7 @@ import Modal from '../components/Modal';
 import {images} from '../images';
 import {MdSubdirectoryArrowRight} from "react-icons/md";
 
-const ReplyTable = ({replyList, replyEditFunc, replyDeleteFunc, reReplyList, reReplySubmitFunc, reReplyEditFunc, reReplyDeleteFunc}) => {
+const ReplyTable = ({currentUser, replyList, replyEditFunc, replyDeleteFunc, reReplyList, reReplySubmitFunc, reReplyEditFunc, reReplyDeleteFunc}) => {
   const [replyEditState, setReplyEditState] = useState(null)
   const [reReplySubmitState, setReReplySubmitState] = useState(null)
   const [reReplyEditState, setReReplyEditState] = useState(null)
@@ -132,12 +132,15 @@ const ReplyTable = ({replyList, replyEditFunc, replyDeleteFunc, reReplyList, reR
                                 <div className="replyDate">{item2.date}</div>
                             </div>
                             <div className="replyContent" style={{paddingLeft: "35px"}}>{item2.content}</div>
-                            <div className="replyButton">
-                                <div>
-                                    <button onClick={()=>{setReReplyEditState(item2.id); setReReplyEdit(item2.content);}}>수정</button>
-                                    <button onClick={()=>{reReplyDeleteFunc(item2.id)}}>삭제</button>
-                                </div>
-                            </div>
+                            {currentUser===item2.user_id
+                            ?<div className="replyButton">
+                              <div>
+                                <button onClick={()=>{setReReplyEditState(item2.id); setReReplyEdit(item2.content);}}>수정</button>
+                                <button onClick={()=>{reReplyDeleteFunc(item2.id)}}>삭제</button>
+                              </div>
+                             </div>
+                            :<div/>
+                            }
                           </div>
                         }
                       </td>

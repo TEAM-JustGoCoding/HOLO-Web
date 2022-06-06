@@ -10,7 +10,7 @@ import { BiMessageDetail } from "react-icons/bi";
 import axios from 'axios';
 
 var reReplyList = [
-  {id: 1, reply_id: '53', nick_name: "우네", user_id: 28, content: "댓글 1번에 답글!", date: "2022-05-23 17:12:04"},
+  {id: 1, reply_id: '53', nick_name: "우네", user_id: 34, content: "댓글 1번에 답글!", date: "2022-05-23 17:12:04"},
   {id: 2, reply_id: '54', nick_name: "해서", user_id: 28, content: "댓글 2번에 답글!", date: "2022-05-23 17:12:04"}
 ]
 
@@ -46,6 +46,7 @@ function ShowPost(props) {
   }, [props.replyList]);
 
   var id = props.id;
+  var user_id = props.user_id;
   var user = props.user;
   var title = props.title;
   var content = props.content;
@@ -274,12 +275,15 @@ function ShowPost(props) {
               : <AiOutlineHeart className="heartIcon" onClick={() => { setHeart(true); increaseHeart(); }}/>
             }
             {like}
-            <div>
-              <Link to={`/edit/document/${id}`}>
-                <button className="postEtcButton">수정</button>
-              </Link>
-              <button className="postEtcButton" onClick={() => {setDeleteModalOpen(true);}}>삭제</button>
-            </div>
+            {currentUser===user_id
+             ?<div>
+                <Link to={`/edit/document/${id}`}>
+                  <button className="postEtcButton">수정</button>
+                </Link>
+                <button className="postEtcButton" onClick={() => {setDeleteModalOpen(true);}}>삭제</button>
+              </div>
+             :<div/>
+            }
           </div>
         </div>
       </div>
@@ -290,7 +294,7 @@ function ShowPost(props) {
             <button onClick={() => {submitReply()}}>등록</button>
         </div>
         <div className="replyTable">
-          <ReplyTable replyList={replyList} replyEditFunc={editReply} replyDeleteFunc={setDeleteReply}
+          <ReplyTable currentUser={currentUser} replyList={replyList} replyEditFunc={editReply} replyDeleteFunc={setDeleteReply}
                       reReplyList={reReplyList} reReplySubmitFunc={submitReReply} reReplyEditFunc={editReReply} reReplyDeleteFunc={setDeleteReReply}/>
         </div>
       </div>
@@ -317,9 +321,9 @@ class Post extends React.Component {
     var pathname = window.location.pathname;
     var words = pathname.split('/');
 
-     
     this.state = {
        pathname : pathname,
+       user_id : 37,  //작성자 id
        id : words[2],
        user : "",
        title : "",
@@ -400,10 +404,9 @@ class Post extends React.Component {
 
   render() {
     return(
-      <ShowPost path={this.state.pathname} id = {this.state.id} user={this.state.user} title={this.state.title} 
-                content={this.state.content} reg_date={this.state.reg_date}
-                view={this.state.view} like={this.state.like} alreadyLiked = {this.state.alreadyLiked} currentUser = {this.state.currentUser}
-                replyList={this.state.replyList}/>
+      <ShowPost path={this.state.pathname} id = {this.state.id} user_id={this.state.user_id} user={this.state.user} title={this.state.title} 
+                content={this.state.content} reg_date={this.state.reg_date} view={this.state.view} like={this.state.like}
+                alreadyLiked = {this.state.alreadyLiked} currentUser = {this.state.currentUser} replyList={this.state.replyList}/>
     );
   }
 }

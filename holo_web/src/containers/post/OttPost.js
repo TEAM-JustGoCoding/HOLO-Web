@@ -5,13 +5,13 @@ import Modal from '../../components/Modal';
 import ReplyTable from '../../components/ReplyTable';
 import {images} from '../../images';
 import { AiOutlineEye } from "react-icons/ai";
-import { FaRegLaugh, FaRegLaughSquint } from "react-icons/fa";
+import { FaRegLaughWink, FaRegLaugh, FaRegLaughSquint } from "react-icons/fa";
 import { BiMessageDetail } from "react-icons/bi";
 import axios from 'axios';
 import {Cookies} from "react-cookie";
 
 var reReplyList = [
-  {id: 1, reply_id: '21', nick_name: "구리", user_id: 28, content: "요즘 재밌는 거 많은데", date: "2022-05-23 17:12:04"},
+  {id: 1, reply_id: '21', nick_name: "구리", user_id: 35, content: "요즘 재밌는 거 많은데", date: "2022-05-23 17:12:04"},
   {id: 2, reply_id: '22', nick_name: "옌", user_id: 28, content: "같이 ㄱㄱ?", date: "2022-05-23 17:12:04"}
 ]
 
@@ -19,6 +19,7 @@ function ShowPost(props) {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState(34); //초기값 수정 필요
   const [participation, setParticipation] = useState(false);
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [participationModalOpen, setParticipationModalOpen] = useState(false);
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -44,8 +45,8 @@ function ShowPost(props) {
     setParticipation(props.alreadyParticipated);
   }, [props.alreadyParticipated]);
 
-
   var id = props.id;
+  var user_id = props.user_id;
   var user = props.user;
   var title = props.title;
   var content = props.content;
@@ -57,10 +58,16 @@ function ShowPost(props) {
   var view = props.view;
   var url = props.path;
 
-  
   function replyChange (e) {
     setReply(e.target.value)
   };
+
+  const successMsg = "\n모집을 마감하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
+  const successPost = () => {
+    setSuccessModalOpen(false);
+    console.log("OTT 모집 마감!")
+    //OTT 모집 마감
+  }
 
   const participationMsg = "\nOTT 구독자 모집에 참여하시겠습니까?\n신중하게 결정해주세요!"
   const participationPost = () => {
@@ -288,18 +295,26 @@ function ShowPost(props) {
         </div>
         {content}
         <div className="postEtc">
-          {participation
-              ? <button className="participationButton pink" onClick={() => { setCancelModalOpen(true); }}><FaRegLaughSquint/>   참여 완료!</button>
-              : <button className="participationButton skyblue" onClick={() => { setParticipationModalOpen(true); }}><FaRegLaugh/>   참여 신청!</button>
+          {currentUser===user_id
+            ?<button className="dealButton purple" onClick={() => { setSuccessModalOpen(true); }}><FaRegLaughWink/>   모집 마감!</button>
+            :<div>
+              {participation
+                ? <button className="dealButton pink" onClick={() => { setCancelModalOpen(true); }}><FaRegLaughSquint/>   참여 완료!</button>
+                : <button className="dealButton skyblue" onClick={() => { setParticipationModalOpen(true); }}><FaRegLaugh/>   참여 신청!</button>
+              }
+            </div>
           }
           <div className="postEtc2">
             <AiOutlineEye style={{ fontSize: '3.5vh', marginRight: '1vh'}}/>{view}
-            <div>
-              <Link to={`/edit/ott/${id}`}>
-                <button className="postEtcButton">수정</button>
-              </Link>
-              <button className="postEtcButton" onClick={() => {setDeleteModalOpen(true);}}>삭제</button>
-            </div>
+            {currentUser===user_id
+             ?<div>
+                <Link to={`/edit/ott/${id}`}>
+                  <button className="postEtcButton">수정</button>
+                </Link>
+                <button className="postEtcButton" onClick={() => {setDeleteModalOpen(true);}}>삭제</button>
+              </div>
+             :<div/>
+            }
           </div>
         </div>
       </div>
@@ -310,10 +325,13 @@ function ShowPost(props) {
           <button onClick={() => {submitReply()}}>등록</button>
         </div>
         <div className="replyTable">
-          <ReplyTable replyList={replyList} replyEditFunc={editReply} replyDeleteFunc={setDeleteReply}
+          <ReplyTable currentUser={currentUser} replyList={replyList} replyEditFunc={editReply} replyDeleteFunc={setDeleteReply}
                       reReplyList={reReplyList} reReplySubmitFunc={submitReReply} reReplyEditFunc={editReReply} reReplyDeleteFunc={setDeleteReReply}/>
         </div>
       </div>
+      <Modal type="Check" open={successModalOpen} close={()=>{setSuccessModalOpen(false);}} submit={successPost}>
+        {successMsg}
+      </Modal>
       <Modal type="Check" open={participationModalOpen} close={()=>{setParticipationModalOpen(false);}} submit={participationPost}>
         {participationMsg}
       </Modal>
@@ -347,6 +365,7 @@ class Post extends React.Component {
     this.state = {
        pathname : pathname,
        id : words[2],
+       user_id : 35,  //작성자 id
        user : "",
        title : "",
        content : "",
@@ -430,13 +449,12 @@ class Post extends React.Component {
                      
   };                         
 
-
   render() {
     return(
-      <ShowPost path = {this.state.pathname} id = {this.state.id} user={this.state.user} title={this.state.title} content={this.state.content} reg_date={this.state.reg_date}
-                limit_date={this.state.limit_date} buy_location={this.state.buy_location} 
-                goal={this.state.goal} view={this.state.view} accumulate={this.state.accumulate} replyList={this.state.replyList}
-                currentUser={this.state.currentUser} alreadyParticipated = {this.state.alreadyParticipated}/>
+      <ShowPost path = {this.state.pathname} id = {this.state.id} user_id={this.state.user_id} user={this.state.user} title={this.state.title}
+              content={this.state.content} reg_date={this.state.reg_date} limit_date={this.state.limit_date}
+              buy_location={this.state.buy_location} goal={this.state.goal} view={this.state.view} accumulate={this.state.accumulate}
+              replyList={this.state.replyList} currentUser={this.state.currentUser} alreadyParticipated = {this.state.alreadyParticipated}/>
     );
   }
 }
