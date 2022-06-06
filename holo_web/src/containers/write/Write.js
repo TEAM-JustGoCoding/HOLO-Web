@@ -10,19 +10,19 @@ import {Cookies} from "react-cookie";
 axios.defaults.withCredentials = true;  //axios 전역설정
 
 var Policy_state = {
-  user : '25',
+  user : '32',
   title : '',
   content : '',
   reg_date : ''
 };
 var Document_state = {
-  user : '25',
+  user : '32',
   title : '',
   content : '',
   reg_date : ''
 };
 var OTT_state = {
-  user : '25',
+  user : '32',
   title : '',
   content : '',
   reg_date : '',
@@ -31,7 +31,7 @@ var OTT_state = {
   goal : ''
 };
 var Delivery_state = {
-  user : '25',
+  user : '32',
   title : '',
   content : '',
   reg_date : '',
@@ -169,28 +169,41 @@ function getToday(){
 
 function postDB(category){
   var date = getToday();
+  var cookies = new Cookies()
 
   switch(category){
     case "정책":
-      Policy_state.reg_date = date;
+      Policy_state.reg_date = date;    
+      if(cookies.get('uid')){
+        Policy_state.user = cookies.get('uid');
+      }
       console.log(JSON.stringify(Policy_state));
       PolicySubmit(Policy_state);
       initState();
       return;
     case "생활백서": 
       Document_state.reg_date = date;
+      if(cookies.get('uid')){
+        Document_state.user = cookies.get('uid');
+      }
       console.log(JSON.stringify(Document_state));
       DocSubmit(Document_state);
       initState();
       return;
     case "OTT구독":
       OTT_state.reg_date = date;
+      if(cookies.get('uid')){
+        OTT_state.user = cookies.get('uid');
+      }
       console.log(JSON.stringify(OTT_state));
       OTTSubmit(OTT_state);
       initState();
       return;
     case "공동구매":
       Delivery_state.reg_date = date;
+      if(cookies.get('uid')){
+        Delivery_state.user = cookies.get('uid');
+      }
       console.log(JSON.stringify(Delivery_state));
       DeliverySubmit(Delivery_state);
       initState();
