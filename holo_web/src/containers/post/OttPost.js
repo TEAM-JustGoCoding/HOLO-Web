@@ -49,6 +49,7 @@ function ShowPost(props) {
   var goal = props.goal;
   var accumulate = props.accumulate;
   var view = props.view;
+  var url = props.path;
 
   
   function replyChange (e) {
@@ -143,13 +144,22 @@ function ShowPost(props) {
       setReplyNum(replyNum+1);  //댓글 개수 증가
       console.log("댓글 등록");
       var date = getToday();
-      axios.post("http://holo.dothome.co.kr/commentOtt.php", JSON.stringify({post: id, user: currentUser, content: reply, date: date}),{
+      axios.post("http://holo.dothome.co.kr/commentOtt.php", JSON.stringify({writer: user,post: id, user: currentUser, content: reply, date: date}),{
         withCredentials: false,
         headers: {"Content-Type": "application/json"}
       })
-        .then(function(body) {
-          console.log(body);
-        })
+      .then(response => {   
+        var type = "comment";
+        var toEmail = response.data;
+        var content = reply;
+
+        try {
+          Android.sendCmtAlarm(type,toEmail, content, url);
+        }
+        catch (e) {
+          console.log("Android 없음!");
+        }
+      })
         .catch(function(error) {
           console.log(error);
         });
@@ -323,6 +333,7 @@ class Post extends React.Component {
     console.log(words[2]);
 
     this.state = {
+       pathname : pathname,
        id : words[2],
        user : "",
        title : "",
@@ -410,7 +421,7 @@ class Post extends React.Component {
 
   render() {
     return(
-      <ShowPost id = {this.state.id} user={this.state.user} title={this.state.title} content={this.state.content} reg_date={this.state.reg_date}
+      <ShowPost path = {this.state.pathname} id = {this.state.id} user={this.state.user} title={this.state.title} content={this.state.content} reg_date={this.state.reg_date}
                 limit_date={this.state.limit_date} buy_location={this.state.buy_location} 
                 goal={this.state.goal} view={this.state.view} accumulate={this.state.accumulate} replyList={this.state.replyList}
                 currentUser={this.state.currentUser} alreadyParticipated = {this.state.alreadyParticipated}/>
