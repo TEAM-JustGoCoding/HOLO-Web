@@ -5,6 +5,7 @@ import queryString from 'query-string';
 import Dropdown from '../../components/Dropdown';
 import Modal from '../../components/Modal';
 import axios from 'axios';
+import {Cookies} from "react-cookie";
 
 axios.defaults.withCredentials = true;  //axios 전역설정
 
@@ -257,6 +258,15 @@ function Write() {
   const [dropdownOpen, setDropdown] = useState(false);
   const [checkModalOpen, setCheckModalOpen] = useState(false);
   const [finModalOpen, setFinModalOpen] = useState(false);
+
+  var cookies = new Cookies()
+
+  if(cookies.get('uid')){
+    Policy_state.user = cookies.get('uid');
+    Document_state.user = cookies.get('uid');
+    OTT_state.user = cookies.get('uid');
+    Delivery_state.user = cookies.get('uid');
+  }
 
   useEffect(()=>{
     switch(queryString.parse(window.location.search).select){
