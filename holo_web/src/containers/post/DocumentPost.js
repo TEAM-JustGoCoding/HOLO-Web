@@ -45,6 +45,7 @@ function ShowPost(props) {
   var content = props.content;
   var reg_date = props.reg_date;
   var view = props.view;
+  var url = props.path;
   
   function replyChange (e) {
     setReply(e.target.value)
@@ -128,13 +129,22 @@ function ShowPost(props) {
       console.log("댓글 등록");
       var date = getToday();
 
-      axios.post("http://holo.dothome.co.kr/commentDoc.php", JSON.stringify({post: id, user: currentUser, content: reply, date: date}),{
+      axios.post("http://holo.dothome.co.kr/commentDoc.php", JSON.stringify({writer: user, post: id, user: currentUser, content: reply, date: date}),{
         withCredentials: false,
         headers: {"Content-Type": "application/json"}
       })
-        .then(function(body) {
-          console.log(body);
-        })
+      .then(response => {   
+        var type = "comment";
+        var toEmail = response.data;
+        var content = reply;
+
+        try {
+          Android.sendCmtAlarm(type,toEmail, content, url);
+        }
+        catch (e) {
+          console.log("Android 없음!");
+        }
+      })
         .catch(function(error) {
           console.log(error);
         });
@@ -297,6 +307,7 @@ class Post extends React.Component {
 
      
     this.state = {
+       pathname : pathname,
        id : words[2],
        user : "",
        title : "",
@@ -377,7 +388,7 @@ class Post extends React.Component {
 
   render() {
     return(
-      <ShowPost id = {this.state.id} user={this.state.user} title={this.state.title} 
+      <ShowPost path={this.state.pathname} id = {this.state.id} user={this.state.user} title={this.state.title} 
                 content={this.state.content} reg_date={this.state.reg_date}
                 view={this.state.view} like={this.state.like} alreadyLiked = {this.state.alreadyLiked} currentUser = {this.state.currentUser}
                 replyList={this.state.replyList}/>
