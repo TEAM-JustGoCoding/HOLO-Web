@@ -9,6 +9,11 @@ import { AiOutlineEye, AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BiMessageDetail } from "react-icons/bi";
 import axios from 'axios';
 
+var reReplyList = [
+  {id: 1, reply_id: '53', nick_name: "우네", user_id: 28, content: "댓글 1번에 답글!", date: "2022-05-23 17:12:04"},
+  {id: 2, reply_id: '54', nick_name: "해서", user_id: 28, content: "댓글 2번에 답글!", date: "2022-05-23 17:12:04"}
+]
+
 function ShowPost(props) {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState(34); //초기값 수정 필요
@@ -17,11 +22,12 @@ function ShowPost(props) {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [checkModalOpen, setCheckModalOpen] = useState(false);
   const [replyDeleteModalOpen, setReplyDeleteModalOpen] = useState(false);
+  const [reReplyDeleteModalOpen, setReReplyDeleteModalOpen] = useState(false);
   const [reply, setReply] = useState('');
   const [replyNum, setReplyNum] = useState(0);
-  const [replyEdit, setReplyEdit] = useState(false);
   const [replyList, setReplyList] = useState([]);
   const [replyId, setReplyId] = useState(null);
+  const [reReplyId, setReReplyId] = useState(null);
 
   useEffect(() => {
     setCurrentUser(props.currentUser);
@@ -116,14 +122,17 @@ function ShowPost(props) {
   }
 
   function submitReply(){
-    try {Android.showToast("게시글에 댓글 작성!");}
-    catch (e) {console.log("Android 없음!");}
+    try {
+      //Android.showToast("게시글에 댓글 작성!");
+    }
+    catch (e) {
+      console.log("Android 없음!");
+    }
 
     if(reply===''){
       setCheckModalOpen(true)
     }
     else{
-      
       setReply('');
       setReplyNum(replyNum+1);  //댓글 개수 증가
       console.log("댓글 등록");
@@ -139,7 +148,8 @@ function ShowPost(props) {
         var content = reply;
 
         try {
-          Android.sendCmtAlarm(type,toEmail, content, url);
+          //Android.sendCmtAlarm(type,toEmail, content, url);
+          console.log(type,toEmail, content, url);
         }
         catch (e) {
           console.log("Android 없음!");
@@ -157,7 +167,6 @@ function ShowPost(props) {
         setReplyList(response.data);
         console.log(replyList);
         //setReplyNum(replyList.length);
-        
       })
       .catch(function(error) {
         console.log(error);
@@ -165,44 +174,31 @@ function ShowPost(props) {
       }
   }
   
-  const setEditReply = (replyId, replyContent) => {
-    setReplyId(replyId)
-    setReplyEdit(true);
-    setReply(replyContent);
-  }
-  const editReply = () => {
-    if(reply===''){
-      setCheckModalOpen(true)
-    }
-    else{
-      setReplyEdit(false);
-      setReply('');
-      console.log("댓글 수정")
-      var date = getToday();
+  const editReply = (replyId, replyContent) => {
+    var date = getToday();
 
-      axios.post("http://holo.dothome.co.kr/updateCommentDoc.php", JSON.stringify({id: replyId, content: reply, date: date}),
-        {
-          withCredentials: false,
-          headers: {"Content-Type": "application/json"}
-        }).then(response => {   
-          console.log(response);
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-      
-      axios.post("http://holo.dothome.co.kr/getCommentDoc.php", JSON.stringify({post: id}),
-        {
-          withCredentials: false,
-          headers: {"Content-Type": "application/json"}
-        }).then(response => {   
-          setReplyList(response.data);  
-          console.log(replyList);
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-      }
+    axios.post("http://holo.dothome.co.kr/updateCommentDoc.php", JSON.stringify({id: replyId, content: replyContent, date: date}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {   
+        console.log(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    
+    axios.post("http://holo.dothome.co.kr/getCommentDoc.php", JSON.stringify({post: id}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {   
+        setReplyList(response.data);  
+        console.log(replyList);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   }
 
   const replyDeleteMsg = "\n댓글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
@@ -239,6 +235,27 @@ function ShowPost(props) {
     });
   }
 
+  const submitReReply = (replyId, reReplyContent) => {
+    console.log("답글 등록")
+    //답글 등록 (댓글 id, 답글 내용)
+  }
+
+  const editReReply = (reReplyId, reReplyContent) => {
+    console.log("답글 수정")
+    //답글 수정 (답글 id, 답글 내용)
+  }
+
+  const reReplyDeleteMsg = "\n답글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
+  const setDeleteReReply = (reReplyId) => {
+    setReReplyDeleteModalOpen(true);
+    setReReplyId(reReplyId);
+  }
+  const deleteReReply = () => {
+    setReReplyDeleteModalOpen(false);
+    console.log("답글 삭제")
+    //답글 삭제 (삭제할 답글 id = reReplyId)
+  }
+
   return (
     <div>
       <div className="postHeaderBar">
@@ -262,38 +279,33 @@ function ShowPost(props) {
                 <button className="postEtcButton">수정</button>
               </Link>
               <button className="postEtcButton" onClick={() => {setDeleteModalOpen(true);}}>삭제</button>
-              <Modal type="Check" open={deleteModalOpen} close={()=>{setDeleteModalOpen(false);}} submit={deletePost}>
-                {deleteMsg}
-              </Modal>
             </div>
           </div>
         </div>
       </div>
       <div className="postReply">
         <div><BiMessageDetail style={{fontSize: '3.5vh'}}/> 댓글 {replyNum}</div>
-        {replyEdit
-          ? <div className="replyEditInput">
-              <textarea placeholder='수정할 댓글을 입력해주세요.' value={reply} spellCheck="false"  onChange={replyChange}></textarea>
-              <div className="replyEditButton">
-                <button onClick={() => {editReply();}} style={{marginBottom: '3px'}}>수정</button>
-                <button onClick={() => {setReplyEdit(false); setReply('');}}>취소</button>
-              </div>
-            </div>
-          : <div className="replyInput">
-              <textarea placeholder='댓글을 입력해주세요.' value={reply} spellCheck="false" onChange={replyChange}></textarea>
-              <button onClick={() => {submitReply()}}>등록</button>
-            </div>
-        }
-        <Modal type="Info" open={checkModalOpen} close={()=>setCheckModalOpen(false)}>
-          내용을 입력해주세요!
-        </Modal>
-        <div className="replyTable">
-          <ReplyTable type="Reply" list={replyList} editFunc={setEditReply} deleteFunc={setDeleteReply}/>
+        <div className="replyInput">
+            <textarea placeholder='댓글을 입력해주세요.' value={reply} spellCheck="false" onChange={replyChange}></textarea>
+            <button onClick={() => {submitReply()}}>등록</button>
         </div>
-        <Modal type="Check" open={replyDeleteModalOpen} close={()=>{setReplyDeleteModalOpen(false);}} submit={deleteReply}>
-          {replyDeleteMsg}
-        </Modal>
+        <div className="replyTable">
+          <ReplyTable replyList={replyList} replyEditFunc={editReply} replyDeleteFunc={setDeleteReply}
+                      reReplyList={reReplyList} reReplySubmitFunc={submitReReply} reReplyEditFunc={editReReply} reReplyDeleteFunc={setDeleteReReply}/>
+        </div>
       </div>
+      <Modal type="Check" open={deleteModalOpen} close={()=>{setDeleteModalOpen(false);}} submit={deletePost}>
+        {deleteMsg}
+      </Modal>
+      <Modal type="Info" open={checkModalOpen} close={()=>setCheckModalOpen(false)}>
+        내용을 입력해주세요!
+      </Modal>
+      <Modal type="Check" open={replyDeleteModalOpen} close={()=>{setReplyDeleteModalOpen(false);}} submit={deleteReply}>
+        {replyDeleteMsg}
+      </Modal>
+      <Modal type="Check" open={reReplyDeleteModalOpen} close={()=>{setReReplyDeleteModalOpen(false);}} submit={deleteReReply}>
+        {reReplyDeleteMsg}
+      </Modal>
     </div>
   );
 }

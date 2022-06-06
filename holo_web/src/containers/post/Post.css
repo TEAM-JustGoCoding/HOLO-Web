@@ -99,8 +99,7 @@
     font-family: "aSmile_L";
     font-size: 2.5vh;
 }
-.replyInput,
-.replyEditInput {
+.replyInput{
     background-color: #f0f0f0;
     width: 90vw;
     height: 15vh;
@@ -108,46 +107,29 @@
     display: flex;
     flex-direction: row;
 }
-.replyInput > textarea,
-.replyEditInput > textarea {
+.replyInput > textarea{
     background-color: #f0f0f0;
-    width: 70vw;
+    width: 75%;
     height: 10vh;
-    margin: auto 1% auto auto;
+    margin: auto;
     border: none;
     resize: none;
     font-family: "aSmile_L";
     font-size: 2vh;
 }
-.replyInput > textarea:focus,
-.replyEditInput > textarea:focus {
+.replyInput > textarea:focus{
     outline: none;
 }
 .replyInput > button {
     background-color: #ababab;
-    width: 15%;
+    width: 20%;
     max-width: 10vh;
-    height: 10vh;
-    margin: auto auto auto 1%;
+    height: 75%;
+    margin: auto auto auto 0;
     border: none;
 }
-.replyEditButton > button {
-    background-color: #ababab;
-    width: 100%;
-    height: 5vh;
-    border: none;
-}
-.replyInput > button:active,
-.replyEditButton > button:active {
+.replyInput > button:active {
     background-color: #848484;
-}
-.replyEditButton {
-    width: 15%;
-    max-width: 10vh;
-    height: 10vh;
-    margin: auto auto auto 1%;
-    display: flex;
-    flex-direction: column;
 }
 .replyTable {
     margin-top: 1%;
@@ -166,7 +148,7 @@
     background-color: #e7ebfd;
     display: block;
     padding: 2vh;
-    margin: auto;
+    margin: auto auto 20px auto;
     border: 5px solid;
     border-radius: 15px;
     font-family: "aSmile";

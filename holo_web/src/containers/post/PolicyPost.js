@@ -1,13 +1,21 @@
 import './Post.css';
 import React, {useState, useEffect} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import {Cookies} from "react-cookie";
 import Modal from '../../components/Modal';
 import ReplyTable from '../../components/ReplyTable';
 import {images} from '../../images';
 import { AiOutlineEye, AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BiMessageDetail } from "react-icons/bi";
 import axios from 'axios';
-import {Cookies} from "react-cookie";
+
+var reReplyList = [
+  {id: 1, reply_id: '34', nick_name: "우네", user_id: 28, content: "와!", date: "2022-05-23 17:12:04"},
+  {id: 2, reply_id: '34', nick_name: "해서", user_id: 28, content: "이것은!", date: "2022-05-23 17:12:04"},
+  {id: 3, reply_id: '34', nick_name: "구리", user_id: 28, content: "정말!", date: "2022-05-23 17:12:04"},
+  {id: 4, reply_id: '34', nick_name: "옌이", user_id: 28, content: "대박!", date: "2022-05-23 17:12:04"},
+  {id: 5, reply_id: '33', nick_name: "빠밤", user_id: 28, content: "와 이것은 정말 대박인 답글이야! ㅠㅠ 너무 슬프당 ㅠㅠ 흐규흐규 ㅠㅠ", date: "2022-05-23 17:12:04"}
+]
 
 function ShowPost(props) {
   const navigate = useNavigate();
@@ -17,11 +25,12 @@ function ShowPost(props) {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [checkModalOpen, setCheckModalOpen] = useState(false);
   const [replyDeleteModalOpen, setReplyDeleteModalOpen] = useState(false);
+  const [reReplyDeleteModalOpen, setReReplyDeleteModalOpen] = useState(false);
   const [reply, setReply] = useState('');
   const [replyNum, setReplyNum] = useState(0);
-  const [replyEdit, setReplyEdit] = useState(false);
   const [replyList, setReplyList] = useState([]);
   const [replyId, setReplyId] = useState(null);
+  const [reReplyId, setReReplyId] = useState(null);
 
   useEffect(() => {
     setCurrentUser(props.currentUser);
@@ -135,7 +144,8 @@ function ShowPost(props) {
           var content = reply;
 
           try {
-            Android.sendCmtAlarm(type,toEmail, content, url);
+            //Android.sendCmtAlarm(type,toEmail, content, url);
+            console.log(type,toEmail, content, url);
           }
           catch (e) {
             console.log("Android 없음!");
@@ -156,48 +166,34 @@ function ShowPost(props) {
         .catch(function(error) {
           console.log(error);
         });
-
-      
     }
   }
   
-  const setEditReply = (replyId, replyContent) => {
-    setReplyId(replyId)
-    setReplyEdit(true);
-    setReply(replyContent);
-  }
-  const editReply = () => {
-    if(reply===''){
-      setCheckModalOpen(true)
-    }
-    else{
-      setReplyEdit(false);
-      setReply('');
-      var date = getToday();
+  const editReply = (replyId, replyContent) => {
+    var date = getToday();
 
-      axios.post("http://holo.dothome.co.kr/updateCommentPolicy.php", JSON.stringify({id: replyId, content: reply, date: date}),
-        {
-          withCredentials: false,
-          headers: {"Content-Type": "application/json"}
-        }).then(response => {   
-          console.log(response);
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-      
-      axios.post("http://holo.dothome.co.kr/getCommentPolicy.php", JSON.stringify({post: id}),
-        {
-          withCredentials: false,
-          headers: {"Content-Type": "application/json"}
-        }).then(response => {   
-          setReplyList(response.data);  
-          console.log(replyList);
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-      }
+    axios.post("http://holo.dothome.co.kr/updateCommentPolicy.php", JSON.stringify({id: replyId, content: replyContent, date: date}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {   
+        console.log(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    
+    axios.post("http://holo.dothome.co.kr/getCommentPolicy.php", JSON.stringify({post: id}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {   
+        setReplyList(response.data);  
+        console.log(replyList);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   }
 
   const replyDeleteMsg = "\n댓글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
@@ -207,7 +203,6 @@ function ShowPost(props) {
   }
   const deleteReply = () => {
     setReplyDeleteModalOpen(false);
-    console.log("댓글 삭제")
    
     axios.post("http://holo.dothome.co.kr/deleteCommentPolicy.php", JSON.stringify({replyId: replyId}),
       {
@@ -235,6 +230,27 @@ function ShowPost(props) {
     });
   }
 
+  const submitReReply = (replyId, reReplyContent) => {
+    console.log("답글 등록")
+    //답글 등록 (댓글 id, 답글 내용)
+  }
+
+  const editReReply = (reReplyId, reReplyContent) => {
+    console.log("답글 수정")
+    //답글 수정 (답글 id, 답글 내용)
+  }
+
+  const reReplyDeleteMsg = "\n답글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
+  const setDeleteReReply = (reReplyId) => {
+    setReReplyDeleteModalOpen(true);
+    setReReplyId(reReplyId);
+  }
+  const deleteReReply = () => {
+    setReReplyDeleteModalOpen(false);
+    console.log("답글 삭제")
+    //답글 삭제 (삭제할 답글 id = reReplyId)
+  }
+
   return (
     <div>
       <div className="postHeaderBar">
@@ -258,38 +274,33 @@ function ShowPost(props) {
                 <button className="postEtcButton">수정</button>
               </Link>
               <button className="postEtcButton" onClick={() => {setDeleteModalOpen(true);}}>삭제</button>
-              <Modal type="Check" open={deleteModalOpen} close={()=>{setDeleteModalOpen(false);}} submit={deletePost}>
-                {deleteMsg}
-              </Modal>
             </div>
           </div>
         </div>
       </div>
       <div className="postReply">
         <div><BiMessageDetail style={{fontSize: '3.5vh'}}/> 댓글 {replyNum}</div>
-        {replyEdit
-          ? <div className="replyEditInput">
-              <textarea placeholder='수정할 댓글을 입력해주세요.' value={reply} spellCheck="false"  onChange={replyChange}></textarea>
-              <div className="replyEditButton">
-                <button onClick={() => {editReply();}} style={{marginBottom: '3px'}}>수정</button>
-                <button onClick={() => {setReplyEdit(false); setReply('');}}>취소</button>
-              </div>
-            </div>
-          : <div className="replyInput">
-              <textarea placeholder='댓글을 입력해주세요.' value={reply} spellCheck="false" onChange={replyChange}></textarea>
-              <button onClick={() => {submitReply()}}>등록</button>
-            </div>
-        }
-        <Modal type="Info" open={checkModalOpen} close={()=>setCheckModalOpen(false)}>
-          내용을 입력해주세요!
-        </Modal>
-        <div className="replyTable">
-          <ReplyTable type="Reply" list={replyList} editFunc={setEditReply} deleteFunc={setDeleteReply}/>
+        <div className="replyInput">
+          <textarea placeholder='댓글을 입력해주세요.' value={reply} spellCheck="false" onChange={replyChange}></textarea>
+          <button onClick={() => {submitReply()}}>등록</button>
         </div>
-        <Modal type="Check" open={replyDeleteModalOpen} close={()=>{setReplyDeleteModalOpen(false);}} submit={deleteReply}>
-          {replyDeleteMsg}
-        </Modal>
+        <div className="replyTable">
+          <ReplyTable replyList={replyList} replyEditFunc={editReply} replyDeleteFunc={setDeleteReply}
+                      reReplyList={reReplyList} reReplySubmitFunc={submitReReply} reReplyEditFunc={editReReply} reReplyDeleteFunc={setDeleteReReply}/>
+        </div>
       </div>
+      <Modal type="Check" open={deleteModalOpen} close={()=>{setDeleteModalOpen(false);}} submit={deletePost}>
+        {deleteMsg}
+      </Modal>
+      <Modal type="Info" open={checkModalOpen} close={()=>setCheckModalOpen(false)}>
+        내용을 입력해주세요!
+      </Modal>
+      <Modal type="Check" open={replyDeleteModalOpen} close={()=>{setReplyDeleteModalOpen(false);}} submit={deleteReply}>
+        {replyDeleteMsg}
+      </Modal>
+      <Modal type="Check" open={reReplyDeleteModalOpen} close={()=>{setReReplyDeleteModalOpen(false);}} submit={deleteReReply}>
+        {reReplyDeleteMsg}
+      </Modal>
     </div>
   );
 }
@@ -299,12 +310,11 @@ class Post extends React.Component {
     super ();
 
     var pathname = window.location.pathname;
-    //console.log(pathname);
     var words = pathname.split('/');
     console.log(words[2]);
 
     this.state = {
-       pathname: pathname,
+      pathname: pathname,
        id : words[2],
        user : "",
        title : "",
@@ -388,7 +398,7 @@ class Post extends React.Component {
     return(
       <ShowPost path = {this.state.pathname} id = {this.state.id} user={this.state.user} title={this.state.title} 
                 content={this.state.content} reg_date={this.state.reg_date}
-                view={this.state.view} like={this.state.like} alreadyLiked={this.state.alreadyLiked} currentUser = {this.state.currentUser}
+                view={this.state.view} like={this.state.like} alreadyLiked={this.state.alreadyLiked} currentUser={this.state.currentUser}
                 replyList={this.state.replyList}/>
     );
   }
