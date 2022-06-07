@@ -101,10 +101,14 @@ const ReplyTable = ({currentUser, replyList, replyEditFunc, replyDeleteFunc, reR
                   </div>
                   :<div className="replyButton">
                       <button onClick={()=>{setReplyState('reReplySubmit'); setReReplySubmitState(item.id)}}>답글</button>
-                      <div>
-                          <button onClick={()=>{setReplyState('replyEdit'); setReplyEditState(item.id); setReplyEdit(item.content);}}>수정</button>
-                          <button onClick={()=>{replyDeleteFunc(item.id)}}>삭제</button>
+                      {currentUser==item.user_id
+                      ?<div>
+                        <button onClick={()=>{setReplyState('replyEdit'); setReplyEditState(item.id); setReplyEdit(item.content);}}>수정</button>
+                        <button onClick={()=>{replyDeleteFunc(item.id)}}>삭제</button>
                       </div>
+                      :<div/>
+                      }
+
                     </div>
                   }
                 </div>
@@ -136,7 +140,7 @@ const ReplyTable = ({currentUser, replyList, replyEditFunc, replyDeleteFunc, reR
                                 <div className="replyDate">{item2.date}</div>
                             </div>
                             <div className="replyContent" style={{paddingLeft: "35px"}}>{item2.content}</div>
-                            {currentUser===item2.user_id
+                            {currentUser==item2.user_id
                             ?<div className="replyButton">
                               <div>
                                 <button onClick={()=>{setReplyState('reReplyEdit'); setReReplyEditState(item2.id); setReReplyEdit(item2.content);}}>수정</button>
