@@ -10,10 +10,6 @@ import { BiMessageDetail } from "react-icons/bi";
 import axios from 'axios';
 import {Cookies} from "react-cookie";
 
-var reReplyList = [
-  {id: 1, reply_id: '21', nick_name: "구리", user_id: 35, content: "요즘 재밌는 거 많은데", date: "2022-05-23 17:12:04"},
-  {id: 2, reply_id: '22', nick_name: "옌", user_id: 28, content: "같이 ㄱㄱ?", date: "2022-05-23 17:12:04"}
-]
 
 function ShowPost(props) {
   const navigate = useNavigate();
@@ -31,6 +27,7 @@ function ShowPost(props) {
   const [replyList, setReplyList] = useState([]);
   const [replyId, setReplyId] = useState(null);
   const [reReplyId, setReReplyId] = useState(null);
+  const [reReplyList, setReReplyList] = useState([]);
 
   useEffect(() => {
     setCurrentUser(props.currentUser);
@@ -39,11 +36,15 @@ function ShowPost(props) {
     setReplyList(props.replyList);
   }, [props.replyList]);
   useEffect(()=>{
-    setReplyNum(props.replyList.length);
-  }, [props.replyList]);
+    setReplyNum(props.replyList.length + props.reReplyList.length);
+  }, [props.replyList], [props.reReplyList]);
   useEffect(()=>{
     setParticipation(props.alreadyParticipated);
   }, [props.alreadyParticipated]);
+  useEffect(()=>{
+    setReReplyList(props.reReplyList);
+  }, [props.reReplyList]);
+
 
   var id = props.id;
   var user_id = props.user_id;
@@ -67,6 +68,31 @@ function ShowPost(props) {
     setSuccessModalOpen(false);
     console.log("OTT 모집 마감!")
     //OTT 모집 마감
+    axios.post("http://holo.dothome.co.kr/OTTEnd.php", JSON.stringify({id: id, starter: user}),{
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    })
+      .then(response => {
+        //채팅방 개설하는 코드를 여기에다 작성        
+        if(response.data['complete'] === "true"){
+          console.log("거래 다 완료됨!");
+
+          var hostEmail = response.data['starter'];
+          var partner = response.data['mates'];
+          var boardTitle = title;
+
+          try {
+            Android.createChatRoom(hostEmail, partner, boardTitle);
+            console.log(hostEmail, partner, boardTitle);
+          }
+          catch (e) {
+            console.log("Android 없음!");
+          }
+        }
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   }
 
   const participationMsg = "\nOTT 구독자 모집에 참여하시겠습니까?\n신중하게 결정해주세요!"
@@ -90,8 +116,8 @@ function ShowPost(props) {
           var boardTitle = title;
 
           try {
-            //Android.createChatRoom(hostEmail, partner, boardTitle);
-            console.log(hostEmail, partner, boardTitle);
+            Android.createChatRoom(hostEmail, partner, boardTitle);
+            //console.log(hostEmail, partner, boardTitle);
           }
           catch (e) {
             console.log("Android 없음!");
@@ -164,11 +190,11 @@ function ShowPost(props) {
       })
       .then(response => {   
         var type = "comment";
-        var toEmail = response.data;
+        var toEmail = JSON.stringify(response.data);
         var content = reply;
 
         try {
-          //Android.sendCmtAlarm(type,toEmail, content, url);
+          Android.sendCmtAlarm(type,toEmail, content, url);
           console.log(type,toEmail, content, url);
         }
         catch (e) {
@@ -259,12 +285,63 @@ function ShowPost(props) {
 
   const submitReReply = (replyId, reReplyContent) => {
     console.log("답글 등록")
+    setReplyNum(replyNum+1);  //댓글 개수 증가
     //답글 등록 (댓글 id, 답글 내용)
+      console.log("댓글 등록");
+      var date = getToday();
+  
+      axios.post("http://holo.dothome.co.kr/replyOtt.php", 
+                JSON.stringify({writer: user, reply_id: replyId, user: currentUser, content: reReplyContent, date: date}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      })
+        .then(response => {   
+          var type = "comment";
+          var toEmail = JSON.stringify(response.data);
+          var content = reReplyContent;
+
+          try {
+            Android.sendCmtAlarm(type, toEmail, content, url);
+            console.log(toEmail, content, url);
+            //console.log(type,toEmail, content, url);
+          }
+          catch (e) {
+            console.log("Android 없음!");
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
   }
 
   const editReReply = (reReplyId, reReplyContent) => {
     console.log("답글 수정")
-    //답글 수정 (답글 id, 답글 내용)
+   
+    var date = getToday();
+
+    axios.post("http://holo.dothome.co.kr/updateReplyOtt.php", JSON.stringify({reReplyId: reReplyId, content: reReplyContent, date: date}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {   
+        console.log(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    
+    axios.post("http://holo.dothome.co.kr/getReplyOtt.php", JSON.stringify({post: id}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {   
+        setReplyList(response.data);  
+        console.log(reReplyList);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   }
 
   const reReplyDeleteMsg = "\n답글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
@@ -276,6 +353,29 @@ function ShowPost(props) {
     setReReplyDeleteModalOpen(false);
     console.log("답글 삭제")
     //답글 삭제 (삭제할 답글 id = reReplyId)
+    axios.post("http://holo.dothome.co.kr/deleteReplyOtt.php", JSON.stringify({reReplyId: reReplyId}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {        
+        console.log(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    
+    setReplyNum(replyNum-1);  //댓글 개수 증가
+    axios.post("http://holo.dothome.co.kr/getReplyOtt.php", JSON.stringify({post: id}),
+    {
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    }).then(response => {        
+      setReReplyList(response.data);
+      //setReplyNum(replyList.length);
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
   }
 
   return (
@@ -295,7 +395,7 @@ function ShowPost(props) {
         </div>
         {content}
         <div className="postEtc">
-          {currentUser===user_id
+          {currentUser==user_id
             ?<button className="dealButton purple" onClick={() => { setSuccessModalOpen(true); }}><FaRegLaughWink/>   모집 마감!</button>
             :<div>
               {participation
@@ -306,7 +406,7 @@ function ShowPost(props) {
           }
           <div className="postEtc2">
             <AiOutlineEye style={{ fontSize: '3.5vh', marginRight: '1vh'}}/>{view}
-            {currentUser===user_id
+            {currentUser==user_id
              ?<div>
                 <Link to={`/edit/ott/${id}`}>
                   <button className="postEtcButton">수정</button>
@@ -365,8 +465,12 @@ class Post extends React.Component {
     this.state = {
        pathname : pathname,
        id : words[2],
-       user_id : 35,  //작성자 id
+       user_id : 32,  //작성자 id
        user : "",
+       score : 0, //작성자 평점
+       deal_count : 0, //작성자 거래횟수,
+       participationList: [], //거래 참여자 정보
+       userMail : "", //작성자 이메일
        title : "",
        content : "",
        reg_date : "",
@@ -376,7 +480,8 @@ class Post extends React.Component {
        accumulate : "",
        view : "",
        replyList : [],   //임의 댓글 데이터
-       currentUser : 35,
+       reReplyList : [],
+       currentUser : 25,
        alreadyParticipated : "false"
     };
 
@@ -391,14 +496,33 @@ class Post extends React.Component {
 
   componentDidMount(){
     console.log(this.state.id);
-
-    axios.post("http://holo.dothome.co.kr/findOTTPost.php", JSON.stringify({postid: this.state.id}),{
+    //거래정보 불러오기 (작성자-메일,평점,거래횟수 / 거래참여자들-메일,평점,닉네임,거래횟수,참여금액)
+    axios.post("http://holo.dothome.co.kr/getOttInfo.php", JSON.stringify({postid: this.state.id}),{
       withCredentials: false,
       headers: {"Content-Type": "application/json"}
     })
       .then(response => {
+        //console.log(response.data);
+        this.setState ({
+          score : response.data.score,
+          userMail: response.data.userMail,
+          deal_count : response.data.deal_count,
+          participationList : response.data.participationList});  
+      
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+
+      //게시글 상세정보 불러오기
+      axios.post("http://holo.dothome.co.kr/findOTTPost.php", JSON.stringify({postid: this.state.id}),{
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      })
+      .then(response => {
         console.log(response.data[0]);
         this.setState ({
+          user_id : response.data[0].uid,
           user: response.data[0].nick_name,
           title: response.data[0].title,
           content: response.data[0].content,
@@ -446,7 +570,22 @@ class Post extends React.Component {
     .catch(function(error) {
       console.log(error);
     });
-                     
+    
+    //게시글에 달린 답글 불러오는 부분
+    axios.post("http://holo.dothome.co.kr/getReplyOtt.php", JSON.stringify({post: this.state.id}),
+    {
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    }).then(response => {
+      console.log(response.data);
+      
+      this.setState({
+        reReplyList : response.data
+      });
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
   };                         
 
   render() {
@@ -454,7 +593,8 @@ class Post extends React.Component {
       <ShowPost path = {this.state.pathname} id = {this.state.id} user_id={this.state.user_id} user={this.state.user} title={this.state.title}
               content={this.state.content} reg_date={this.state.reg_date} limit_date={this.state.limit_date}
               buy_location={this.state.buy_location} goal={this.state.goal} view={this.state.view} accumulate={this.state.accumulate}
-              replyList={this.state.replyList} currentUser={this.state.currentUser} alreadyParticipated = {this.state.alreadyParticipated}/>
+              replyList={this.state.replyList} currentUser={this.state.currentUser} alreadyParticipated = {this.state.alreadyParticipated}
+              reReplyList = {this.state.reReplyList}/>
     );
   }
 }

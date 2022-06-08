@@ -9,13 +9,6 @@ import { AiOutlineEye, AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BiMessageDetail } from "react-icons/bi";
 import axios from 'axios';
 
-var reReplyList = [
-  {id: 1, reply_id: '34', nick_name: "우네", user_id: 37, content: "와!", date: "2022-05-23 17:12:04"},
-  {id: 2, reply_id: '34', nick_name: "해서", user_id: 28, content: "이것은!", date: "2022-05-23 17:12:04"},
-  {id: 3, reply_id: '34', nick_name: "구리", user_id: 28, content: "정말!", date: "2022-05-23 17:12:04"},
-  {id: 4, reply_id: '34', nick_name: "옌이", user_id: 28, content: "대박!", date: "2022-05-23 17:12:04"},
-  {id: 5, reply_id: '33', nick_name: "빠밤", user_id: 28, content: "와 이것은 정말 대박인 답글이야! ㅠㅠ 너무 슬프당 ㅠㅠ 흐규흐규 ㅠㅠ", date: "2022-05-23 17:12:04"}
-]
 
 function ShowPost(props) {
   const navigate = useNavigate();
@@ -31,6 +24,7 @@ function ShowPost(props) {
   const [replyList, setReplyList] = useState([]);
   const [replyId, setReplyId] = useState(null);
   const [reReplyId, setReReplyId] = useState(null);
+  const [reReplyList, setReReplyList] = useState([]);
 
   useEffect(() => {
     setCurrentUser(props.currentUser);
@@ -45,8 +39,11 @@ function ShowPost(props) {
     setReplyList(props.replyList);
   }, [props.replyList]);
   useEffect(()=>{
-    setReplyNum(props.replyList.length);
-  }, [props.replyList]);
+    setReplyNum(props.replyList.length + props.reReplyList.length);
+  }, [props.replyList], [props.reReplyList]);
+  useEffect(()=>{
+    setReReplyList(props.reReplyList);
+  }, [props.reReplyList]);
 
   var id = props.id;
   var user_id = props.user_id;
@@ -141,12 +138,12 @@ function ShowPost(props) {
       })
         .then(response => {   
           var type = "comment";
-          var toEmail = response.data;
+          var toEmail = JSON.stringify(response.data);
           var content = reply;
 
           try {
-            //Android.sendCmtAlarm(type,toEmail, content, url);
-            console.log(type,toEmail, content, url);
+            Android.sendCmtAlarm(type,toEmail, content, url);
+            //console.log(type,toEmail, content, url);
           }
           catch (e) {
             console.log("Android 없음!");
@@ -233,12 +230,63 @@ function ShowPost(props) {
 
   const submitReReply = (replyId, reReplyContent) => {
     console.log("답글 등록")
+    setReplyNum(replyNum+1);  //댓글 개수 증가
     //답글 등록 (댓글 id, 답글 내용)
+      console.log("댓글 등록");
+      var date = getToday();
+  
+      axios.post("http://holo.dothome.co.kr/replyPolicy.php", 
+                JSON.stringify({writer: user, reply_id: replyId, user: currentUser, content: reReplyContent, date: date}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      })
+        .then(response => {   
+          var type = "comment";
+          var toEmail = JSON.stringify(response.data);
+          var content = reReplyContent;
+
+          try {
+            Android.sendCmtAlarm(type, toEmail, content, url);
+            console.log(toEmail, content, url);
+            //console.log(type,toEmail, content, url);
+          }
+          catch (e) {
+            console.log("Android 없음!");
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
   }
 
   const editReReply = (reReplyId, reReplyContent) => {
     console.log("답글 수정")
     //답글 수정 (답글 id, 답글 내용)
+    var date = getToday();
+
+    axios.post("http://holo.dothome.co.kr/updateReplyPolicy.php", JSON.stringify({reReplyId: reReplyId, content: reReplyContent, date: date}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {   
+        console.log(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    
+    axios.post("http://holo.dothome.co.kr/getReplyPolicy.php", JSON.stringify({post: id}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {   
+        setReplyList(response.data);  
+        console.log(reReplyList);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   }
 
   const reReplyDeleteMsg = "\n답글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
@@ -248,8 +296,30 @@ function ShowPost(props) {
   }
   const deleteReReply = () => {
     setReReplyDeleteModalOpen(false);
-    console.log("답글 삭제")
-    //답글 삭제 (삭제할 답글 id = reReplyId)
+    
+    axios.post("http://holo.dothome.co.kr/deleteReplyPolicy.php", JSON.stringify({reReplyId: reReplyId}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {        
+        console.log(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    
+    setReplyNum(replyNum-1);  //댓글 개수 증가
+    axios.post("http://holo.dothome.co.kr/getReplyPolicy.php", JSON.stringify({post: id}),
+    {
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    }).then(response => {        
+      setReReplyList(response.data);
+      //setReplyNum(replyList.length);
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
   }
 
   return (
@@ -329,7 +399,8 @@ class Post extends React.Component {
        like : "",
        alreadyLiked : '', //이 글을 보는 사용자가 이전에 이미 좋아요를 눌렀는지 체크하는 변수
        replyList : [],   //임의 댓글 데이터
-       currentUser: 37, //초기값 수정 필요  
+       reReplyList : [], //답글 데이터
+       currentUser: 35, //초기값 수정 필요  
     };
 
     var cookies = new Cookies()
@@ -351,6 +422,7 @@ class Post extends React.Component {
       .then(response => {
         console.log(response.data[0]);
         this.setState ({
+          user_id : response.data[0].uid,
           user: response.data[0].nick_name,
           title: response.data[0].title,
           content: response.data[0].content,
@@ -394,13 +466,30 @@ class Post extends React.Component {
       .catch(function(error) {
         console.log(error);
       });
+
+    //게시글에 달린 답글 불러오는 부분
+    axios.post("http://holo.dothome.co.kr/getReplyPolicy.php", JSON.stringify({post: this.state.id}),
+    {
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    }).then(response => {
+      console.log(response.data);
+      
+      this.setState({
+        reReplyList : response.data
+      });
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
   };                         
 
   render() {
     return(
       <ShowPost path = {this.state.pathname} id = {this.state.id} user_id={this.state.user_id} user={this.state.user} title={this.state.title} 
                 content={this.state.content} reg_date={this.state.reg_date} view={this.state.view} like={this.state.like}
-                alreadyLiked={this.state.alreadyLiked} currentUser={this.state.currentUser} replyList={this.state.replyList}/>
+                alreadyLiked={this.state.alreadyLiked} currentUser={this.state.currentUser} replyList={this.state.replyList} 
+                reReplyList = {this.state.reReplyList}/>
     );
   }
 }
