@@ -38,6 +38,7 @@ var Delivery_state = {
   limit_date : '',
   buy_location : '',
   pickup_location : '',
+  town_location : '양호동',
   goal : ''
 };
 
@@ -279,6 +280,10 @@ function Write() {
     Document_state.user = cookies.get('uid');
     OTT_state.user = cookies.get('uid');
     Delivery_state.user = cookies.get('uid');
+  }
+
+  if(cookies.get('town')){
+    Delivery_state.town_location = cookies.get('town');
   }
 
   useEffect(()=>{
