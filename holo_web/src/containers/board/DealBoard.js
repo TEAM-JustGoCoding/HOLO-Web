@@ -6,6 +6,9 @@ import {images} from '../../images';
 import { AiOutlineSearch, AiOutlinePlus } from "react-icons/ai";
 import BoardTable from '../../components/BoardTable';
 import Pagination from '../../components/Pagination';
+import {Cookies} from "react-cookie";
+import axios from 'axios';
+import { responsiveFontSizes } from '@mui/material';
 
 function ShowBoard(props) {
   var deliveryJson = props.deliveryInfo;
@@ -87,41 +90,48 @@ class Board extends React.Component {
 
     this.state = {
       ott: [],
-      delivery: []
+      delivery: [],
+      town_location: "거의동" //거의동, 옥계동, 양덕동 등 다양하게 테스트 가능
     };
+
+    var cookies = new Cookies()
+
+    if(cookies.get('town')){
+      this.state.town_location = cookies.get('town')
+    }
   }
 
-  componentDidMount(){
-    fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/ott_to_json.php')
-    .then(response => { return response.json();})
-    .then(response => { 
-                        var ottJson = [];
-                        var obj = response;
-                        //console.log(obj.length);
-    
-                        for(var i=0; i < obj.length; i++) {
-                          ottJson.push(obj[i]);
-                        }           
-                       console.log(ottJson);
-
-                       this.setState ({ott: ottJson});
-                      });   
+  componentDidMount(){ 
+    //공동구매 글 불러오기
+    axios.post("http://holo.dothome.co.kr/delivery_to_json.php", JSON.stringify({town_location: this.state.town_location}),{
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      })
+        .then(response => {
+          console.log(response.data);
+          this.setState ({
+            delivery: response.data
+          });  
+        })
+        .catch(function(error) {
+          console.log(error);
+        });          
   
-   fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/delivery_to_json.php')
-    .then(response => { return response.json();})
-    .then(response => { 
-                        var deliJson = [];
-                        var obj = response;
-                        //console.log(obj.length);
-    
-                        for(var i=0; i < obj.length; i++) {
-                          deliJson.push(obj[i]);
-                        }           
-                       console.log(deliJson);
-
-                       this.setState ({delivery: deliJson});
-                      });                           
-  };                         
+    //OTT 글 불러오기
+    axios.post("http://holo.dothome.co.kr/ott_to_json.php", JSON.stringify({town_location: this.state.town_location}),{
+          withCredentials: false,
+          headers: {"Content-Type": "application/json"}
+        })
+          .then(response => {
+            console.log(response.data);
+            this.setState ({
+              ott: response.data
+            });  
+          })
+          .catch(function(error) {
+            console.log(error);
+          }); 
+    };       
 
   render() {
     return(

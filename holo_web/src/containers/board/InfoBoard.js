@@ -6,6 +6,7 @@ import {images} from '../../images';
 import { AiOutlineSearch, AiOutlinePlus } from "react-icons/ai";
 import BoardTable from '../../components/BoardTable';
 import Pagination from '../../components/Pagination';
+import axios from 'axios';
 
 function ShowBoard(props) {
   var poliInfo = props.poliInfo;
@@ -104,39 +105,35 @@ class Board extends React.Component {
   }
 
   componentDidMount(){
-    fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/policy_to_json.php')
-    .then(response => { return response.json();})
-    .then(response => { 
-          var policyJson = [];
-          var obj = response;
-
-          for(var i=0; i < obj.length; i++) {
-            policyJson.push(obj[i]);
-            policyJson[i]['hot']=false
-          }           
-          console.log(policyJson);
-
-          this.setState ({policy: policyJson});
-          this.setState ({hotPolicy: [{id: "12345", title: "정책 핫 게시물 제목 클릭 금지", content: "정책 핫 게시물 내용",  nick_name: "우네",
-                          reg_date: "2022-05-01 12:00:00", like: "10000", view: "50000", hot: true}]}) //핫게시물 구현 후 삭제
-        });
-
-    fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/doc_to_json.php')
-    .then(response => { return response.json();})
-    .then(response => { 
-         var documentJson = [];
-         var obj = response;
-                      
-         for(var i=0; i < obj.length; i++) {
-            documentJson.push(obj[i]);
-            documentJson[i]['hot']=false
-          }           
-          console.log(documentJson);
-                  
-         this.setState ({document: documentJson});
-         this.setState ({hotDocument: [{id: "12345", title: "생활 핫 게시물 제목 클릭 금지", content: "생활 핫 게시물 내용",  nick_name: "우네",
-                         reg_date: "2022-05-01 12:00:00", like: "1000", view: "5000", hot: true}]}) //핫게시물 구현 후 삭제
-     });                               
+    //공동구매 글 불러오기
+    axios.post("http://holo.dothome.co.kr/policy_to_json.php", JSON.stringify({temp: "policy"}),{
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      })
+        .then(response => {
+          console.log(response.data);
+          this.setState ({
+            policy: response.data
+          });  
+        })
+        .catch(function(error) {
+          console.log(error);
+        });          
+  
+    //document 글 불러오기
+    axios.post("http://holo.dothome.co.kr/doc_to_json.php", JSON.stringify({temp: "doc"}),{
+          withCredentials: false,
+          headers: {"Content-Type": "application/json"}
+        })
+          .then(response => {
+            console.log(response.data);
+            this.setState ({
+              document: response.data
+            });  
+          })
+          .catch(function(error) {
+            console.log(error);
+          });                    
   };
 
   render() {
