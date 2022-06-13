@@ -1,6 +1,6 @@
 import React from 'react';
+import { Table } from 'react-bootstrap';
 import './Modal.css';
-
 
 function InfoModal({open, close, msg}){
   return (
@@ -13,6 +13,38 @@ function InfoModal({open, close, msg}){
       ) : null}
     </div>
   );
+}
+
+function DealModal({open, close, submit, refuse, list}){
+  return(
+    <div className={open ? 'openModal modal' : 'modal'}>
+    {open ? (
+      <section className="dealModal">
+        <button className="modalCloseButton" onClick={close}>&times;</button>
+        <div><span>모집 현황</span></div>
+        <div style={{height: '60%', overflow: 'auto'}}>
+          <Table borderless>
+            <tbody>
+              {list.map(list=>(
+                <tr key={list.mail}>
+                  <td>{list.user}</td>
+                  <td>{list.score}/5점</td>
+                  <td>{list.deal_count}회</td>
+                  {list.money
+                  ?<td>{list.money}원</td>
+                  :null
+                  }
+                  <td><button style={{borderRadius: '5px'}} onClick={()=>{refuse(list.mail)}}>거절</button></td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </div>
+        <div><button className="modalSuccessButton" onClick={submit}>모집 마감</button></div>
+      </section>
+    ) : null}
+  </div>
+  )
 }
 
 function InputModal({open, close, submit, msg}){
@@ -57,10 +89,12 @@ function CheckModal({open, close, submit, msg}){
   );
 }
 
-function ShowModal({type, open, close, submit, msg}) {
+function ShowModal({type, open, close, submit, refuse, list, msg}) {
   switch(type){
     case "Info":
       return <InfoModal open={open} close={close} msg={msg}/>
+    case "Deal":
+      return <DealModal open={open} close={close} submit={submit} refuse={refuse} list={list}/>
     case "Input":
       return <InputModal open={open} close={close} submit={submit} msg={msg}/>
     case "Check":
@@ -73,11 +107,11 @@ function ShowModal({type, open, close, submit, msg}) {
 
 
 const Modal = (props) => {
-  const { type, open, close, submit } = props;
+  const {type, open, close, submit, refuse, list} = props;
   const msg = props.children;
 
   return (
-    <ShowModal type={type} open={open} close={close} submit={submit} msg={msg}></ShowModal>
+    <ShowModal type={type} open={open} close={close} submit={submit} refuse={refuse} list={list} msg={msg}></ShowModal>
   );
 };
 

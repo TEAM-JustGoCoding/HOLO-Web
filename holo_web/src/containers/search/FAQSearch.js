@@ -99,16 +99,14 @@ function Search() {
   return (
     <div className="leftSearch">
       <div className="searchHeaderBar">
-        <input type="text" onChange={getResearchWord} placeholder="검색어를 입력해주세요"/>
+        <input type="text" onChange={getResearchWord} placeholder="검색어를 입력해주세요" maxLength='50'/>
         <button onClick={search}>
           <AiOutlineSearch className="searchImg"/>
         </button>
       </div>
       <div className="searchResults">
         <ShowResults resultExist={resultExist} searchResult={searchResult}></ShowResults>
-        <Modal type="Info" open={modalOpen} close={()=>setModalOpen(false)}>
-          검색어를 입력해주세요!
-        </Modal>
+        <Modal type="Info" open={modalOpen} close={()=>setModalOpen(false)}>검색어를 입력해주세요!</Modal>
       </div>
     </div>
   );

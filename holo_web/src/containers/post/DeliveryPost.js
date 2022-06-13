@@ -5,23 +5,26 @@ import Modal from '../../components/Modal';
 import ReplyTable from '../../components/ReplyTable';
 import {images} from '../../images';
 import { AiOutlineEye } from "react-icons/ai";
-import { FaRegLaughWink, FaRegLaugh, FaRegLaughSquint } from "react-icons/fa";
+import { FaRegLaughBeam, FaRegLaugh, FaRegLaughSquint } from "react-icons/fa";
 import { BiMessageDetail } from "react-icons/bi";
 import axios from 'axios';
 import {Cookies} from "react-cookie";
 
-
 function ShowPost(props) {
   const navigate = useNavigate();
-  const [currentUser, setCurrentUser] = useState(34); //초기값 수정 필요
+  const [currentUser, setCurrentUser] = useState(28); //초기값 수정 필요
   const [participation, setParticipation] = useState(false);
-  const [successModalOpen, setSuccessModalOpen] = useState(false);
-  const [participationModalOpen, setParticipationModalOpen] = useState(false);
-  const [cancelModalOpen, setCancelModalOpen] = useState(false);
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [checkModalOpen, setCheckModalOpen] = useState(false);
-  const [replyDeleteModalOpen, setReplyDeleteModalOpen] = useState(false);
-  const [reReplyDeleteModalOpen, setReReplyDeleteModalOpen] = useState(false);
+  const [userInfoModal, setUserInfoModal] = useState(false);
+  const [manageModal, setManageModal] = useState(false);
+  const [refuseModal, setRefuseModal] = useState(false);
+  const [successModal, setSuccessModal] = useState(false);
+  const [participationModal, setParticipationModal] = useState(false);
+  const [cancelModal, setCancelModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [checkModal, setCheckModal] = useState(false);
+  const [replyDeleteModal, setReplyDeleteModal] = useState(false);
+  const [reReplyDeleteModal, setReReplyDeleteModal] = useState(false);
+  const [refuseUserMail, setRefuseUserMail] = useState('');
   const [reply, setReply] = useState('');
   const [replyNum, setReplyNum] = useState(0);
   const [replyList, setReplyList] = useState([]);
@@ -30,44 +33,51 @@ function ShowPost(props) {
   const [reReplyList, setReReplyList] = useState([]);
 
   useEffect(() => {
-    setCurrentUser(props.currentUser);
-  }, [props.currentUser])
+    setCurrentUser(props.state.currentUser);
+  }, [props.state.currentUser])
   useEffect(()=>{
-    setReplyList(props.replyList);
-  }, [props.replyList]);
+    setReplyList(props.state.replyList);
+  }, [props.state.replyList]);
   useEffect(()=>{
-    setReplyNum(props.replyList.length + props.reReplyList.length);
-  }, [props.replyList], [props.reReplyList]);
+    setReplyNum(props.state.replyList.length + props.state.reReplyList.length);
+  }, [props.state.replyList], [props.state.reReplyList]);
   useEffect(()=>{
-    setParticipation(props.alreadyParticipated);
-  }, [props.alreadyParticipated]);
+    setParticipation(props.state.alreadyParticipated);
+  }, [props.state.alreadyParticipated]);
   useEffect(()=>{
-    setReReplyList(props.reReplyList);
-  }, [props.reReplyList]);
+    setReReplyList(props.state.reReplyList);
+  }, [props.state.reReplyList]);
 
-
-  var id = props.id;
-  var user_id = props.user_id;
-  var user = props.user;
-  var title = props.title;
-  var content = props.content;
-  var reg_date = props.reg_date;
-  var limit_date = props.limit_date;
-  var buy_location = props.buy_location;
-  var pickup_location = props.pickup_location;
-  var goal = props.goal;
-  var accumulate = props.accumulate;
-  var view = props.view;
-  var url = props.path;
+  var url = props.state.pathname;
+  var id = props.state.id;
+  var user_id = props.state.user_id;
+  var user = props.state.user;
+  var score = props.state.score;
+  var deal_count = props.state.deal_count;
+  var participationList = props.state.participationList;
+  var userMail= props.state.userMail;
+  var title = props.state.title;
+  var content = props.state.content;
+  var reg_date = props.state.reg_date;
+  var limit_date = props.state.limit_date;
+  var buy_location = props.state.buy_location;
+  var pickup_location = props.state.pickup_location;
+  var goal = props.state.goal;
+  var accumulate = props.state.accumulate;
+  var view = props.state.view;
   
   function replyChange (e) {
-    setReply(e.target.value)
+    if (e.target.value.length > 200) {
+      setReply(e.target.value.slice(0, 200))
+    }
+    else {
+      setReply(e.target.value)
+    }
   };
 
   const successMsg = "\n모집을 마감하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
   const successPost = () => {
-    setSuccessModalOpen(false);
-    console.log("공동구매 모집 마감!")
+    setSuccessModal(false);
     //공동구매 모집 마감
     axios.post("http://holo.dothome.co.kr/DeliveryEnd.php", JSON.stringify({id: id, starter: user}),{
       withCredentials: false,
@@ -83,8 +93,7 @@ function ShowPost(props) {
           var boardTitle = title;
 
           try {
-            Android.createChatRoom(hostEmail, partner, boardTitle);
-            console.log(hostEmail, partner, boardTitle);
+            window.Android.createChatRoom(hostEmail, partner, boardTitle);
           }
           catch (e) {
             console.log("Android 없음!");
@@ -96,12 +105,23 @@ function ShowPost(props) {
       });
   }
 
+  const refuseMsg = "\n해당 신청을 거절하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
+  const setRefuseUser = (mail) => {
+    setRefuseModal(true);
+    setRefuseUserMail(mail)
+  }
+  const refuseUser = () => {
+    setRefuseModal(false); 
+    //신청자 거절
+    console.log(refuseUserMail)
+  }
+
   const participationMsg = "\n공동구매에 참여할 금액을 작성해주세요.\n입력하신 금액은 참여 현황에 반영됩니다.\n신중하게 작성해주세요!\n0원 이하는 입력할 수 없습니다.";
   const participationPost = (money) => {
-    setParticipationModalOpen(false);
+    setParticipationModal(false);
     setParticipation(true);
     console.log(money+"원! 공동구매 금액 추가!")
-    //공동구매 참여 DB 반영
+    //공동구매 참여
     axios.post("http://holo.dothome.co.kr/DeliveryParticipate.php", JSON.stringify({id: id, starter: user, user: currentUser, money: money}),{
       withCredentials: false,
       headers: {"Content-Type": "application/json"}
@@ -116,8 +136,7 @@ function ShowPost(props) {
           var boardTitle = title;
 
           try {
-            //Android.createChatRoom(hostEmail, partner, boardTitle);
-            console.log(hostEmail, partner, boardTitle);
+            window.Android.createChatRoom(hostEmail, partner, boardTitle);
           }
           catch (e) {
             console.log("Android 없음!");
@@ -132,7 +151,7 @@ function ShowPost(props) {
   
   const cancelMsg = "\n참여를 취소하시겠습니까?\n신중하게 결정해주세요!"
   const cancelPost = () => {
-    setCancelModalOpen(false);
+    setCancelModal(false);
     setParticipation(false);
     console.log("공동구매 참여 취소!")
     //공동구매 참여 취소 DB 반영
@@ -150,7 +169,7 @@ function ShowPost(props) {
 
   const deleteMsg = "\n게시글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
   const deletePost = () => {
-    setDeleteModalOpen(false);
+    setDeleteModal(false);
     axios.post("http://holo.dothome.co.kr/deleteDelivery.php", JSON.stringify({id: id}),{
       withCredentials: false,
       headers: {"Content-Type": "application/json"}
@@ -176,7 +195,7 @@ function ShowPost(props) {
 
   function submitReply(){
     if(reply===''){
-      setCheckModalOpen(true)
+      setCheckModal(true)
     }
     else{
       setReply('');
@@ -194,8 +213,7 @@ function ShowPost(props) {
         var content = reply;
 
         try {
-          Android.sendCmtAlarm(type, toEmail, content, url);
-          //console.log(type,toEmail, content, url);
+          window.Android.sendCmtAlarm(type, toEmail, content, url);
         }
         catch (e) {
           console.log("Android 없음!");
@@ -251,11 +269,11 @@ function ShowPost(props) {
 
   const replyDeleteMsg = "\n댓글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
   const setDeleteReply = (replyId) => {
-    setReplyDeleteModalOpen(true);
+    setReplyDeleteModal(true);
     setReplyId(replyId);
   }
   const deleteReply = () => {
-    setReplyDeleteModalOpen(false);
+    setReplyDeleteModal(false);
 
     axios.post("http://holo.dothome.co.kr/deleteCommentDelivery.php", JSON.stringify({replyId: replyId}),
       {
@@ -301,9 +319,7 @@ function ShowPost(props) {
           var content = reReplyContent;
 
           try {
-            Android.sendCmtAlarm(type, toEmail, content, url);
-            console.log(toEmail, content, url);
-            //console.log(type,toEmail, content, url);
+            window.Android.sendCmtAlarm(type, toEmail, content, url);
           }
           catch (e) {
             console.log("Android 없음!");
@@ -357,11 +373,11 @@ function ShowPost(props) {
 
   const reReplyDeleteMsg = "\n답글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
   const setDeleteReReply = (reReplyId) => {
-    setReReplyDeleteModalOpen(true);
+    setReReplyDeleteModal(true);
     setReReplyId(reReplyId);
   }
   const deleteReReply = () => {
-    setReReplyDeleteModalOpen(false);
+    setReReplyDeleteModal(false);
     console.log("답글 삭제")
     //답글 삭제 (삭제할 답글 id = reReplyId)
 
@@ -396,7 +412,7 @@ function ShowPost(props) {
         <div>공동구매</div>
       </div>
       <div className="postTitle">{title}</div>
-      <div className="postUser"><img src={images.user} alt="User"/>{user}</div>
+      <div className="postUser"><img src={images.user} alt="User" onClick={()=>setUserInfoModal(true)}/>{user}</div>
       <div className="postRegDate">{reg_date}</div>
       <div className="postContent">
         <div className="postDealContent">
@@ -408,23 +424,23 @@ function ShowPost(props) {
         </div>
         {content}
         <div className="postEtc">
-          {currentUser==user_id
-            ?<button className="dealButton purple" onClick={() => { setSuccessModalOpen(true); }}><FaRegLaughWink/>   모집 마감!</button>
+          {currentUser.toString()===user_id
+            ?<button className="dealButton purple" onClick={()=>{setManageModal(true);}}><FaRegLaughBeam/>   모집 관리!</button>
             :<div>
               {participation
-              ? <button className="dealButton pink" onClick={() => { setCancelModalOpen(true); }}><FaRegLaughSquint/>   참여 완료!</button>
-              : <button className="dealButton skyblue" onClick={() => { setParticipationModalOpen(true); }}><FaRegLaugh/>   참여 신청!</button>
+              ? <button className="dealButton pink" onClick={() => { setCancelModal(true); }}><FaRegLaughSquint/>   참여 완료!</button>
+              : <button className="dealButton skyblue" onClick={() => { setParticipationModal(true); }}><FaRegLaugh/>   참여 신청!</button>
               }
              </div>
           }
           <div className="postEtc2">
             <AiOutlineEye style={{ fontSize: '3.5vh', marginRight: '1vh'}}/>{view}
-            {currentUser==user_id
+            {currentUser.toString()===user_id
              ?<div>
                 <Link to={`/edit/delivery/${id}`}>
                   <button className="postEtcButton">수정</button>
                 </Link>
-                <button className="postEtcButton" onClick={() => {setDeleteModalOpen(true);}}>삭제</button>
+                <button className="postEtcButton" onClick={() => {setDeleteModal(true);}}>삭제</button>
               </div>
              :<div/>
             }
@@ -434,7 +450,7 @@ function ShowPost(props) {
       <div className="postReply">
         <div><BiMessageDetail style={{fontSize: '3.5vh'}}/> 댓글 {replyNum}</div>
         <div className="replyInput">
-          <textarea placeholder='댓글을 입력해주세요.' value={reply} spellCheck="false" onChange={replyChange}></textarea>
+          <textarea placeholder='댓글을 입력해주세요.' value={reply} spellCheck="false" onChange={replyChange} maxLength='200'></textarea>
           <button onClick={() => {submitReply()}}>등록</button>
         </div>
         <div className="replyTable">
@@ -442,27 +458,16 @@ function ShowPost(props) {
                       reReplyList={reReplyList} reReplySubmitFunc={submitReReply} reReplyEditFunc={editReReply} reReplyDeleteFunc={setDeleteReReply}/>
         </div>
       </div>
-      <Modal type="Check" open={successModalOpen} close={()=>{setSuccessModalOpen(false);}} submit={successPost}>
-        {successMsg}
-      </Modal>
-      <Modal type="Input" open={participationModalOpen} close={() => {setParticipationModalOpen(false);}} submit={participationPost}>
-        {participationMsg}
-      </Modal>
-      <Modal type="Check" open={cancelModalOpen} close={()=>{setCancelModalOpen(false);}} submit={cancelPost}>
-        {cancelMsg}
-      </Modal>
-      <Modal type="Check" open={deleteModalOpen} close={()=>{setDeleteModalOpen(false);}} submit={deletePost}>
-        {deleteMsg}
-      </Modal>
-      <Modal type="Info" open={checkModalOpen} close={()=>setCheckModalOpen(false)}>
-        내용을 입력해주세요!
-      </Modal>
-      <Modal type="Check" open={replyDeleteModalOpen} close={()=>{setReplyDeleteModalOpen(false);}} submit={deleteReply}>
-        {replyDeleteMsg}
-      </Modal>
-      <Modal type="Check" open={reReplyDeleteModalOpen} close={()=>{setReReplyDeleteModalOpen(false);}} submit={deleteReReply}>
-        {reReplyDeleteMsg}
-      </Modal>
+      <Modal type="Info" open={userInfoModal} close={()=>{setUserInfoModal(false);}}>{user+"님의 별점은 "+score+"/5점 입니다.\n거래 참여 횟수는 "+deal_count+"회 입니다."}</Modal>
+      <Modal type="Deal" open={manageModal} close={()=>{setManageModal(false);}} submit={()=>{setSuccessModal(true);}} refuse={setRefuseUser} list={participationList}>모집 현황</Modal>
+      <Modal type="Check" open={refuseModal} close={()=>{setRefuseModal(false);}} submit={refuseUser}>{refuseMsg}</Modal>
+      <Modal type="Check" open={successModal} close={()=>{setSuccessModal(false);}} submit={successPost}>{successMsg}</Modal>
+      <Modal type="Input" open={participationModal} close={()=>{setParticipationModal(false);}} submit={participationPost}>{participationMsg}</Modal>
+      <Modal type="Check" open={cancelModal} close={()=>{setCancelModal(false);}} submit={cancelPost}>{cancelMsg}</Modal>
+      <Modal type="Check" open={deleteModal} close={()=>{setDeleteModal(false);}} submit={deletePost}>{deleteMsg}</Modal>
+      <Modal type="Info" open={checkModal} close={()=>setCheckModal(false)}>내용을 입력해주세요!</Modal>
+      <Modal type="Check" open={replyDeleteModal} close={()=>{setReplyDeleteModal(false);}} submit={deleteReply}>{replyDeleteMsg}</Modal>
+      <Modal type="Check" open={reReplyDeleteModal} close={()=>{setReReplyDeleteModal(false);}} submit={deleteReReply}>{reReplyDeleteMsg}</Modal>
     </div>
   );
 }
@@ -493,8 +498,8 @@ class Post extends React.Component {
        goal : "",
        accumulate : "",
        view : "",
-       replyList : [],   //임의 댓글 데이터
-       currentUser : 38,
+       replyList : [],
+       currentUser : 28,
        reReplyList : [],
        alreadyParticipated : "false"
     };
@@ -604,12 +609,7 @@ class Post extends React.Component {
 
   render() {
     return(
-      <ShowPost path = {this.state.pathname} id = {this.state.id} user_id={this.state.user_id} user={this.state.user} title={this.state.title}
-                content={this.state.content} reg_date={this.state.reg_date} limit_date={this.state.limit_date}
-                buy_location={this.state.buy_location} pickup_location={this.state.pickup_location} 
-                goal={this.state.goal} view={this.state.view} accumulate={this.state.accumulate}
-                replyList={this.state.replyList} currentUser={this.state.currentUser} alreadyParticipated={this.state.alreadyParticipated}
-                reReplyList = {this.state.reReplyList}/>
+      <ShowPost state={this.state}/>
     );
   }
 }

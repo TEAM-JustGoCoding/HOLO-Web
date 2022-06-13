@@ -64,14 +64,19 @@ function PolicyWrite(props) {
     Policy_state.title = title;
   };
   function P_contentChange (e) {
-    setContent(e.target.value)
+    if (e.target.value.length > 21845){
+      setContent(e.target.value.slice(0,21845))
+    }
+    else {
+      setContent(e.target.value)
+    }
     Policy_state.content = content;
   };
 
   return(
     <div className="writeInput">
-      <input type='text' id="title" placeholder='제목' value={title} spellCheck="false" onChange={P_titleChange}/>
-      <textarea id="content" className="infoContent" placeholder='내용을 입력하세요.' value={content} spellCheck="false" onChange={P_contentChange}/>
+      <input type='text' id="title" placeholder='제목' value={title} spellCheck="false" onChange={P_titleChange} maxLength='50'/>
+      <textarea id="content" className="infoContent" placeholder='내용을 입력하세요.' value={content} spellCheck="false" onChange={P_contentChange} maxLength='21845'/>
     </div>
   )
 }
@@ -98,14 +103,19 @@ function DocumentWrite(props) {
     Document_state.title = title;
   };
   function D_contentChange (e) {
-    setContent(e.target.value)
+    if (e.target.value.length > 21845){
+      setContent(e.target.value.slice(0,21845))
+    }
+    else {
+      setContent(e.target.value)
+    }
     Document_state.content = content;
   };
 
   return(
     <div className="writeInput">
-      <input type='text' id="title" placeholder='제목' value={title} spellCheck="false" onChange={D_titleChange}/>
-      <textarea id="content" className="infoContent" placeholder='내용을 입력하세요.' value={content} spellCheck="false" onChange={D_contentChange}/>
+      <input type='text' id="title" placeholder='제목' value={title} spellCheck="false" onChange={D_titleChange} maxLength='50'/>
+      <textarea id="content" className="infoContent" placeholder='내용을 입력하세요.' value={content} spellCheck="false" onChange={D_contentChange} maxLength='21845'/>
     </div>
   )
 }
@@ -147,7 +157,12 @@ function OTTWrite(props){
     OTT_state.title = title;
   };
   function O_contentChange (e) {
-    setContent(e.target.value)
+    if (e.target.value.length > 21845){
+      setContent(e.target.value.slice(0,21845))
+    }
+    else {
+      setContent(e.target.value)
+    }
     OTT_state.content = content;
   };
   function O_goalChange (e) {
@@ -166,11 +181,11 @@ function OTTWrite(props){
 
   return(
     <div className="writeInput">
-      <input type='text' id="title" placeholder='제목' value={title} spellCheck="false" onChange={O_titleChange}/>
+      <input type='text' id="title" placeholder='제목' value={title} spellCheck="false" onChange={O_titleChange} maxLength='50'/>
       <input type="datetime-local" id="limitDate" data-placeholder="구매 일시" value={limit_date.replace(" ","T").slice(0,16)} required aria-required="true" onChange={O_limitDateChange}/>
-      <input type='text' id="buyLocation" className="contentInput" placeholder='OTT 플랫폼' value={buy_location} spellCheck="false" onChange={O_buyLocationChange}/>
+      <input type='text' id="buyLocation" className="contentInput" placeholder='OTT 플랫폼' value={buy_location} spellCheck="false" onChange={O_buyLocationChange} maxLength='50'/>
       <input type='number' id="goal" className="contentInput" min="0" placeholder='목표 인원' value={goal} onInput={(e)=>{e.target.value=e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1')}} onChange={O_goalChange}/>
-      <textarea id="content" className="ottContent" placeholder='내용을 입력하세요.' value={content} spellCheck="false" onChange={O_contentChange}/>
+      <textarea id="content" className="ottContent" placeholder='내용을 입력하세요.' value={content} spellCheck="false" onChange={O_contentChange} maxLength='21845'/>
     </div>
   )
 }
@@ -218,7 +233,12 @@ function DeliveryWrite(props) {
     Delivery_state.title = title;
   };
   function G_contentChange (e) {
-    setContent(e.target.value)
+    if (e.target.value.length > 21845){
+      setContent(e.target.value.slice(0,21845))
+    }
+    else {
+      setContent(e.target.value)
+    }
     Delivery_state.content = content;
   };
   function G_goalChange (e) {
@@ -241,12 +261,12 @@ function DeliveryWrite(props) {
 
   return(
     <div className="writeInput">
-      <input type='text' id="title" placeholder='제목' value={title} spellCheck="false" onChange={G_titleChange}/>
+      <input type='text' id="title" placeholder='제목' value={title} spellCheck="false" onChange={G_titleChange} maxLength='50'/>
       <input type="datetime-local" id="limitDate" data-placeholder="구매 일시" value={limit_date.replace(" ","T").slice(0,16)} required aria-required="true" onChange={G_limitDateChange}/>
-      <input type='text' id="buyLocation" placeholder='구매처' value={buy_location} spellCheck="false" onChange={G_buyLocationChange}/>
+      <input type='text' id="buyLocation" placeholder='구매처' value={buy_location} spellCheck="false" onChange={G_buyLocationChange} maxLength='50'/>
       <input type='number' id="goal" min="0" placeholder='목표 금액' value={goal} onInput={(e)=>{e.target.value=e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1')}} onChange={G_goalChange}/>
-      <input type='text' id="pickupLocation" placeholder='픽업 위치' value={pickup_location} spellCheck="false" onChange={G_pickupChange}/>
-      <textarea id="content" className="deliveryContent" placeholder='내용을 입력하세요.' value={content} spellCheck="false" onChange={G_contentChange}/>
+      <input type='text' id="pickupLocation" placeholder='픽업 위치' value={pickup_location} spellCheck="false" onChange={G_pickupChange} maxLength='50'/>
+      <textarea id="content" className="deliveryContent" placeholder='내용을 입력하세요.' value={content} spellCheck="false" onChange={G_contentChange} maxLength='21845'/>
     </div>
   )
 }
@@ -366,8 +386,8 @@ function DeliverySubmit(data){
 
 function ShowEdit(props) {
   const navigate = useNavigate();
-  const [checkModalOpen, setCheckModalOpen] = useState(false);
-  const [finModalOpen, setFinModalOpen] = useState(false);
+  const [checkModal, setCheckModal] = useState(false);
+  const [finModal, setFinModal] = useState(false);
 
   var category = "";
   if(props.category==="policy"){category="정책"}
@@ -379,30 +399,30 @@ function ShowEdit(props) {
     navigate(-1)
   };
   const openFinModal = () => {
-    setFinModalOpen(true);
+    setFinModal(true);
   };
   const closeFinModal = () => {
-    setFinModalOpen(false);
+    setFinModal(false);
     goBack();
   };
   const checkFin = (category) => {
     switch(category){
       case "policy":
-        if(Policy_state.title===''||Policy_state.content===''){setCheckModalOpen(true)}
+        if(Policy_state.title===''||Policy_state.content===''){setCheckModal(true)}
         else{openFinModal(); postDB(category);}
         return;
       case "document": 
-        if(Document_state.title===''||Document_state.content===''){setCheckModalOpen(true)}
+        if(Document_state.title===''||Document_state.content===''){setCheckModal(true)}
         else{openFinModal(); postDB(category);}
       return;
       case "ott":
         if(OTT_state.title===''||OTT_state.content===''||OTT_state.limit_date===''||OTT_state.buy_location===''
-          ||OTT_state.goal===''){setCheckModalOpen(true)}
+          ||OTT_state.goal===''){setCheckModal(true)}
         else{openFinModal(); postDB(category);}
         return;
       case "delivery":
         if(Delivery_state.title===''||Delivery_state.content===''||Delivery_state.limit_date===''||Delivery_state.buy_location===''
-          ||Delivery_state.pickup_location===''||Delivery_state.goal===''){setCheckModalOpen(true)}
+          ||Delivery_state.pickup_location===''||Delivery_state.goal===''){setCheckModal(true)}
         else{openFinModal(); postDB(category);}
         return;
       default:
@@ -416,12 +436,8 @@ function ShowEdit(props) {
         <button className="finButton" onClick={() => {goBack();}}>취소</button>
         <button className="categoryButton" disabled>{category}</button>
         <button className="finButton" onClick={() => {checkFin(props.category);}}>완료</button>
-        <Modal type="Info" open={checkModalOpen} close={()=>setCheckModalOpen(false)}>
-          내용을 모두 입력해주세요!
-        </Modal>
-        <Modal type="Info" open={finModalOpen} close={closeFinModal}>
-          게시글 수정이 완료되었어요!
-        </Modal>
+        <Modal type="Info" open={checkModal} close={()=>setCheckModal(false)}>내용을 모두 입력해주세요!</Modal>
+        <Modal type="Info" open={finModal} close={closeFinModal}>게시글 수정이 완료되었어요!</Modal>
       </div>
       <ShowInput category={props.category} id = {props.id} user={props.user} title={props.title} 
                 content={props.content} reg_date={props.reg_date} limit_date={props.limit_date}

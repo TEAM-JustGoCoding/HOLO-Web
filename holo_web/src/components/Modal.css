@@ -13,7 +13,35 @@
     cursor: pointer;
     border: 0;
 }
-.infoModal,
+.infoModal{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: #9dc3e6;
+    width: 90%;
+    max-width: 450px;
+    height: 30%;
+    margin: 0 auto;
+    border-radius: 35px;
+    border: 10px solid #1d4999;
+    animation: modal-show 0.3s;
+    overflow: hidden;
+    text-align: center;
+}
+.dealModal{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: #9dc3e6;
+    width: 90%;
+    max-width: 450px;
+    height: 50%;
+    margin: 0 auto;
+    border-radius: 35px;
+    border: 10px solid #1d4999;
+    animation: modal-show 0.3s;
+    overflow: hidden;
+}
 .checkModal {
     display: flex;
     flex-direction: column;
@@ -41,20 +69,23 @@
     border: 10px solid #1d4999;
     animation: modal-show 0.3s;
     overflow: hidden;
+    text-align: center;
 }
 
-.infoModal > div {
-    margin: auto auto;
+.infoModal > div,
+.dealModal > div,
+.inputModal > div,
+.checkModal > div {
+    margin: auto;
     font-family: "aSmile";
-    font-size: 2.5vh;
+    font-size: 2vh;
     color: #1d4999;
     white-space: pre-line;
 }
-.inputModal > div,
-.checkModal > div {
-    margin: auto auto;
+.dealModal > div > span {
+    margin: auto;
     font-family: "aSmile";
-    font-size: 2vh;
+    font-size: 2.5vh;
     color: #1d4999;
     white-space: pre-line;
 }
@@ -81,6 +112,7 @@
     text-align: center;
     color: #1d4999;
 }
+.modalSuccessButton,
 .modalFinButton{
     background-color: #1d4999;
     padding: 0.5vh 2vh;

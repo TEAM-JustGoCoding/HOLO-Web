@@ -3,9 +3,9 @@ import React from 'react';
 import axios from 'axios';
 
 function ShowPost(props) {
-  //var id = props.id;
-  var title = props.title;
-  var content = props.content;
+  //var id = props.state.id;
+  var title = props.state.title;
+  var content = props.state.content;
 
   return (
     <div>
@@ -55,8 +55,7 @@ class Post extends React.Component {
 
   render() {
     return(
-      <ShowPost id = {this.state.id}  title={this.state.title} 
-                content={this.state.content} />
+      <ShowPost state={this.state}/>
     );
   }
 }

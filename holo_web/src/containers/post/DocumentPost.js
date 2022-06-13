@@ -12,13 +12,13 @@ import axios from 'axios';
 
 function ShowPost(props) {
   const navigate = useNavigate();
-  const [currentUser, setCurrentUser] = useState(34); //초기값 수정 필요
+  const [currentUser, setCurrentUser] = useState(10); //초기값 수정 필요
   const [heart, setHeart] = useState(false);
   const [like, setLike] =useState('');
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [checkModalOpen, setCheckModalOpen] = useState(false);
-  const [replyDeleteModalOpen, setReplyDeleteModalOpen] = useState(false);
-  const [reReplyDeleteModalOpen, setReReplyDeleteModalOpen] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [checkModal, setCheckModal] = useState(false);
+  const [replyDeleteModal, setReplyDeleteModal] = useState(false);
+  const [reReplyDeleteModal, setReReplyDeleteModal] = useState(false);
   const [reply, setReply] = useState('');
   const [replyNum, setReplyNum] = useState(0);
   const [replyList, setReplyList] = useState([]);
@@ -27,42 +27,46 @@ function ShowPost(props) {
   const [reReplyList, setReReplyList] = useState([]);
 
   useEffect(() => {
-    setCurrentUser(props.currentUser);
-  }, [props.currentUser])
+    setCurrentUser(props.state.currentUser);
+  }, [props.state.currentUser])
   useEffect(() => {
-    setHeart(props.alreadyLiked);
-  }, [props.alreadyLiked]);
+    setHeart(props.state.alreadyLiked);
+  }, [props.state.alreadyLiked]);
   useEffect(() => {
-    setLike(props.like);
-  }, [props.like]);
+    setLike(props.state.like);
+  }, [props.state.like]);
   useEffect(()=>{
-    setReplyList(props.replyList);
-  }, [props.replyList]);
+    setReplyList(props.state.replyList);
+  }, [props.state.replyList]);
   useEffect(()=>{
-    setReplyNum(props.replyList.length + props.reReplyList.length);
-  }, [props.replyList], [props.reReplyList]);
+    setReplyNum(props.state.replyList.length + props.state.reReplyList.length);
+  }, [props.state.replyList], [props.state.reReplyList]);
   useEffect(()=>{
-    setReReplyList(props.reReplyList);
-  }, [props.reReplyList]);
+    setReReplyList(props.state.reReplyList);
+  }, [props.state.reReplyList]);
 
   
-
-  var id = props.id;
-  var user_id = props.user_id;
-  var user = props.user;
-  var title = props.title;
-  var content = props.content;
-  var reg_date = props.reg_date;
-  var view = props.view;
-  var url = props.path;
+  var url = props.state.pathname;
+  var id = props.state.id;
+  var user_id = props.state.user_id;
+  var user = props.state.user;
+  var title = props.state.title;
+  var content = props.state.content;
+  var reg_date = props.state.reg_date;
+  var view = props.state.view;
   
   function replyChange (e) {
-    setReply(e.target.value)
+    if (e.target.value.length > 200) {
+      setReply(e.target.value.slice(0, 200))
+    }
+    else {
+      setReply(e.target.value)
+    }
   };
 
   const deleteMsg = "\n게시글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
   const deletePost = () => {
-    setDeleteModalOpen(false);
+    setDeleteModal(false);
 
     axios.post("http://holo.dothome.co.kr/deleteDoc.php", JSON.stringify({id: id}),{
       withCredentials: false,
@@ -126,14 +130,14 @@ function ShowPost(props) {
 
   function submitReply(){
     try {
-      //Android.showToast("게시글에 댓글 작성!");
+      window.Android.showToast("게시글에 댓글 작성!");
     }
     catch (e) {
       console.log("Android 없음!");
     }
 
     if(reply===''){
-      setCheckModalOpen(true)
+      setCheckModal(true)
     }
     else{
       setReply('');
@@ -151,8 +155,7 @@ function ShowPost(props) {
         var content = reply;
 
         try {
-          Android.sendCmtAlarm(type,toEmail, content, url);
-          //console.log(type,toEmail, content, url);
+          window.Android.sendCmtAlarm(type,toEmail, content, url);
         }
         catch (e) {
           console.log("Android 없음!");
@@ -206,11 +209,11 @@ function ShowPost(props) {
 
   const replyDeleteMsg = "\n댓글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
   const setDeleteReply = (replyId) => {
-    setReplyDeleteModalOpen(true);
+    setReplyDeleteModal(true);
     setReplyId(replyId);
   }
   const deleteReply = () => {
-    setReplyDeleteModalOpen(false);
+    setReplyDeleteModal(false);
 
     axios.post("http://holo.dothome.co.kr/deleteCommentDoc.php", JSON.stringify({replyId: replyId}),
       {
@@ -257,9 +260,7 @@ function ShowPost(props) {
           var content = reReplyContent;
 
           try {
-            Android.sendCmtAlarm(type,toEmail, content, url);
-            console.log(toEmail, content, url);
-            //console.log(type,toEmail, content, url);
+            window.Android.sendCmtAlarm(type,toEmail, content, url);
           }
           catch (e) {
             console.log("Android 없음!");
@@ -316,11 +317,11 @@ function ShowPost(props) {
 
   const reReplyDeleteMsg = "\n답글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
   const setDeleteReReply = (reReplyId) => {
-    setReReplyDeleteModalOpen(true);
+    setReReplyDeleteModal(true);
     setReReplyId(reReplyId);
   }
   const deleteReReply = () => {
-    setReReplyDeleteModalOpen(false);
+    setReReplyDeleteModal(false);
     console.log("답글 삭제")
     
     axios.post("http://holo.dothome.co.kr/deleteReplyDoc.php", JSON.stringify({reReplyId: reReplyId}),
@@ -368,12 +369,12 @@ function ShowPost(props) {
               : <AiOutlineHeart className="heartIcon" onClick={() => { setHeart(true); increaseHeart(); }}/>
             }
             {like}
-            {currentUser===user_id
+            {currentUser.toString()===user_id
              ?<div>
                 <Link to={`/edit/document/${id}`}>
                   <button className="postEtcButton">수정</button>
                 </Link>
-                <button className="postEtcButton" onClick={() => {setDeleteModalOpen(true);}}>삭제</button>
+                <button className="postEtcButton" onClick={() => {setDeleteModal(true);}}>삭제</button>
               </div>
              :<div/>
             }
@@ -383,7 +384,7 @@ function ShowPost(props) {
       <div className="postReply">
         <div><BiMessageDetail style={{fontSize: '3.5vh'}}/> 댓글 {replyNum}</div>
         <div className="replyInput">
-            <textarea placeholder='댓글을 입력해주세요.' value={reply} spellCheck="false" onChange={replyChange}></textarea>
+            <textarea placeholder='댓글을 입력해주세요.' value={reply} spellCheck="false" onChange={replyChange} maxLength='200'></textarea>
             <button onClick={() => {submitReply()}}>등록</button>
         </div>
         <div className="replyTable">
@@ -391,18 +392,10 @@ function ShowPost(props) {
                       reReplyList={reReplyList} reReplySubmitFunc={submitReReply} reReplyEditFunc={editReReply} reReplyDeleteFunc={setDeleteReReply}/>
         </div>
       </div>
-      <Modal type="Check" open={deleteModalOpen} close={()=>{setDeleteModalOpen(false);}} submit={deletePost}>
-        {deleteMsg}
-      </Modal>
-      <Modal type="Info" open={checkModalOpen} close={()=>setCheckModalOpen(false)}>
-        내용을 입력해주세요!
-      </Modal>
-      <Modal type="Check" open={replyDeleteModalOpen} close={()=>{setReplyDeleteModalOpen(false);}} submit={deleteReply}>
-        {replyDeleteMsg}
-      </Modal>
-      <Modal type="Check" open={reReplyDeleteModalOpen} close={()=>{setReReplyDeleteModalOpen(false);}} submit={deleteReReply}>
-        {reReplyDeleteMsg}
-      </Modal>
+      <Modal type="Check" open={deleteModal} close={()=>{setDeleteModal(false);}} submit={deletePost}>{deleteMsg}</Modal>
+      <Modal type="Info" open={checkModal} close={()=>setCheckModal(false)}>내용을 입력해주세요!</Modal>
+      <Modal type="Check" open={replyDeleteModal} close={()=>{setReplyDeleteModal(false);}} submit={deleteReply}>{replyDeleteMsg}</Modal>
+      <Modal type="Check" open={reReplyDeleteModal} close={()=>{setReReplyDeleteModal(false);}} submit={deleteReReply}>{reReplyDeleteMsg}</Modal>
     </div>
   );
 }
@@ -416,9 +409,12 @@ class Post extends React.Component {
 
     this.state = {
        pathname : pathname,
-       user_id : 37,  //작성자 id
        id : words[2],
+       user_id : 37,  //작성자 id
        user : "",
+       score : 0,
+       deal_count : 0,
+       userMail : "",
        title : "",
        content : "",
        reg_date : "",
@@ -427,7 +423,7 @@ class Post extends React.Component {
        alreadyLiked: "",
        replyList : [],
        reReplyList : [],
-       currentUser: 34, //초기값 수정 필요  
+       currentUser: 10, //초기값 수정 필요  
     };
 
     var cookies = new Cookies()
@@ -442,6 +438,22 @@ class Post extends React.Component {
   componentDidMount(){
     console.log(this.state.id);
     
+    //거래정보 불러오기 (작성자-메일,평점,거래횟수)
+    axios.post("http://holo.dothome.co.kr/getDocInfo.php", JSON.stringify({postid: this.state.id}),{
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    })
+      .then(response => {
+        console.log(response.data);
+        this.setState ({
+          score : response.data.score,
+          userMail: response.data.userMail,
+          deal_count : response.data.deal_count});  
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+
     axios.post("http://holo.dothome.co.kr/findDocPost.php", JSON.stringify({postid: this.state.id}),{
       withCredentials: false,
       headers: {"Content-Type": "application/json"}
@@ -515,10 +527,7 @@ class Post extends React.Component {
 
   render() {
     return(
-      <ShowPost path={this.state.pathname} id = {this.state.id} user_id={this.state.user_id} user={this.state.user} title={this.state.title} 
-                content={this.state.content} reg_date={this.state.reg_date} view={this.state.view} like={this.state.like}
-                alreadyLiked = {this.state.alreadyLiked} currentUser = {this.state.currentUser} replyList={this.state.replyList}
-                reReplyList={this.state.reReplyList}/>
+      <ShowPost state={this.state}/>
     );
   }
 }

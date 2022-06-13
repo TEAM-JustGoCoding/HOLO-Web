@@ -17,13 +17,27 @@ const ReplyTable = ({currentUser, replyList, replyEditFunc, replyDeleteFunc, reR
   const [checkModalOpen, setCheckModalOpen] = useState(false)
 
   function replyEditChange(e) {
-    setReplyEdit(e.target.value)
+    if (e.target.value.length > 200) {
+      setReplyEdit(e.target.value.slice(0, 200))
+    }
+    else {
+      setReplyEdit(e.target.value)    }
   }
   function reReplySubmitChange (e) {
-    setReReplySubmit(e.target.value)
+    if (e.target.value.length > 200) {
+      setReReplySubmit(e.target.value.slice(0, 200))
+    }
+    else {
+      setReReplySubmit(e.target.value)
+    }
   };
   function reReplyEditChange (e) {
-    setReReplyEdit(e.target.value)
+    if (e.target.value.length > 200) {
+      setReReplyEdit(e.target.value.slice(0, 200))
+    }
+    else {
+      setReReplyEdit(e.target.value)
+    }
   };
 
   function editReply(replyId){
@@ -71,7 +85,7 @@ const ReplyTable = ({currentUser, replyList, replyEditFunc, replyDeleteFunc, reR
               ? <div>
                   <div className="replyTableInput">
                     <div>
-                      <textarea placeholder='댓글을 입력해주세요.' value={replyEdit} spellCheck="false" onChange={replyEditChange}></textarea>
+                      <textarea placeholder='댓글을 입력해주세요.' value={replyEdit} spellCheck="false" onChange={replyEditChange} maxLength='200'></textarea>
                       <div>
                         <button onClick={() => {editReply(item.id)}}>수정</button>
                         <button onClick={() => {setReplyState(null); setReplyEditState(null); setReplyEdit('');}}>취소</button>
@@ -91,7 +105,7 @@ const ReplyTable = ({currentUser, replyList, replyEditFunc, replyDeleteFunc, reR
                     <div className="replyTableInput">
                       <MdSubdirectoryArrowRight style={{fontSize: "30px", padding: "3px"}}/>
                       <div>
-                        <textarea placeholder='답글을 입력해주세요.' spellCheck="false" onChange={reReplySubmitChange}></textarea>
+                        <textarea placeholder='답글을 입력해주세요.' spellCheck="false" onChange={reReplySubmitChange} maxLength='200'></textarea>
                         <div>
                           <button onClick={() => {submitReReply(item.id)}}>등록</button>
                           <button onClick={() => {setReplyState(null); setReReplySubmitState(null); setReReplySubmit('');}}>취소</button>
@@ -101,14 +115,13 @@ const ReplyTable = ({currentUser, replyList, replyEditFunc, replyDeleteFunc, reR
                   </div>
                   :<div className="replyButton">
                       <button onClick={()=>{setReplyState('reReplySubmit'); setReReplySubmitState(item.id)}}>답글</button>
-                      {currentUser==item.user_id
+                      {currentUser.toString()===item.user_id
                       ?<div>
                         <button onClick={()=>{setReplyState('replyEdit'); setReplyEditState(item.id); setReplyEdit(item.content);}}>수정</button>
-                        <button onClick={()=>{replyDeleteFunc(item.id)}}>삭제</button>
+                        <button onClick={()=>{replyDeleteFunc(item.id);}}>삭제</button>
                       </div>
                       :<div/>
                       }
-
                     </div>
                   }
                 </div>
@@ -125,7 +138,7 @@ const ReplyTable = ({currentUser, replyList, replyEditFunc, replyDeleteFunc, reR
                             <div className="replyTableInput">
                               <MdSubdirectoryArrowRight style={{fontSize: "30px", padding: "3px"}}/>
                               <div>
-                                <textarea placeholder='답글을 입력해주세요.' value={reReplyEdit} spellCheck="false" onChange={reReplyEditChange}></textarea>
+                                <textarea placeholder='답글을 입력해주세요.' value={reReplyEdit} spellCheck="false" onChange={reReplyEditChange} maxLength='200'></textarea>
                                 <div>
                                   <button onClick={() => {editReReply(item2.id)}}>수정</button>
                                   <button onClick={() => {setReplyState(null); setReReplyEditState(null); setReReplyEdit('');}}>취소</button>
@@ -140,7 +153,7 @@ const ReplyTable = ({currentUser, replyList, replyEditFunc, replyDeleteFunc, reR
                                 <div className="replyDate">{item2.date}</div>
                             </div>
                             <div className="replyContent" style={{paddingLeft: "35px"}}>{item2.content}</div>
-                            {currentUser==item2.user_id
+                            {currentUser.toString()===item2.user_id
                             ?<div className="replyButton">
                               <div>
                                 <button onClick={()=>{setReplyState('reReplyEdit'); setReReplyEditState(item2.id); setReReplyEdit(item2.content);}}>수정</button>
@@ -161,9 +174,7 @@ const ReplyTable = ({currentUser, replyList, replyEditFunc, replyDeleteFunc, reR
         ))}
         </tbody>
       </Table>
-      <Modal type="Info" open={checkModalOpen} close={()=>setCheckModalOpen(false)}>
-        내용을 입력해주세요!
-      </Modal>
+      <Modal type="Info" open={checkModalOpen} close={()=>setCheckModalOpen(false)}>내용을 입력해주세요!</Modal>
     </div>
   );
 }

@@ -54,13 +54,18 @@ function PolicyWrite() {
     Policy_state.title = e.target.value;
   };
   function P_contentChange (e) {
-    Policy_state.content = e.target.value;
+    if (e.target.value.length > 21845) {
+      Policy_state.content = e.target.value.slice(0,21845);
+    }
+    else {
+      Policy_state.content = e.target.value;
+    }
   };
 
   return(
     <div className="writeInput">
-      <input type='text' id="title" placeholder='제목' spellCheck="false" onChange={P_titleChange}/>
-      <textarea id="content" className="infoContent" placeholder='내용을 입력하세요.' spellCheck="false" onChange={P_contentChange}/>
+      <input type='text' id="title" placeholder='제목' spellCheck="false" onChange={P_titleChange} maxLength='50'/>
+      <textarea id="content" className="infoContent" placeholder='내용을 입력하세요.' spellCheck="false" onChange={P_contentChange} maxLength='21845'/>
     </div>
   )
 }
@@ -70,13 +75,18 @@ function DocumentWrite() {
     Document_state.title = e.target.value;
   };
   function D_contentChange (e) {
-    Document_state.content = e.target.value;
+    if (e.target.value.length > 21845) {
+      Document_state.content = e.target.value.slice(0,21845);
+    }
+    else {
+      Document_state.content = e.target.value;
+    }
   };
 
   return(
     <div className="writeInput">
-      <input type='text' id="title" placeholder='제목' spellCheck="false" onChange={D_titleChange}/>
-      <textarea id="content" className="infoContent" placeholder='내용을 입력하세요.' spellCheck="false" onChange={D_contentChange}/>
+      <input type='text' id="title" placeholder='제목' spellCheck="false" onChange={D_titleChange} maxLength='50'/>
+      <textarea id="content" className="infoContent" placeholder='내용을 입력하세요.' spellCheck="false" onChange={D_contentChange} maxLength='21845'/>
     </div>
   )
 }
@@ -86,7 +96,12 @@ function OTTWrite(){
     OTT_state.title = e.target.value;
   };
   function O_contentChange (e) {
-    OTT_state.content = e.target.value;
+    if (e.target.value.length > 21845) {
+      OTT_state.content = e.target.value.slice(0,21845);
+    }
+    else {
+      OTT_state.content = e.target.value;
+    }
   };
   function O_goalChange (e) {
     OTT_state.goal = e.target.value;
@@ -101,11 +116,11 @@ function OTTWrite(){
 
   return(
     <div className="writeInput">
-      <input type='text' id="title" placeholder='제목' spellCheck="false" onChange={O_titleChange}/>
+      <input type='text' id="title" placeholder='제목' spellCheck="false" onChange={O_titleChange} maxLength='50'/>
       <input type="datetime-local" id="limitDate" data-placeholder="구매 일시" required aria-required="true" onChange={O_limitDateChange}/>
-      <input type='text' id="buyLocation" className="contentInput" placeholder='OTT 플랫폼' spellCheck="false" onChange={O_buyLocationChange}/>
+      <input type='text' id="buyLocation" className="contentInput" placeholder='OTT 플랫폼' spellCheck="false" onChange={O_buyLocationChange} maxLength='50'/>
       <input type='number' id="goal" className="contentInput" min="0" placeholder='목표 인원' onInput={(e)=>{e.target.value=e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1')}} onChange={O_goalChange}/>
-      <textarea id="content" className="ottContent" placeholder='내용을 입력하세요.' spellCheck="false" onChange={O_contentChange}/>
+      <textarea id="content" className="ottContent" placeholder='내용을 입력하세요.' spellCheck="false" onChange={O_contentChange} maxLength='21845'/>
     </div>
   )
 }
@@ -115,7 +130,12 @@ function DeliveryWrite() {
     Delivery_state.title = e.target.value;
   };
   function G_contentChange (e) {
-    Delivery_state.content = e.target.value;
+    if (e.target.value.length > 21845) {
+      Delivery_state.content = e.target.value.slice(0,21845);
+    }
+    else {
+      Delivery_state.content = e.target.value;
+    }
   };
   function G_goalChange (e) {
     Delivery_state.goal = e.target.value;
@@ -133,12 +153,12 @@ function DeliveryWrite() {
 
   return(
     <div className="writeInput">
-      <input type='text' id="title" placeholder='제목' spellCheck="false" onChange={G_titleChange}/>
+      <input type='text' id="title" placeholder='제목' spellCheck="false" onChange={G_titleChange} maxLength='50'/>
       <input type="datetime-local" id="limitDate" data-placeholder="구매 일시" required aria-required="true" onChange={G_limitDateChange}/>
-      <input type='text' id="buyLocation" placeholder='구매처' spellCheck="false" onChange={G_buyLocationChange}/>
+      <input type='text' id="buyLocation" placeholder='구매처' spellCheck="false" onChange={G_buyLocationChange} maxLength='50'/>
       <input type='number' id="goal" min="0" placeholder='목표 금액' onInput={(e)=>{e.target.value=e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1')}} onChange={G_goalChange}/>
-      <input type='text' id="pickupLocation" placeholder='픽업 위치' spellCheck="false" onChange={G_pickupChange}/>
-      <textarea id="content" className="deliveryContent" placeholder='내용을 입력하세요.' spellCheck="false" onChange={G_contentChange}/>
+      <input type='text' id="pickupLocation" placeholder='픽업 위치' spellCheck="false" onChange={G_pickupChange} maxLength='50'/>
+      <textarea id="content" className="deliveryContent" placeholder='내용을 입력하세요.' spellCheck="false" onChange={G_contentChange} maxLength='21845'/>
     </div>
   )
 }
