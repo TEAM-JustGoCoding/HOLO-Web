@@ -5,6 +5,7 @@ import {images} from '../../images';
 import {AiOutlineSearch} from "react-icons/ai";
 import BoardTable from '../../components/BoardTable';
 import Pagination from '../../components/Pagination';
+import axios from 'axios';
 
 
 function ShowBoard(props) {
@@ -64,20 +65,20 @@ class Board extends React.Component {
   }
 
   componentDidMount(){
-    fetch('https://stark-savannah-03205.herokuapp.com/http://holo.dothome.co.kr/faq_to_json.php')
-    .then(response => { return response.json();})
-    .then(response => { 
-                        var faqJson = [];
-                        var obj = response;
-                        //console.log(obj.length);
-    
-                        for(var i=0; i < obj.length; i++) {
-                          faqJson.push(obj[i]);
-                        }           
-                       console.log(faqJson);
-
-                       this.setState ({faq: faqJson});
-                      });                           
+    //faq 글 불러오기
+    axios.post("http://holo.dothome.co.kr/faq_to_json.php", JSON.stringify({temp: "faq"}),{
+          withCredentials: false,
+          headers: {"Content-Type": "application/json"}
+        })
+          .then(response => {
+            console.log(response.data);
+            this.setState ({
+              faq: response.data
+            });  
+          })
+          .catch(function(error) {
+            console.log(error);
+          });                         
   };
   render() {
     return(
