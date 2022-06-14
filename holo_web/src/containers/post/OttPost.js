@@ -114,6 +114,23 @@ function ShowPost(props) {
     setRefuseModal(false); 
     //신청자 거절
     console.log(refuseUserMail)
+    //참여자 거절
+    axios.post("http://holo.dothome.co.kr/OttDeclineParticipate.php", JSON.stringify({id: id, refuseTo: refuseUserMail}),{
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    })
+      .then(response => {
+        //거절 알림 보내기  
+        try {
+          //window.Android.createChatRoom(hostEmail, partner, boardTitle);
+        }
+        catch (e) {
+          console.log("Android 없음!");
+        }
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   }
 
   const participationMsg = "\nOTT 구독자 모집에 참여하시겠습니까?\n신중하게 결정해주세요!"
@@ -487,7 +504,7 @@ class Post extends React.Component {
        view : "",
        replyList : [],   //임의 댓글 데이터
        reReplyList : [],
-       currentUser : 28,
+       currentUser : 8,
        alreadyParticipated : "false"
     };
 

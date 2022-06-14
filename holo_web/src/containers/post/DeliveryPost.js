@@ -114,6 +114,23 @@ function ShowPost(props) {
     setRefuseModal(false); 
     //신청자 거절
     console.log(refuseUserMail)
+    //참여자 거절
+    axios.post("http://holo.dothome.co.kr/DeliveryDeclineParticipate.php", JSON.stringify({id: id, refuseTo: refuseUserMail}),{
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    })
+      .then(response => {
+        //거절 알림 보내기  
+        try {
+          //window.Android.createChatRoom(hostEmail, partner, boardTitle);
+        }
+        catch (e) {
+          console.log("Android 없음!");
+        }
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   }
 
   const participationMsg = "\n공동구매에 참여할 금액을 작성해주세요.\n입력하신 금액은 참여 현황에 반영됩니다.\n신중하게 작성해주세요!\n0원 이하는 입력할 수 없습니다.";
@@ -499,7 +516,7 @@ class Post extends React.Component {
        accumulate : "",
        view : "",
        replyList : [],
-       currentUser : 28,
+       currentUser : 1,
        reReplyList : [],
        alreadyParticipated : "false"
     };
