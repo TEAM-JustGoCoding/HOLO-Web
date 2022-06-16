@@ -35,12 +35,12 @@ function ShowBoard(props) {
           </button>
         </Link>
       </div>
-      <div className="boardCategoryBar">
-          <div className="centerText">
-            FAQ
-          </div>
+      <div className="boardCategoryBar faq">
+        <div className="centerText">
+          FAQ
         </div>
-      <div className='boardCenter'>
+      </div>
+      <div className='faqBoardCenter'>
         <div className="boardTable">
           <div>
             <div><BoardTable type="FAQ" list={sliceList()}></BoardTable></div>

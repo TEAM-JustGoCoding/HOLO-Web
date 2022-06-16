@@ -49,14 +49,12 @@
 }
 
 .boardCategoryBar{
-  background-color: #c9d3fb;
   width: 100vw;
   height: 7.5vh;
   display: flex;
   flex-direction: row;
 }
 .leftButton{
-  background-color: #c9d3fb;
   width: 50vw;
   height: 7.5vh;
   padding: 0;
@@ -68,7 +66,6 @@
   outline: 0;
 }
 .rightButton{
-  background-color: #ddcafa;
   width: 50vw;
   height: 7.5vh;
   padding: 0;
@@ -92,16 +89,20 @@
   color: #1d4999;
 }
 
-.boardCenter,
 .board.left{
-  background-color: #c9d3fb;
   width: 100vw;
   height: 82.5vh;
   display: flex;
   flex-direction: column;
 }
 .board.right {
-  background-color: #ddcafa;
+  width: 100vw;
+  height: 82.5vh;
+  display: flex;
+  flex-direction: column;
+}
+.faqBoardCenter{
+  background-color: #c7ecfd;
   width: 100vw;
   height: 82.5vh;
   display: flex;
@@ -176,6 +177,12 @@
   height: auto;
   margin: auto auto auto auto;
 }
+
+.policy{background-color: #c9d3fb;}
+.document{background-color: #ddcafa;}
+.delivery{background-color: #8f98ed;}
+.ott{background-color: #f4fbc9;}
+.faq{background-color: #c7ecfd;}
 
 @font-face {
   font-family: "aSmile_L";

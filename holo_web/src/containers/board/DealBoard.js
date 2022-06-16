@@ -8,7 +8,6 @@ import BoardTable from '../../components/BoardTable';
 import Pagination from '../../components/Pagination';
 import {Cookies} from "react-cookie";
 import axios from 'axios';
-import { responsiveFontSizes } from '@mui/material';
 
 function ShowBoard(props) {
   var deliveryJson = props.deliveryInfo;
@@ -56,10 +55,10 @@ function ShowBoard(props) {
         </Link>
       </div>
       <div className="boardCategoryBar">
-        <button className="leftButton" onClick={() => { setSelect("delivery"); setPage(1);/*getDeliveryJson();*/}} >공동구매</button>
-        <button className="rightButton" onClick={() => { setSelect("ott"); setPage(1); /*getOttJson();*/}}>OTT 구독</button>
+        <button className="leftButton delivery" onClick={() => { setSelect("delivery"); setPage(1);/*getDeliveryJson();*/}} >공동구매</button>
+        <button className="rightButton ott" onClick={() => { setSelect("ott"); setPage(1); /*getOttJson();*/}}>OTT 구독</button>
       </div>
-      <div className={`board ${select === "delivery" ? 'left' : 'right'}`}>
+      <div className={`board ${select === "delivery" ? 'left delivery' : 'right ott'}`}>
         <div className="boardTable">
           <div>
             <div><BoardTable type={`${select === "delivery" ? 'Delivery' : 'Ott'}`} list={sliceList()}></BoardTable></div>

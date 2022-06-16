@@ -112,9 +112,7 @@ function ShowPost(props) {
   }
   const refuseUser = () => {
     setRefuseModal(false); 
-    //신청자 거절
-    console.log(refuseUserMail)
-    //참여자 거절
+    setManageModal(false);
     axios.post("http://holo.dothome.co.kr/OttDeclineParticipate.php", JSON.stringify({id: id, refuseTo: refuseUserMail}),{
       withCredentials: false,
       headers: {"Content-Type": "application/json"}
@@ -347,6 +345,18 @@ function ShowPost(props) {
         .catch(function(error) {
           console.log(error);
         });
+
+    axios.post("http://holo.dothome.co.kr/getReplyOtt.php", JSON.stringify({post: id}),
+    {
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    }).then(response => {   
+      setReReplyList(response.data);  
+      console.log(reReplyList);
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
   }
 
   const editReReply = (reReplyId, reReplyContent) => {
@@ -370,7 +380,7 @@ function ShowPost(props) {
         withCredentials: false,
         headers: {"Content-Type": "application/json"}
       }).then(response => {   
-        setReplyList(response.data);  
+        setReReplyList(response.data);  
         console.log(reReplyList);
       })
       .catch(function(error) {

@@ -261,6 +261,18 @@ function ShowPost(props) {
         .catch(function(error) {
           console.log(error);
         });
+        
+    axios.post("http://holo.dothome.co.kr/getReplyPolicy.php", JSON.stringify({post: id}),
+    {
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    }).then(response => {   
+      setReReplyList(response.data);  
+      console.log(reReplyList);
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
   }
 
   const editReReply = (reReplyId, reReplyContent) => {
@@ -284,7 +296,7 @@ function ShowPost(props) {
         withCredentials: false,
         headers: {"Content-Type": "application/json"}
       }).then(response => {   
-        setReplyList(response.data);  
+        setReReplyList(response.data);  
         console.log(reReplyList);
       })
       .catch(function(error) {
@@ -311,7 +323,8 @@ function ShowPost(props) {
         console.log(error);
       });
     
-    setReplyNum(replyNum-1);  //댓글 개수 증가
+    setReplyNum(replyNum-1);  //댓글 개수 감소
+
     axios.post("http://holo.dothome.co.kr/getReplyPolicy.php", JSON.stringify({post: id}),
     {
       withCredentials: false,

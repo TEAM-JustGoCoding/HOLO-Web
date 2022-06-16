@@ -97,7 +97,7 @@ function Search() {
   }
   
   return (
-    <div className="leftSearch">
+    <div className="search delivery">
       <div className="searchHeaderBar">
         <input type="text" onChange={getResearchWord} placeholder="검색어를 입력해주세요" maxLength='50'/>
         <button onClick={search}>

@@ -63,10 +63,10 @@ function ShowBoard(props) {
         </Link>
       </div>
       <div className="boardCategoryBar">
-        <button className="leftButton" onClick={() => { setSelect("policy"); setPage(1);/*getPolicyJson();*/}} >정책</button>
-        <button className="rightButton" onClick={() => { setSelect("document"); setPage(1); /*getDocumentJson();*/}}>생활백서</button>
+        <button className="leftButton policy" onClick={() => { setSelect("policy"); setPage(1);/*getPolicyJson();*/}} >정책</button>
+        <button className="rightButton document" onClick={() => { setSelect("document"); setPage(1); /*getDocumentJson();*/}}>생활백서</button>
       </div>
-      <div className={`board ${select === "policy" ? 'left' : 'right'}`}>
+      <div className={`board ${select === "policy" ? 'left policy' : 'right document'}`}>
         <div className="boardTable">
           <div>
             <div>

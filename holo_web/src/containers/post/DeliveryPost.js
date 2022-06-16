@@ -111,9 +111,8 @@ function ShowPost(props) {
     setRefuseUserMail(mail)
   }
   const refuseUser = () => {
-    setRefuseModal(false); 
-    //신청자 거절
-    console.log(refuseUserMail)
+    setRefuseModal(false);
+    setManageModal(false);
     //참여자 거절
     axios.post("http://holo.dothome.co.kr/DeliveryDeclineParticipate.php", JSON.stringify({id: id, refuseTo: refuseUserMail}),{
       withCredentials: false,
@@ -516,7 +515,7 @@ class Post extends React.Component {
        accumulate : "",
        view : "",
        replyList : [],
-       currentUser : 1,
+       currentUser : 28,
        reReplyList : [],
        alreadyParticipated : "false"
     };

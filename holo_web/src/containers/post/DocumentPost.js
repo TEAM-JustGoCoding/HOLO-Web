@@ -242,7 +242,6 @@ function ShowPost(props) {
   }
 
   const submitReReply = (replyId, reReplyContent) => {
-    console.log("답글 등록")
     setReplyNum(replyNum+1);  //댓글 개수 증가
     //답글 등록 (댓글 id, 답글 내용)
       console.log("댓글 등록");
@@ -276,7 +275,7 @@ function ShowPost(props) {
       withCredentials: false,
       headers: {"Content-Type": "application/json"}
     }).then(response => {   
-      setReplyList(response.data);  
+      setReReplyList(response.data);  
       console.log(reReplyList);
    })
     .catch(function(error) {
@@ -285,7 +284,6 @@ function ShowPost(props) {
   }
 
   const editReReply = (reReplyId, reReplyContent) => {
-    console.log("답글 수정")
     //답글 수정 (답글 id, 답글 내용)
     var date = getToday();
 
@@ -300,14 +298,13 @@ function ShowPost(props) {
         console.log(error);
       });
     
-
     //답글 업데이트
     axios.post("http://holo.dothome.co.kr/getReplyDocument.php", JSON.stringify({post: id}),
       {
         withCredentials: false,
         headers: {"Content-Type": "application/json"}
       }).then(response => {   
-        setReplyList(response.data);  
+        setReReplyList(response.data);  
         console.log(reReplyList);
       })
       .catch(function(error) {

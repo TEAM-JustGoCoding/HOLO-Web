@@ -1,11 +1,4 @@
-.leftSearch,
-.faqSearch {
-  background-color: #c9d3fb;
-  width: 100vw;
-  height: 100vh;
-}
-.rightSearch {
-  background: #ddcafa;
+.search{
   width: 100vw;
   height: 100vh;
 }
@@ -98,6 +91,12 @@
   font-size: 3.5vh;
   color: #1d4999;
 }
+
+.policy{background-color: #c9d3fb;}
+.document{background-color: #ddcafa;}
+.delivery{background-color: #8f98ed;}
+.ott{background-color: #f4fbc9;}
+.faq{background-color: #c7ecfd;}
 
 @font-face {
   font-family: "aSmile_L";
