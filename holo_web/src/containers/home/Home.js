@@ -10,17 +10,25 @@ function Home() {
 
   useEffect(()=> {
     switch(queryString.parse(window.location.search).path){
-      case 'policy':
+      case 'policyboard':
         navigate('/infoboard?select=policy'); break;
-      case 'document':
+      case 'documentboard':
         navigate('/infoboard?select=document'); break;
-      case 'delivery':
+      case 'deliveryboard':
         navigate('/dealboard?select=delivery'); break;
-      case 'ott':
+      case 'ottboard':
         navigate('/dealboard?select=ott'); break;
-      case 'faq':
+      case 'policypost':
+        navigate('/policypost/'+queryString.parse(window.location.search).id); break;
+      case 'documentpost':
+        navigate('/documentpost/'+queryString.parse(window.location.search).id); break;
+      case 'deliverypost':
+        navigate('/deliverypost/'+queryString.parse(window.location.search).id); break;
+      case 'ottpost':
+        navigate('/ottpost/'+queryString.parse(window.location.search).id); break;
+      case 'faqboard':
         navigate('/faqboard'); break;
-      case 'like':
+      case 'likeboard':
         navigate('/likeboard'); break;
       default:
         return null

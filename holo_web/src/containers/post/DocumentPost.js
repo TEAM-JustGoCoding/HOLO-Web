@@ -40,13 +40,13 @@ function ShowPost(props) {
   }, [props.state.replyList]);
   useEffect(()=>{
     setReplyNum(props.state.replyList.length + props.state.reReplyList.length);
-  }, [props.state.replyList], [props.state.reReplyList]);
+  }, [props.state.replyList, props.state.reReplyList]);
   useEffect(()=>{
     setReReplyList(props.state.reReplyList);
   }, [props.state.reReplyList]);
 
   
-  var url = props.state.pathname;
+  var url = '?path=documentpost&id='+props.state.id;
   var id = props.state.id;
   var user_id = props.state.user_id;
   var user = props.state.user;

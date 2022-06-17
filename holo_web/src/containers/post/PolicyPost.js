@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import {Cookies} from "react-cookie";
 import Modal from '../../components/Modal';
 import ReplyTable from '../../components/ReplyTable';
-import {images} from '../../images';
+import {getProfileImg} from '../../firebase'
 import { AiOutlineEye, AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BiMessageDetail } from "react-icons/bi";
 import axios from 'axios';
@@ -25,8 +25,6 @@ function ShowPost(props) {
   const [reReplyId, setReReplyId] = useState(null);
   const [reReplyList, setReReplyList] = useState([]);
 
-
-
   useEffect(() => {
     setCurrentUser(props.state.currentUser);
   }, [props.state.currentUser])
@@ -41,12 +39,12 @@ function ShowPost(props) {
   }, [props.state.replyList]);
   useEffect(()=>{
     setReplyNum(props.state.replyList.length + props.state.reReplyList.length);
-  }, [props.state.replyList], [props.state.reReplyList]);
+  }, [props.state.replyList, props.state.reReplyList]);
   useEffect(()=>{
     setReReplyList(props.state.reReplyList);
   }, [props.state.reReplyList]);
 
-  var url = props.state.pathname;
+  var url = '?path=policypost&id='+props.state.id;
   var id = props.state.id;
   var user_id = props.state.user_id;
   var user = props.state.user;
@@ -54,6 +52,7 @@ function ShowPost(props) {
   var content = props.state.content;
   var reg_date = props.state.reg_date;
   var view = props.state.view;
+  var profile = props.state.profile;
   
   function replyChange (e) {
     if (e.target.value.length > 200) {
@@ -344,7 +343,7 @@ function ShowPost(props) {
         <div>정책</div>
       </div>
       <div className="postTitle">{title}</div>
-      <div className="postUser"><img src={images.user} alt="User"/>{user}</div>
+      <div className="postUser"><img src={profile} alt=" "/>{user}</div>
       <div className="postRegDate">{reg_date}</div>
       <div className="postContent">
         {content}
@@ -372,7 +371,7 @@ function ShowPost(props) {
         <div><BiMessageDetail style={{fontSize: '3.5vh'}}/> 댓글 {replyNum}</div>
         <div className="replyInput">
           <textarea name="reply" placeholder='댓글을 입력해주세요.' value={reply} spellCheck="false" onChange={replyChange} maxLength='200'></textarea>
-          <button onClick={() => {submitReply()}}>등록</button>
+          <button onClick={() => {submitReply(); console.log(replyList)}}>등록</button>
         </div>
         <div className="replyTable">
           <ReplyTable currentUser={currentUser} replyList={replyList} replyEditFunc={editReply} replyDeleteFunc={setDeleteReply}
@@ -411,7 +410,8 @@ class Post extends React.Component {
        alreadyLiked : '', //이 글을 보는 사용자가 이전에 이미 좋아요를 눌렀는지 체크하는 변수
        replyList : [],
        reReplyList : [],
-       currentUser: 28, //초기값 수정 필요  
+       currentUser: 28, //초기값 수정 필요
+       profile: ''
     };
 
     var cookies = new Cookies()
@@ -436,7 +436,12 @@ class Post extends React.Component {
         this.setState ({
           score : response.data.score,
           userMail: response.data.userMail,
-          deal_count : response.data.deal_count});  
+          deal_count : response.data.deal_count
+        });
+        getProfileImg(response.data.userMail).then((img) => {
+          this.setState ({
+            profile: img})
+        });
       })
       .catch(function(error) {
         console.log(error);
@@ -455,7 +460,8 @@ class Post extends React.Component {
           content: response.data[0].content,
           reg_date : response.data[0].reg_date,
           view : response.data[0].view,
-          like : response.data[0].like });
+          like : response.data[0].like
+        });
       })
       .catch(function(error) {
         console.log(error);

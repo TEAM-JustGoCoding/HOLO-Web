@@ -133,8 +133,38 @@ class Board extends React.Component {
           })
           .catch(function(error) {
             console.log(error);
-          });                    
-  };
+          });
+          
+    //hot document 글 불러오기 
+    axios.post("http://holo.dothome.co.kr/hotDocument.php", JSON.stringify({temp: "doc"}),{
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    })
+      .then(response => {
+        console.log(response.data);
+        this.setState ({
+          hotDocument: response.data
+        });  
+      })
+      .catch(function(error) {
+        console.log(error);
+      }); 
+
+    //hot policy 글 불러오기
+    axios.post("http://holo.dothome.co.kr/hotPolicy.php", JSON.stringify({temp: "policy"}),{
+          withCredentials: false,
+          headers: {"Content-Type": "application/json"}
+        })
+          .then(response => {
+            console.log(response.data);
+            this.setState ({
+              hotPolicy: response.data
+            });  
+          })
+          .catch(function(error) {
+            console.log(error);
+          });                  
+      };
 
   render() {
     return(

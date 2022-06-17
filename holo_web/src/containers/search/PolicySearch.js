@@ -32,7 +32,7 @@ function ExistResults(props) {
     <div>
       <div className="searchTable">
         <div>
-          <div><BoardTable type="Policy" list={sliceList()}></BoardTable></div>
+          <div><BoardTable type="Policy" list={sliceList()} searchQuery={props.searchQuery}></BoardTable></div>
         </div>
       </div>
       <div className="searchPagination">
@@ -55,7 +55,7 @@ function ShowResults(props) {
     case 0:
       return <NoResults/>;
     case 1:
-      return <ExistResults searchResult={props.searchResult}/>;
+      return <ExistResults searchQuery={props.searchQuery} searchResult={props.searchResult}/>;
     default:
       return null
   }
@@ -64,6 +64,7 @@ function ShowResults(props) {
 function Search() {
   const [modalOpen, setModalOpen] = useState(false)
   const [searchWord, setSearchWord] = useState("")
+  const [searchQuery, setSearchQuery] = useState("")
   const [searchResult, setSearchResult] = useState(null)
   const [resultExist, setResultExist] = useState(null)
 
@@ -73,6 +74,7 @@ function Search() {
     }
     else{
       console.log("검색어: ",searchWord);
+      setSearchQuery(searchWord);
       //1. 검색어 json 형식으로 php 서버에 전송
       axios.post("http://holo.dothome.co.kr/searchPolicy.php", JSON.stringify({word: searchWord}),{
         withCredentials: false,
@@ -105,7 +107,7 @@ function Search() {
         </button>
       </div>
       <div className="searchResults">
-        <ShowResults resultExist={resultExist} searchResult={searchResult}></ShowResults>
+        <ShowResults resultExist={resultExist} searchQuery={searchQuery} searchResult={searchResult}></ShowResults>
         <Modal type="Info" open={modalOpen} close={()=>setModalOpen(false)}>검색어를 입력해주세요!</Modal>
       </div>
     </div>

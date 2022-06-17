@@ -32,6 +32,8 @@
     width: 7vh;
     height: 7vh;
     margin: 0 1vh 0 0;
+    border: solid 1px #ababab;
+    border-radius: 50px;
 }
 .postRegDate {
     width: 90vw;

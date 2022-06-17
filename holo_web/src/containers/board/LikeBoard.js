@@ -57,7 +57,7 @@ class Board extends React.Component {
       //user: 32,  //29 시도해볼 것
       policy: [],
       document: [],
-      currentUser: 35 //임의의 사용자
+      currentUser: 28 //임의의 사용자
     };
 
     var cookies = new Cookies()

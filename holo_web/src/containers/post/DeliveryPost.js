@@ -40,7 +40,7 @@ function ShowPost(props) {
   }, [props.state.replyList]);
   useEffect(()=>{
     setReplyNum(props.state.replyList.length + props.state.reReplyList.length);
-  }, [props.state.replyList], [props.state.reReplyList]);
+  }, [props.state.replyList, props.state.reReplyList]);
   useEffect(()=>{
     setParticipation(props.state.alreadyParticipated);
   }, [props.state.alreadyParticipated]);
@@ -48,7 +48,7 @@ function ShowPost(props) {
     setReReplyList(props.state.reReplyList);
   }, [props.state.reReplyList]);
 
-  var url = props.state.pathname;
+  var url = '?path=deliverypost&id='+props.state.id;
   var id = props.state.id;
   var user_id = props.state.user_id;
   var user = props.state.user;
@@ -119,9 +119,10 @@ function ShowPost(props) {
       headers: {"Content-Type": "application/json"}
     })
       .then(response => {
-        //거절 알림 보내기  
         try {
-          //window.Android.createChatRoom(hostEmail, partner, boardTitle);
+          var toEmail = refuseUserMail;
+          var Title = title;
+          window.Android.sendRefuseDeal(toEmail, Title);
         }
         catch (e) {
           console.log("Android 없음!");
