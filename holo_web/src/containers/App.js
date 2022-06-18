@@ -9,6 +9,7 @@ import DocumentPost from './post/DocumentPost';
 import DeliveryPost from './post/DeliveryPost';
 import OttPost from './post/OttPost';
 import FAQPost from './post/FAQPost';
+import AllSearch from './search/AllSearch'
 import PolicySearch from './search/PolicySearch';
 import DocumentSearch from './search/DocumentSearch';
 import DeliverySearch from './search/DeliverySearch';
@@ -30,6 +31,7 @@ const App = () => {
       <Route path="/deliverypost/:id" element={<DeliveryPost/>}/>
       <Route path="/ottpost/:id" element={<OttPost/>}/>
       <Route path="/faqpost/:id" element={<FAQPost/>}/>
+      <Route path="/allsearch" element={<AllSearch/>}/>
       <Route path="/policysearch" element={<PolicySearch />} />
       <Route path="/documentsearch" element={<DocumentSearch />} />
       <Route path="/deliverysearch" element={<DeliverySearch/>}/>

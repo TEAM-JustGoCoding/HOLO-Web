@@ -11,7 +11,7 @@ import axios from 'axios';
 
 function ShowPost(props) {
   const navigate = useNavigate();
-  const [currentUser, setCurrentUser] = useState(28); //초기값 수정 필요
+  const [currentUser, setCurrentUser] = useState(70); //초기값 수정 필요
   const [heart, setHeart] = useState(false);
   const [like, setLike] =useState('');
   const [deleteModal, setDeleteModal] = useState(false);
@@ -43,6 +43,14 @@ function ShowPost(props) {
   useEffect(()=>{
     setReReplyList(props.state.reReplyList);
   }, [props.state.reReplyList]);
+  useEffect(()=>{
+    for(let i=0;i<replyList.length;i++){
+      getProfileImg(replyList[i].mail).then((img) => {
+        replyList[i].profile = img
+      })
+    }
+    console.log(replyList)
+  }, [replyList])
 
   var url = '?path=policypost&id='+props.state.id;
   var id = props.state.id;
@@ -236,7 +244,7 @@ function ShowPost(props) {
     console.log("답글 등록")
     setReplyNum(replyNum+1);  //댓글 개수 증가
     //답글 등록 (댓글 id, 답글 내용)
-      console.log("댓글 등록");
+      console.log("답글 등록");
       var date = getToday();
   
       axios.post("http://holo.dothome.co.kr/replyPolicy.php", 
@@ -246,7 +254,7 @@ function ShowPost(props) {
         headers: {"Content-Type": "application/json"}
       })
         .then(response => {   
-          var type = "comment";
+          var type = "subComment";
           var toEmail = JSON.stringify(response.data);
           var content = reReplyContent;
 
@@ -343,7 +351,7 @@ function ShowPost(props) {
         <div>정책</div>
       </div>
       <div className="postTitle">{title}</div>
-      <div className="postUser"><img src={profile} alt=" "/>{user}</div>
+      <div className="postUser"><div><img src={profile} alt=" "/></div><span>{user}</span></div>
       <div className="postRegDate">{reg_date}</div>
       <div className="postContent">
         {content}
@@ -410,7 +418,7 @@ class Post extends React.Component {
        alreadyLiked : '', //이 글을 보는 사용자가 이전에 이미 좋아요를 눌렀는지 체크하는 변수
        replyList : [],
        reReplyList : [],
-       currentUser: 28, //초기값 수정 필요
+       currentUser: 70, //초기값 수정 필요
        profile: ''
     };
 

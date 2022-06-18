@@ -8,15 +8,33 @@
     flex-direction: row;
 }
 .replyUser {
+    display: flex;
+    flex-direction: row;
     height: 100%;
     margin: auto auto auto 0;
     font-family: "aSmile_L";
     font-size: 2vh;
 }
-.replyUser > img {
+.replyUser > div {
+    position: relative;
     width: 5vh;
     height: 5vh;
     margin: 0 5px 0 0;
+}
+.replyUser > div > img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(50, 50);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    margin: auto;
+    border: solid 1px #ababab;
+    border-radius: 50px;
+}
+.replyUser > span {
+    margin: auto auto auto 1px;
 }
 .replyDate {
     height: 100%;
@@ -33,6 +51,8 @@
     white-space: pre-line;
     font-family: "aSmile_L";
     font-size: 2vh;
+    word-wrap: break-word;
+    word-break: break-all;
 }
 .replyButton {
     padding: 3px;

@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import {Cookies} from "react-cookie";
 import Modal from '../../components/Modal';
 import ReplyTable from '../../components/ReplyTable';
-import {images} from '../../images';
+import {getProfileImg} from '../../firebase'
 import { AiOutlineEye, AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BiMessageDetail } from "react-icons/bi";
 import axios from 'axios';
@@ -44,8 +44,15 @@ function ShowPost(props) {
   useEffect(()=>{
     setReReplyList(props.state.reReplyList);
   }, [props.state.reReplyList]);
+  useEffect(()=>{
+    for(let i=0;i<replyList.length;i++){
+      getProfileImg(replyList[i].mail).then((img) => {
+        replyList[i].profile = img
+      })
+    }
+    console.log(replyList)
+  }, [replyList])
 
-  
   var url = '?path=documentpost&id='+props.state.id;
   var id = props.state.id;
   var user_id = props.state.user_id;
@@ -54,6 +61,7 @@ function ShowPost(props) {
   var content = props.state.content;
   var reg_date = props.state.reg_date;
   var view = props.state.view;
+  var profile = props.state.profile;
   
   function replyChange (e) {
     if (e.target.value.length > 200) {
@@ -244,7 +252,7 @@ function ShowPost(props) {
   const submitReReply = (replyId, reReplyContent) => {
     setReplyNum(replyNum+1);  //댓글 개수 증가
     //답글 등록 (댓글 id, 답글 내용)
-      console.log("댓글 등록");
+      console.log("답글 등록");
       var date = getToday();
   
       axios.post("http://holo.dothome.co.kr/replyDoc.php", 
@@ -254,7 +262,7 @@ function ShowPost(props) {
          headers: {"Content-Type": "application/json"}
       })
         .then(response => {   
-          var type = "comment";
+          var type = "subComment";
           var toEmail = JSON.stringify(response.data);
           var content = reReplyContent;
 
@@ -354,7 +362,7 @@ function ShowPost(props) {
         <div>생활백서</div>
       </div>
       <div className="postTitle">{title}</div>
-      <div className="postUser"><img src={images.user} alt="User"/>{user}</div>
+      <div className="postUser"><div><img src={profile} alt=" "/></div><span>{user}</span></div>
       <div className="postRegDate">{reg_date}</div>
       <div className="postContent">
         {content}
@@ -420,7 +428,8 @@ class Post extends React.Component {
        alreadyLiked: "",
        replyList : [],
        reReplyList : [],
-       currentUser: 10, //초기값 수정 필요  
+       currentUser: 10, //초기값 수정 필요
+       profile: ''
     };
 
     var cookies = new Cookies()
@@ -445,7 +454,11 @@ class Post extends React.Component {
         this.setState ({
           score : response.data.score,
           userMail: response.data.userMail,
-          deal_count : response.data.deal_count});  
+          deal_count : response.data.deal_count});
+        getProfileImg(response.data.userMail).then((img) => {
+          this.setState ({
+            profile: img})
+        });
       })
       .catch(function(error) {
         console.log(error);

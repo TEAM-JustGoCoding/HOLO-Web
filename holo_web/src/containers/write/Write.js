@@ -104,6 +104,9 @@ function OTTWrite(){
     }
   };
   function O_goalChange (e) {
+    if (e.target.value.length > 2){
+      e.target.value = parseInt(String(e.target.value).slice(0,2));
+    }
     OTT_state.goal = e.target.value;
   }
   function O_limitDateChange (e) {
@@ -119,7 +122,7 @@ function OTTWrite(){
       <input type='text' id="title" placeholder='제목' spellCheck="false" onChange={O_titleChange} maxLength='50'/>
       <input type="datetime-local" id="limitDate" data-placeholder="구매 일시" required aria-required="true" onChange={O_limitDateChange}/>
       <input type='text' id="buyLocation" className="contentInput" placeholder='OTT 플랫폼' spellCheck="false" onChange={O_buyLocationChange} maxLength='50'/>
-      <input type='number' id="goal" className="contentInput" min="0" placeholder='목표 인원' onInput={(e)=>{e.target.value=e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1')}} onChange={O_goalChange}/>
+      <input type='number' id="goal" className="contentInput" min="0" max="10" placeholder='목표 인원 (10명 이하)' onInput={(e)=>{e.target.value=e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1')}} onChange={O_goalChange} maxLength='2'/>
       <textarea id="content" className="ottContent" placeholder='내용을 입력하세요.' spellCheck="false" onChange={O_contentChange} maxLength='21845'/>
     </div>
   )
@@ -138,6 +141,9 @@ function DeliveryWrite() {
     }
   };
   function G_goalChange (e) {
+    if (e.target.value.length > 7) {
+      e.target.value = parseInt(String(e.target.value).slice(0,7));
+    }
     Delivery_state.goal = e.target.value;
   }
   function G_buyLocationChange (e) {
@@ -156,7 +162,7 @@ function DeliveryWrite() {
       <input type='text' id="title" placeholder='제목' spellCheck="false" onChange={G_titleChange} maxLength='50'/>
       <input type="datetime-local" id="limitDate" data-placeholder="구매 일시" required aria-required="true" onChange={G_limitDateChange}/>
       <input type='text' id="buyLocation" placeholder='구매처' spellCheck="false" onChange={G_buyLocationChange} maxLength='50'/>
-      <input type='number' id="goal" min="0" placeholder='목표 금액' onInput={(e)=>{e.target.value=e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1')}} onChange={G_goalChange}/>
+      <input type='number' id="goal" min="0"  max="1000000" placeholder='목표 금액 (100만원 이하)' onInput={(e)=>{e.target.value=e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1')}} onChange={G_goalChange} maxLength='7'/>
       <input type='text' id="pickupLocation" placeholder='픽업 위치' spellCheck="false" onChange={G_pickupChange} maxLength='50'/>
       <textarea id="content" className="deliveryContent" placeholder='내용을 입력하세요.' spellCheck="false" onChange={G_contentChange} maxLength='21845'/>
     </div>
@@ -291,6 +297,8 @@ function Write() {
   const [category, setCategory] = useState("정책");
   const [dropdownOpen, setDropdown] = useState(false);
   const [checkModalOpen, setCheckModalOpen] = useState(false);
+  const [ottCheckModalOpen, setOttCheckModalOpen] = useState(false);
+  const [deliveryCheckModalOpen, setDeliveryCheckModalOpen] = useState(false);
   const [finModalOpen, setFinModalOpen] = useState(false);
 
   var cookies = new Cookies()
@@ -356,11 +364,13 @@ function Write() {
       case "OTT구독":
         if(OTT_state.title===''||OTT_state.content===''||OTT_state.limit_date===''||OTT_state.buy_location===''
           ||OTT_state.goal===''){setCheckModalOpen(true)}
+        else if(OTT_state.goal>10){setOttCheckModalOpen(true)}
         else{openFinModal(); postDB(category);}
         return;
       case "공동구매":
         if(Delivery_state.title===''||Delivery_state.content===''||Delivery_state.limit_date===''||Delivery_state.buy_location===''
           ||Delivery_state.pickup_location===''||Delivery_state.goal===''){setCheckModalOpen(true)}
+        else if(Delivery_state.goal>1000000){setDeliveryCheckModalOpen(true)}
         else{openFinModal(); postDB(category);}
         return;
       default:
@@ -375,12 +385,10 @@ function Write() {
         <button className="categoryButton" onClick={openDropdown}>{category}</button>
         <Dropdown open={dropdownOpen} close={closeDropdown}></Dropdown>
         <button className="finButton" onClick={() => {checkFin(category);}}>완료</button>
-        <Modal type="Info" open={checkModalOpen} close={()=>setCheckModalOpen(false)}>
-          내용을 모두 입력해주세요!
-        </Modal>
-        <Modal type="Info" open={finModalOpen} close={closeFinModal}>
-          게시글 작성이 완료되었어요!
-        </Modal>
+        <Modal type="Info" open={checkModalOpen} close={()=>setCheckModalOpen(false)}>내용을 모두 입력해주세요!</Modal>
+        <Modal type="Info" open={ottCheckModalOpen} close={()=>setOttCheckModalOpen(false)}>목표 인원은 10명 이하로 입력해주세요!</Modal>
+        <Modal type="Info" open={deliveryCheckModalOpen} close={()=>setDeliveryCheckModalOpen(false)}>목표 금액은 100만원 이하로 입력해주세요!</Modal>
+        <Modal type="Info" open={finModalOpen} close={closeFinModal}>게시글 작성이 완료되었어요!</Modal>
       </div>
       <ShowInput category={category}></ShowInput>
     </div>

@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Modal from '../../components/Modal';
 import ReplyTable from '../../components/ReplyTable';
-import {images} from '../../images';
+import {getProfileImg} from '../../firebase'
 import { AiOutlineEye } from "react-icons/ai";
 import { FaRegLaughBeam, FaRegLaugh, FaRegLaughSquint } from "react-icons/fa";
 import { BiMessageDetail } from "react-icons/bi";
@@ -55,7 +55,6 @@ function ShowPost(props) {
   var score = props.state.score;
   var deal_count = props.state.deal_count;
   var participationList = props.state.participationList;
-  var userMail= props.state.userMail;
   var title = props.state.title;
   var content = props.state.content;
   var reg_date = props.state.reg_date;
@@ -65,6 +64,7 @@ function ShowPost(props) {
   var goal = props.state.goal;
   var accumulate = props.state.accumulate;
   var view = props.state.view;
+  var profile = props.state.profile;
   
   function replyChange (e) {
     if (e.target.value.length > 200) {
@@ -138,6 +138,7 @@ function ShowPost(props) {
     setParticipationModal(false);
     setParticipation(true);
     console.log(money+"원! 공동구매 금액 추가!")
+
     //공동구매 참여
     axios.post("http://holo.dothome.co.kr/DeliveryParticipate.php", JSON.stringify({id: id, starter: user, user: currentUser, money: money}),{
       withCredentials: false,
@@ -321,7 +322,7 @@ function ShowPost(props) {
     console.log("답글 등록")
     setReplyNum(replyNum+1);  //댓글 개수 증가
     //답글 등록 (댓글 id, 답글 내용)
-      console.log("댓글 등록");
+      console.log("답글 등록");
       var date = getToday();
   
       axios.post("http://holo.dothome.co.kr/replyDelivery.php", 
@@ -331,7 +332,7 @@ function ShowPost(props) {
         headers: {"Content-Type": "application/json"}
       })
         .then(response => {   
-          var type = "comment";
+          var type = "subComment";
           var toEmail = JSON.stringify(response.data);
           var content = reReplyContent;
 
@@ -429,7 +430,7 @@ function ShowPost(props) {
         <div>공동구매</div>
       </div>
       <div className="postTitle">{title}</div>
-      <div className="postUser"><img src={images.user} alt="User" onClick={()=>setUserInfoModal(true)}/>{user}</div>
+      <div className="postUser"><div><img src={profile} alt=" " onClick={()=>setUserInfoModal(true)}/></div><span>{user}</span></div>
       <div className="postRegDate">{reg_date}</div>
       <div className="postContent">
         <div className="postDealContent">
@@ -518,7 +519,8 @@ class Post extends React.Component {
        replyList : [],
        currentUser : 28,
        reReplyList : [],
-       alreadyParticipated : "false"
+       alreadyParticipated : "false",
+       profile: ''
     };
 
     var cookies = new Cookies()
@@ -542,7 +544,11 @@ class Post extends React.Component {
           score : response.data.score,
           userMail: response.data.userMail,
           deal_count : response.data.deal_count,
-          participationList : response.data.participationList});  
+          participationList : response.data.participationList});
+        getProfileImg(response.data.userMail).then((img) => {
+          this.setState ({
+            profile: img})
+        }); 
       })
       .catch(function(error) {
         console.log(error);

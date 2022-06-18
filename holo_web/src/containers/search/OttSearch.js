@@ -68,6 +68,12 @@ function Search() {
   const [searchResult, setSearchResult] = useState(null)
   const [resultExist, setResultExist] = useState(null)
 
+  useEffect(()=>{
+    if(searchResult === null) { return; } //검색 결과 동기화 해결 후 삭제
+    else if(searchResult.length > 0) { setResultExist(1); }
+    else { setResultExist(0); }
+  }, [searchResult])
+
   function search(){
     if(searchWord===""){
       setModalOpen(true)
@@ -87,10 +93,6 @@ function Search() {
         .catch(function(error) {
           console.log(error);
         });
-    
-      if(searchResult === null) { return; } //검색 결과 동기화 해결 후 삭제
-      else if(searchResult.length > 0) { setResultExist(1); }
-      else { setResultExist(0); }
     }
   }
 

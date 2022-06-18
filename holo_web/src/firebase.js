@@ -1,6 +1,5 @@
 import { initializeApp } from "firebase/app";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
-import {images} from './images';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDPrRf9wVlXJDZiq16XI6XnlVxwyoPkJ5I",
@@ -26,7 +25,6 @@ const getProfileImg = (mail) => {
     .catch((error) => {
       switch (error.code) {
         case 'storage/object-not-found': // File doesn't exist
-          resolve(images.user)
           break;
         case 'storage/unauthorized': // User doesn't have permission to access the object
           break;

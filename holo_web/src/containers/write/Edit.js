@@ -166,6 +166,9 @@ function OTTWrite(props){
     OTT_state.content = content;
   };
   function O_goalChange (e) {
+    if (e.target.value.length > 2) {
+      e.target.value = parseInt(String(e.target.value).slice(0,2));
+    }
     setGoal(e.target.value)
     OTT_state.goal = goal;
   }
@@ -184,7 +187,7 @@ function OTTWrite(props){
       <input type='text' id="title" placeholder='제목' value={title} spellCheck="false" onChange={O_titleChange} maxLength='50'/>
       <input type="datetime-local" id="limitDate" data-placeholder="구매 일시" value={limit_date.replace(" ","T").slice(0,16)} required aria-required="true" onChange={O_limitDateChange}/>
       <input type='text' id="buyLocation" className="contentInput" placeholder='OTT 플랫폼' value={buy_location} spellCheck="false" onChange={O_buyLocationChange} maxLength='50'/>
-      <input type='number' id="goal" className="contentInput" min="0" placeholder='목표 인원' value={goal} onInput={(e)=>{e.target.value=e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1')}} onChange={O_goalChange}/>
+      <input type='number' id="goal" className="contentInput" min="0" max="10" placeholder='목표 인원 (10명 이하)' value={goal} onInput={(e)=>{e.target.value=e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1')}} onChange={O_goalChange} maxLength='2'/>
       <textarea id="content" className="ottContent" placeholder='내용을 입력하세요.' value={content} spellCheck="false" onChange={O_contentChange} maxLength='21845'/>
     </div>
   )
@@ -242,8 +245,12 @@ function DeliveryWrite(props) {
     Delivery_state.content = content;
   };
   function G_goalChange (e) {
+    if (e.target.value.length > 7) {
+      e.target.value = parseInt(String(e.target.value).slice(0,7));
+    }
     setGoal(e.target.value)
     Delivery_state.goal = goal;
+    console.log(goal)
   }
   function G_buyLocationChange (e) {
     setBuyLocation(e.target.value)
@@ -264,7 +271,7 @@ function DeliveryWrite(props) {
       <input type='text' id="title" placeholder='제목' value={title} spellCheck="false" onChange={G_titleChange} maxLength='50'/>
       <input type="datetime-local" id="limitDate" data-placeholder="구매 일시" value={limit_date.replace(" ","T").slice(0,16)} required aria-required="true" onChange={G_limitDateChange}/>
       <input type='text' id="buyLocation" placeholder='구매처' value={buy_location} spellCheck="false" onChange={G_buyLocationChange} maxLength='50'/>
-      <input type='number' id="goal" min="0" placeholder='목표 금액' value={goal} onInput={(e)=>{e.target.value=e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1')}} onChange={G_goalChange}/>
+      <input type='number' id="goal" min="0" max="1000000" placeholder='목표 금액 (100만원 이하)' value={goal} onInput={(e)=>{e.target.value=e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1')}} onChange={G_goalChange} maxLength='7'/>
       <input type='text' id="pickupLocation" placeholder='픽업 위치' value={pickup_location} spellCheck="false" onChange={G_pickupChange} maxLength='50'/>
       <textarea id="content" className="deliveryContent" placeholder='내용을 입력하세요.' value={content} spellCheck="false" onChange={G_contentChange} maxLength='21845'/>
     </div>
@@ -387,6 +394,8 @@ function DeliverySubmit(data){
 function ShowEdit(props) {
   const navigate = useNavigate();
   const [checkModal, setCheckModal] = useState(false);
+  const [ottCheckModalOpen, setOttCheckModalOpen] = useState(false);
+  const [deliveryCheckModalOpen, setDeliveryCheckModalOpen] = useState(false);
   const [finModal, setFinModal] = useState(false);
 
   var category = "";
@@ -418,11 +427,13 @@ function ShowEdit(props) {
       case "ott":
         if(OTT_state.title===''||OTT_state.content===''||OTT_state.limit_date===''||OTT_state.buy_location===''
           ||OTT_state.goal===''){setCheckModal(true)}
+        else if(OTT_state.goal>10){setOttCheckModalOpen(true)}
         else{openFinModal(); postDB(category);}
         return;
       case "delivery":
         if(Delivery_state.title===''||Delivery_state.content===''||Delivery_state.limit_date===''||Delivery_state.buy_location===''
           ||Delivery_state.pickup_location===''||Delivery_state.goal===''){setCheckModal(true)}
+        else if(Delivery_state.goal>1000000){setDeliveryCheckModalOpen(true)}
         else{openFinModal(); postDB(category);}
         return;
       default:
@@ -437,6 +448,8 @@ function ShowEdit(props) {
         <button className="categoryButton" disabled>{category}</button>
         <button className="finButton" onClick={() => {checkFin(props.category);}}>완료</button>
         <Modal type="Info" open={checkModal} close={()=>setCheckModal(false)}>내용을 모두 입력해주세요!</Modal>
+        <Modal type="Info" open={ottCheckModalOpen} close={()=>setOttCheckModalOpen(false)}>목표 인원은 10명 이하로 입력해주세요!</Modal>
+        <Modal type="Info" open={deliveryCheckModalOpen} close={()=>setDeliveryCheckModalOpen(false)}>목표 금액은 100만원 이하로 입력해주세요!</Modal>
         <Modal type="Info" open={finModal} close={closeFinModal}>게시글 수정이 완료되었어요!</Modal>
       </div>
       <ShowInput category={props.category} id = {props.id} user={props.user} title={props.title} 

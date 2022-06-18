@@ -45,6 +45,8 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.tableTitle > span,
+.tableTitle-FAQ > span,
 .tableTitle-Like > span{
   color: #1d4999;
   margin-right: 5px;

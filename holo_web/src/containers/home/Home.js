@@ -18,6 +18,10 @@ function Home() {
         navigate('/dealboard?select=delivery'); break;
       case 'ottboard':
         navigate('/dealboard?select=ott'); break;
+      case 'faqboard':
+        navigate('/faqboard'); break;
+      case 'likeboard':
+        navigate('/likeboard'); break;
       case 'policypost':
         navigate('/policypost/'+queryString.parse(window.location.search).id); break;
       case 'documentpost':
@@ -26,10 +30,8 @@ function Home() {
         navigate('/deliverypost/'+queryString.parse(window.location.search).id); break;
       case 'ottpost':
         navigate('/ottpost/'+queryString.parse(window.location.search).id); break;
-      case 'faqboard':
-        navigate('/faqboard'); break;
-      case 'likeboard':
-        navigate('/likeboard'); break;
+      case 'allsearch' :
+        navigate('/allsearch?word='+queryString.parse(window.location.search).word); break;
       default:
         return null
     }

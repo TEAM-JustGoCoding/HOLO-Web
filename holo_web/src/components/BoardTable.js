@@ -13,7 +13,7 @@ const highlightText = (text, query) => {
       <>
         {parts.map((part, index) =>
           part === query ? (
-            <span key={index} style={{ color: "#1d4999" }}>{part}</span>
+            <span key={index} style={{ color: "#ff3333" }}>{part}</span>
           ) : (
             part
           ),
@@ -24,6 +24,84 @@ const highlightText = (text, query) => {
   return text;
 };
 
+function AllTable({list, searchQuery}) {
+  function InfoTd(props){
+    return(
+      <td style={{ border: '#323232', padding: '1vh'}}>
+        <Link className="link" to={`/${props.item.category==="policy"?"policypost":"documentpost"}/${props.item.id}`}>
+          <div className="tableTitle">
+            <span>[{props.item.category==="policy"?"정책":"생활백서"}]</span>
+            {highlightText(props.item.title, searchQuery)}
+          </div>
+          <div className="tableInfo">
+            <AiOutlineCalendar style={{ fontSize: '1.5vh', marginRight: '2px'}}/>{props.item.reg_date}
+            <AiOutlineUser style={{ fontSize: '1.5vh', margin: '0 2px 0 7.5px'}}/>{props.item.nick_name}
+            <AiOutlineEye style={{ fontSize: '1.5vh', margin: '0 2px 0 7.5px'}}/>{props.item.view}
+            <AiFillHeart style={{ fontSize: '1.5vh', margin: '0 2px 0 7.5px', color: 'red'}}/>{props.item.like}
+          </div>
+        </Link>
+      </td>
+    )
+  }
+  function DealTd(props){
+    return(
+      <td style={{border: '#323232', padding : '1vh'}}>
+        <Link className="link" to={`/${props.item.category==="delivery"?"deliverypost":"ottpost"}/${props.item.id}`}>
+          <div className="tableTitle">
+            <span>[{props.item.category==="delivery"?"공동구매":"OTT 구독"}]</span>
+            {highlightText(props.item.title, searchQuery)}
+          </div>
+          <div className="tableInfo">
+            <AiOutlineCalendar style={{ fontSize: '1.5vh', marginRight: '2px'}}/>{props.item.reg_date}
+            <AiOutlineUser style={{ fontSize: '1.5vh', margin: '0 2px 0 7.5px'}}/>{props.item.nick_name}
+            <AiOutlineEye style={{ fontSize: '1.5vh', margin: '0 2px 0 7.5px'}}/>{props.item.view}
+            <BiCoin style={{ fontSize: '1.5vh', margin: '0 2px 0 7.5px'}}/>{props.item.accumulate}/{props.item.goal}
+          </div>
+        </Link>
+      </td>
+    )
+  }
+  function FAQTd(props){
+    return(
+      <td style={{border: '#323232', padding: '1vh'}}>
+        <Link className="link" to={`/faqpost/${props.item.id}`}>
+          <div className="tableTitle-FAQ">
+            <span>[FAQ]</span>
+            Q. {highlightText(props.item.title, searchQuery)}
+          </div>
+        </Link>
+      </td>
+    )
+  }
+  function ShowTd(props){
+    switch(props.category){
+      case 'policy':
+        return <InfoTd item={props.item}/>;
+      case 'document':
+        return <InfoTd item={props.item}/>;
+      case 'delivery':
+        return <DealTd item={props.item}/>;
+      case 'ott':
+        return <DealTd item={props.item}/>;
+      case 'faq':
+        return <FAQTd item={props.item}/>;
+      default:
+        return null
+    }
+  }
+
+  return(
+    <Table bordered hover style={{ marginBottom: '0'}}>
+      <tbody>
+      {list.map(item=>(
+        <tr key={[item.category, item.id]} className="tableRow">
+          <ShowTd category={item.category} item={item}/>
+        </tr>
+      ))}
+      </tbody>
+    </Table>
+  );
+}
 function PolicyTable({list, searchQuery}) {
   return(
     <Table bordered hover style={{ marginBottom: '0'}}>
@@ -173,6 +251,8 @@ function LikeTable({list}) {
 }
 function ShowTable({type, list, searchQuery}) {
   switch(type){
+    case "All":
+      return <AllTable list={list} searchQuery={searchQuery}/>;
     case "Policy":
       return <PolicyTable list={list} searchQuery={searchQuery}/>;
     case "Document":

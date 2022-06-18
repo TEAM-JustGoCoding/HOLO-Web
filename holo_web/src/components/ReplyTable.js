@@ -95,7 +95,7 @@ const ReplyTable = ({currentUser, replyList, replyEditFunc, replyDeleteFunc, reR
                 </div>
               : <div className="reply">
                   <div className="replyTitle">
-                      <div className="replyUser"><img src={images.user} alt="User"/>{item.nick_name}</div>
+                      <div className="replyUser"><div><img src={item.profile} alt="User"/></div><span>{item.nick_name}</span></div>
                       <div className="replyDate">{item.date}</div>
                   </div>
                   <div className="replyContent">{item.content}</div>
@@ -149,7 +149,7 @@ const ReplyTable = ({currentUser, replyList, replyEditFunc, replyDeleteFunc, reR
                         :<div className="reply">
                             <div className="replyTitle">
                                 <MdSubdirectoryArrowRight style={{fontSize: "30px", padding: "3px"}}/>
-                                <div className="replyUser"><img src={images.user} alt="User"/>{item2.nick_name}</div>
+                                <div className="replyUser"><div><img src={images.user} alt="User"/></div><span>{item2.nick_name}</span></div>
                                 <div className="replyDate">{item2.date}</div>
                             </div>
                             <div className="replyContent" style={{paddingLeft: "35px"}}>{item2.content}</div>

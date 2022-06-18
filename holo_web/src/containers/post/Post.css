@@ -20,20 +20,38 @@
     border: none;
     font-family: "aSmile";
     font-size: 3.5vh;
+    word-wrap: break-word;
+    word-break: break-all;
 }
 .postUser {
+    display: flex;
+    flex-direction: row;
     width: 90vw;
     height: 100%;
     margin: auto;
     font-family: "aSmile_L";
     font-size: 2.5vh;
 }
-.postUser > img {
+.postUser > div {
+    position: relative;
     width: 7vh;
     height: 7vh;
     margin: 0 1vh 0 0;
+}
+.postUser > div > img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(50, 50);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    margin: auto;
     border: solid 1px #ababab;
     border-radius: 50px;
+}
+.postUser > span {
+    margin: auto auto auto 1px;
 }
 .postRegDate {
     width: 90vw;
@@ -54,6 +72,8 @@
     white-space: pre-line;
     font-family: "aSmile_L";
     font-size: 2.5vh;
+    word-wrap: break-word;
+    word-break: break-all;
 }
 .postDealContent {
     width: 100%;

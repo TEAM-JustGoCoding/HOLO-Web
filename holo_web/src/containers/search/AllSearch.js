@@ -5,7 +5,16 @@ import { AiOutlineSearch } from "react-icons/ai";
 import BoardTable from '../../components/BoardTable';
 import Pagination from '../../components/Pagination';
 import Modal from '../../components/Modal';
-import axios from 'axios';
+import queryString from 'query-string';
+
+//>> 삭제 필요 <<
+var resultList = [
+  {category: 'policy', id: 3, title: '정책 게시글', reg_date: '2022-02-05', nick_name: '옌', view: '500', like: '5'},
+  {category: 'document', id: 3, title: '생활백서 게시글', reg_date: '2022-02-05', nick_name: '옌2', view: '500', like: '5'},
+  {category: 'delivery', id: 3, title: '공동구매 게시글', reg_date: '2022-02-05', nick_name: '옌3', view: '500', accumulate: '100', goal: '1000'},
+  {category: 'ott', id: 3, title: 'ott 게시글', reg_date: '2022-02-05', nick_name: '옌4', view: '500', accumulate: '1', goal: '5'},
+  {category: 'faq', id: 3, title: 'FAQ 게시글'}
+]
 
 function ExistResults(props) {
   const [page, setPage] = useState(1);
@@ -32,7 +41,7 @@ function ExistResults(props) {
     <div>
       <div className="searchTable">
         <div>
-          <div><BoardTable type="Policy" list={sliceList()} searchQuery={props.searchQuery}></BoardTable></div>
+          <div><BoardTable type="All" list={sliceList()} searchQuery={props.searchQuery}></BoardTable></div>
         </div>
       </div>
       <div className="searchPagination">
@@ -63,11 +72,11 @@ function ShowResults(props) {
 
 function Search() {
   const [modalOpen, setModalOpen] = useState(false)
-  const [searchWord, setSearchWord] = useState("")
-  const [searchQuery, setSearchQuery] = useState("")
-  const [searchResult, setSearchResult] = useState(null)
+  const [searchWord, setSearchWord] = useState(queryString.parse(window.location.search).word)
+  const [searchQuery, setSearchQuery] = useState(queryString.parse(window.location.search).word)
+  const [searchResult, setSearchResult] = useState(resultList)  // >>구현 필요 << 여기에 처음 게시글 검색 결과 넣기
   const [resultExist, setResultExist] = useState(null)
-  
+
   useEffect(()=>{
     if(searchResult === null) { return; } //검색 결과 동기화 해결 후 삭제
     else if(searchResult.length > 0) { setResultExist(1); }
@@ -79,20 +88,11 @@ function Search() {
       setModalOpen(true)
     }
     else{
-      console.log("검색어: ",searchWord);
+      console.log("검색어: ", searchWord);
       setSearchQuery(searchWord);
+
       //1. 검색어 json 형식으로 php 서버에 전송
-      axios.post("http://holo.dothome.co.kr/searchPolicy.php", JSON.stringify({word: searchWord}),{
-        withCredentials: false,
-        headers: {"Content-Type": "application/json"}
-      })
-        .then(response => {
-          console.log(response.data);
-          setSearchResult(response.data);
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+      setSearchResult([]) //>> 구현 필요 << 검색 결과 여기에 넣기
     }
   }
 
@@ -101,9 +101,9 @@ function Search() {
   }
 
   return (
-    <div className="search policy">
+    <div className="search all">
       <div className="searchHeaderBar">
-        <input type="text" onChange={getResearchWord} placeholder="검색어를 입력해주세요" maxLength='50'/>
+        <input type="text" value={searchWord} onChange={getResearchWord} placeholder="검색어를 입력해주세요" maxLength='50'/>
         <button onClick={search}>
           <AiOutlineSearch className="searchImg"/>
         </button>
