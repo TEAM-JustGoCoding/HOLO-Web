@@ -21,11 +21,13 @@ function ExistResults(props) {
   const [result, setResult] = useState([]);
 
   useEffect(()=> {
+    if(sessionStorage.getItem('searchPage')){
+      setPage(parseInt(sessionStorage.getItem('searchPage')))
+    }
+  }, [])
+  useEffect(()=> {
     setResult(props.searchResult);
   },[props.searchResult])
-  useEffect(()=> {
-    setPage(1)
-  },[result])
 
   function sliceList(){
     if (page === (result.length/10))
@@ -35,6 +37,7 @@ function ExistResults(props) {
   }
   const handlePageChange = (page) => {
     setPage(page);
+    sessionStorage.setItem('searchPage', page)
   };
 
   return(
@@ -78,10 +81,26 @@ function Search() {
   const [resultExist, setResultExist] = useState(null)
 
   useEffect(()=>{
+    if(sessionStorage.getItem('searchWord')!=null){setSearchWord(sessionStorage.getItem('searchWord'))}
+    if(sessionStorage.getItem('searchQuery')!=null){setSearchQuery(sessionStorage.getItem('searchQuery'))}
+    if(JSON.parse(sessionStorage.getItem('searchResult'))!=null){setSearchResult(JSON.parse(sessionStorage.getItem('searchResult')))}
+    if(sessionStorage.getItem('searchExist')!=null){setResultExist(sessionStorage.getItem('searchExist'))}
+  }, [])
+  useEffect(()=>{
+    sessionStorage.setItem('searchWord', searchWord)
+  }, [searchWord])
+  useEffect(()=>{
+    sessionStorage.setItem('searchQuery', searchQuery)
+  }, [searchQuery])
+  useEffect(()=>{
     if(searchResult === null) { return; } //검색 결과 동기화 해결 후 삭제
     else if(searchResult.length > 0) { setResultExist(1); }
     else { setResultExist(0); }
+    sessionStorage.setItem('searchResult', JSON.stringify(searchResult))
   }, [searchResult])
+  useEffect(()=>{
+    sessionStorage.setItem('searchExist', resultExist)
+  }, [resultExist])
 
   function search(){
     if(searchWord===""){
@@ -90,6 +109,8 @@ function Search() {
     else{
       console.log("검색어: ", searchWord);
       setSearchQuery(searchWord);
+      setResultExist(null);
+      sessionStorage.setItem('searchPage', 1);
 
       //1. 검색어 json 형식으로 php 서버에 전송
       setSearchResult([]) //>> 구현 필요 << 검색 결과 여기에 넣기

@@ -41,16 +41,19 @@ function ShowPost(props) {
     setReplyNum(props.state.replyList.length + props.state.reReplyList.length);
   }, [props.state.replyList, props.state.reReplyList]);
   useEffect(()=>{
-    setReReplyList(props.state.reReplyList);
-  }, [props.state.reReplyList]);
-  useEffect(()=>{
     for(let i=0;i<replyList.length;i++){
       getProfileImg(replyList[i].mail).then((img) => {
         replyList[i].profile = img
       })
     }
-    console.log(replyList)
   }, [replyList])
+  useEffect(()=>{
+    for(let i=0;i<reReplyList.length;i++){
+      getProfileImg(reReplyList[i].mail).then((img) => {
+        reReplyList[i].profile = img
+      })
+    }
+  }, [reReplyList])
 
   var url = '?path=policypost&id='+props.state.id;
   var id = props.state.id;
@@ -447,7 +450,7 @@ class Post extends React.Component {
           deal_count : response.data.deal_count
         });
         getProfileImg(response.data.userMail).then((img) => {
-          this.setState ({
+          this.setState({
             profile: img})
         });
       })

@@ -47,7 +47,8 @@
   height: 90vh;
   display: flex;
 }
-.searchTable{
+.searchTable,
+.searchTable-FAQ{
   width: 100vw;
   height: 82.5vh;
   display: flex;
@@ -58,7 +59,14 @@
   margin: auto auto;
   display: flex;
 }
-.searchTable > div > div {
+.searchTable-FAQ > div {
+  width: 95vw;
+  height: 70vh;
+  margin: auto auto;
+  display: flex;
+}
+.searchTable > div > div,
+.searchTable-FAQ > div > div {
   width: 95vw;
   margin: 0 auto auto auto;
 }

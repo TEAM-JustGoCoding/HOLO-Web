@@ -30,7 +30,7 @@ function AllTable({list, searchQuery}) {
       <td style={{ border: '#323232', padding: '1vh'}}>
         <Link className="link" to={`/${props.item.category==="policy"?"policypost":"documentpost"}/${props.item.id}`}>
           <div className="tableTitle">
-            <span>[{props.item.category==="policy"?"정책":"생활백서"}]</span>
+            <span style={{color: '#1d4999', marginRight: '5px'}}>[{props.item.category==="policy"?"정책":"생활백서"}]</span>
             {highlightText(props.item.title, searchQuery)}
           </div>
           <div className="tableInfo">
@@ -48,7 +48,7 @@ function AllTable({list, searchQuery}) {
       <td style={{border: '#323232', padding : '1vh'}}>
         <Link className="link" to={`/${props.item.category==="delivery"?"deliverypost":"ottpost"}/${props.item.id}`}>
           <div className="tableTitle">
-            <span>[{props.item.category==="delivery"?"공동구매":"OTT 구독"}]</span>
+            <span style={{color: '#1d4999', marginRight: '5px'}}>[{props.item.category==="delivery"?"공동구매":"OTT 구독"}]</span>
             {highlightText(props.item.title, searchQuery)}
           </div>
           <div className="tableInfo">
@@ -66,7 +66,7 @@ function AllTable({list, searchQuery}) {
       <td style={{border: '#323232', padding: '1vh'}}>
         <Link className="link" to={`/faqpost/${props.item.id}`}>
           <div className="tableTitle-FAQ">
-            <span>[FAQ]</span>
+            <span style={{color: '#1d4999', marginRight: '5px'}}>[FAQ]</span>
             Q. {highlightText(props.item.title, searchQuery)}
           </div>
         </Link>
@@ -232,7 +232,7 @@ function LikeTable({list}) {
           <td style={{ border: '#323232', padding: '1vh'}}>
             <Link className="link" to={`/${item.category==="policy"?"policypost":"documentpost"}/${item.id}`}>
               <div className="tableTitle-Like">
-                <span>[{item.category==="policy"?"정책":"생활백서"}]</span>
+                <span style={{color: '#1d4999', marginRight: '5px'}}>[{item.category==="policy"?"정책":"생활백서"}]</span>
                 {item.title}
               </div>
               <div className="tableInfo">
@@ -272,7 +272,12 @@ function ShowTable({type, list, searchQuery}) {
 
 const BoardTable = ({type, list, searchQuery}) => {
   return (
-    <ShowTable type={type} list={list} searchQuery={searchQuery}></ShowTable>
+    <>
+      {list===null
+      ?null
+      :<ShowTable type={type} list={list} searchQuery={searchQuery}></ShowTable>
+      }
+    </>
   );
 }
 

@@ -17,9 +17,20 @@ function ShowBoard(props) {
   const [page, setPage] = useState(1);
 
   useEffect(()=> {
-    if(window.location.search){
-        setSelect(queryString.parse(window.location.search).select)
-      }
+    if(sessionStorage.getItem('boardSelect')!=null){
+      setSelect(sessionStorage.getItem('boardSelect'))
+    }
+    else if(window.location.search){
+      setSelect(queryString.parse(window.location.search).select)
+    }
+    if(sessionStorage.getItem('boardPage')!=null){
+      setPage(parseInt(sessionStorage.getItem('boardPage')))
+    }
+    sessionStorage.setItem('searchWord', "")
+    sessionStorage.setItem('searchQuery', "")
+    sessionStorage.setItem('searchResult', null)
+    sessionStorage.setItem('searchExist', null)
+    sessionStorage.setItem('searchPage', 1)
   },[])
 
   function sliceList(){
@@ -38,9 +49,10 @@ function ShowBoard(props) {
         return null
     }
   }
+
   const handlePageChange = (page) => {
-    setPage(page); 
-    console.log("page: ",page);
+    setPage(page);
+    sessionStorage.setItem('boardPage', page)
   };
 
   return (
@@ -55,8 +67,8 @@ function ShowBoard(props) {
         </Link>
       </div>
       <div className="boardCategoryBar">
-        <button className="leftButton delivery" onClick={() => { setSelect("delivery"); setPage(1);/*getDeliveryJson();*/}} >공동구매</button>
-        <button className="rightButton ott" onClick={() => { setSelect("ott"); setPage(1); /*getOttJson();*/}}>OTT 구독</button>
+        <button className="leftButton delivery" onClick={() => { setSelect("delivery"); sessionStorage.setItem('boardSelect', "delivery"); setPage(1); sessionStorage.setItem('boardPage', "1");}} >공동구매</button>
+        <button className="rightButton ott" onClick={() => { setSelect("ott"); sessionStorage.setItem('boardSelect', "ott"); setPage(1); sessionStorage.setItem('boardPage', "1");}}>OTT 구독</button>
       </div>
       <div className={`board ${select === "delivery" ? 'left delivery' : 'right ott'}`}>
         <div className="boardTable">

@@ -3,7 +3,6 @@ import React, {useState} from 'react';
 import { Table } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Modal from '../components/Modal';
-import {images} from '../images';
 import {MdSubdirectoryArrowRight} from "react-icons/md";
 
 const ReplyTable = ({currentUser, replyList, replyEditFunc, replyDeleteFunc, reReplyList, reReplySubmitFunc, reReplyEditFunc, reReplyDeleteFunc}) => {
@@ -149,7 +148,7 @@ const ReplyTable = ({currentUser, replyList, replyEditFunc, replyDeleteFunc, reR
                         :<div className="reply">
                             <div className="replyTitle">
                                 <MdSubdirectoryArrowRight style={{fontSize: "30px", padding: "3px"}}/>
-                                <div className="replyUser"><div><img src={images.user} alt="User"/></div><span>{item2.nick_name}</span></div>
+                                <div className="replyUser"><div><img src={item2.profile} alt="User"/></div><span>{item2.nick_name}</span></div>
                                 <div className="replyDate">{item2.date}</div>
                             </div>
                             <div className="replyContent" style={{paddingLeft: "35px"}}>{item2.content}</div>

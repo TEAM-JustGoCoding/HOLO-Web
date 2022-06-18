@@ -12,7 +12,7 @@ import axios from 'axios';
 
 function ShowPost(props) {
   const navigate = useNavigate();
-  const [currentUser, setCurrentUser] = useState(10); //초기값 수정 필요
+  const [currentUser, setCurrentUser] = useState(28); //초기값 수정 필요
   const [heart, setHeart] = useState(false);
   const [like, setLike] =useState('');
   const [deleteModal, setDeleteModal] = useState(false);
@@ -50,8 +50,14 @@ function ShowPost(props) {
         replyList[i].profile = img
       })
     }
-    console.log(replyList)
   }, [replyList])
+  useEffect(()=>{
+    for(let i=0;i<reReplyList.length;i++){
+      getProfileImg(reReplyList[i].mail).then((img) => {
+        reReplyList[i].profile = img
+      })
+    }
+  }, [reReplyList])
 
   var url = '?path=documentpost&id='+props.state.id;
   var id = props.state.id;
@@ -428,7 +434,7 @@ class Post extends React.Component {
        alreadyLiked: "",
        replyList : [],
        reReplyList : [],
-       currentUser: 10, //초기값 수정 필요
+       currentUser: 28, //초기값 수정 필요
        profile: ''
     };
 

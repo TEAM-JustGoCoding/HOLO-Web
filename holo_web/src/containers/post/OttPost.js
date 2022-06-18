@@ -47,6 +47,20 @@ function ShowPost(props) {
   useEffect(()=>{
     setReReplyList(props.state.reReplyList);
   }, [props.state.reReplyList]);
+  useEffect(()=>{
+    for(let i=0;i<replyList.length;i++){
+      getProfileImg(replyList[i].mail).then((img) => {
+        replyList[i].profile = img
+      })
+    }
+  }, [replyList])
+  useEffect(()=>{
+    for(let i=0;i<reReplyList.length;i++){
+      getProfileImg(reReplyList[i].mail).then((img) => {
+        reReplyList[i].profile = img
+      })
+    }
+  }, [reReplyList])
 
   var url = '?path=ottpost&id='+props.state.id;
   var id = props.state.id;

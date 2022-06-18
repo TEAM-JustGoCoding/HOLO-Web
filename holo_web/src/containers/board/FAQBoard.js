@@ -1,5 +1,5 @@
 import './Board.css';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import {images} from '../../images';
 import {AiOutlineSearch} from "react-icons/ai";
@@ -13,15 +13,27 @@ function ShowBoard(props) {
 
   const [page, setPage] = useState(1);
 
+  useEffect(()=> {
+    if(sessionStorage.getItem('boardPage')!=null){
+      setPage(parseInt(sessionStorage.getItem('boardPage')))
+    }
+    sessionStorage.setItem('searchWord', "")
+    sessionStorage.setItem('searchQuery', "")
+    sessionStorage.setItem('searchResult', null)
+    sessionStorage.setItem('searchExist', null)
+    sessionStorage.setItem('searchPage', 1)
+  },[])
+
   function sliceList(){
     if (page === (faqJson.length/10))
       return faqJson.slice(10*(page-1), faqJson.length)
     else
       return faqJson.slice(10*(page-1), 10*page);
   }
+  
   const handlePageChange = (page) => {
-    setPage(page); 
-    console.log("page: ",page);
+    setPage(page);
+    sessionStorage.setItem('boardPage', page)
   };
 
   return (

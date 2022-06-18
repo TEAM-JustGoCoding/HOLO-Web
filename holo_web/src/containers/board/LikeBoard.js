@@ -13,6 +13,11 @@ function ShowBoard(props) {
   const [likeJson, setLikeJson] = useState([]);
 
   useEffect(()=> {
+    if(sessionStorage.getItem('boardPage')!=null){
+      setPage(parseInt(sessionStorage.getItem('boardPage')))
+    }
+  },[])
+  useEffect(()=> {
       setLikeJson([...poliInfo, ...docInfo])
   },[poliInfo, docInfo])
 
@@ -22,9 +27,10 @@ function ShowBoard(props) {
     else
       return likeJson.slice(10*(page-1), 10*page);
   }
+
   const handlePageChange = (page) => {
-    setPage(page); 
-    console.log("page: ",page);
+    setPage(page);
+    sessionStorage.setItem('boardPage', page)
   };
 
   return (

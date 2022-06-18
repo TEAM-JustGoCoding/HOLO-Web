@@ -20,11 +20,24 @@ function ShowBoard(props) {
   const [documentJson, setDocumentJson] = useState([]);
 
   useEffect(()=> {
-    if(window.location.search){
-        setSelect(queryString.parse(window.location.search).select)
-      }
+    if(sessionStorage.getItem('boardSelect')!=null){
+      setSelect(sessionStorage.getItem('boardSelect'))
+    }
+    else if(window.location.search){
+      setSelect(queryString.parse(window.location.search).select)
+    }
+    if(sessionStorage.getItem('boardPage')!=null){
+      setPage(parseInt(sessionStorage.getItem('boardPage')))
+    }
+    else{
+      sessionStorage.setItem('boardPage', 1)
+    }
+    sessionStorage.setItem('searchWord', "")
+    sessionStorage.setItem('searchQuery', "")
+    sessionStorage.setItem('searchResult', null)
+    sessionStorage.setItem('searchExist', null)
+    sessionStorage.setItem('searchPage', 1)
   },[])
-
   useEffect(()=> {
     setPolicyJson([...hotPoliInfo,...poliInfo])
     setDocumentJson([...hotDocInfo,...docInfo])
@@ -33,7 +46,7 @@ function ShowBoard(props) {
   function sliceList(){
     switch(select){
       case "policy":
-        if (page === (policyJson.length/10 ))
+        if (page === (policyJson.length/10))
           return policyJson.slice(10*(page-1), policyJson.length)
         else
           return policyJson.slice(10*(page-1), 10*page);
@@ -47,8 +60,8 @@ function ShowBoard(props) {
     }
   }
   const handlePageChange = (page) => {
-    setPage(page); 
-    console.log("page: ",page);
+    setPage(page);
+    sessionStorage.setItem('boardPage', page)
   };
 
   return (
@@ -63,8 +76,8 @@ function ShowBoard(props) {
         </Link>
       </div>
       <div className="boardCategoryBar">
-        <button className="leftButton policy" onClick={() => { setSelect("policy"); setPage(1);/*getPolicyJson();*/}} >정책</button>
-        <button className="rightButton document" onClick={() => { setSelect("document"); setPage(1); /*getDocumentJson();*/}}>생활백서</button>
+        <button className="leftButton policy" onClick={() => { setSelect("policy"); sessionStorage.setItem('boardSelect', "policy"); setPage(1); sessionStorage.setItem('boardPage', "1");}}>정책</button>
+        <button className="rightButton document" onClick={() => { setSelect("document"); sessionStorage.setItem('boardSelect', "document"); setPage(1); sessionStorage.setItem('boardPage', "1");}}>생활백서</button>
       </div>
       <div className={`board ${select === "policy" ? 'left policy' : 'right document'}`}>
         <div className="boardTable">
