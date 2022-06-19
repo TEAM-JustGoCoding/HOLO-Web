@@ -67,7 +67,7 @@ function Home({history}) {
       }
     }
     else{
-      history.goBack()
+      window.history.back()
     }
   },[])
 

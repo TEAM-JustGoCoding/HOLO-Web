@@ -443,7 +443,7 @@ function ShowPost(props) {
         <div>OTT 구독</div>
       </div>
       <div className="postTitle">{title}</div>
-      <div className="postUser"><div><img src={profile} alt=" "/></div><span>{user}</span></div>
+      <div className="postUser"><div><img src={profile} alt=" " onClick={()=>setUserInfoModal(true)}/></div><span>{user}</span></div>
       <div className="postRegDate">{reg_date}</div>
       <div className="postContent">
         <div className="postDealContent">
