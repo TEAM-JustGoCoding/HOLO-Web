@@ -7,16 +7,21 @@ import Pagination from '../../components/Pagination';
 import Modal from '../../components/Modal';
 import queryString from 'query-string';
 import axios from 'axios';
+import { SystemSecurityUpdate } from '@mui/icons-material';
 
 
 //>> 삭제 필요 <<
+/*
 var resultList = [
   {category: 'policy', id: 3, title: '정책 게시글', reg_date: '2022-02-05', nick_name: '옌', view: '500', like: '5'},
   {category: 'document', id: 3, title: '생활백서 게시글', reg_date: '2022-02-05', nick_name: '옌2', view: '500', like: '5'},
   {category: 'delivery', id: 3, title: '공동구매 게시글', reg_date: '2022-02-05', nick_name: '옌3', view: '500', accumulate: '100', goal: '1000'},
   {category: 'ott', id: 3, title: 'ott 게시글', reg_date: '2022-02-05', nick_name: '옌4', view: '500', accumulate: '1', goal: '5'},
   {category: 'faq', id: 3, title: 'FAQ 게시글'}
-]
+]sjr
+*/
+
+var resultList = [];
 
 function ExistResults(props) {
   const [page, setPage] = useState(1);
@@ -75,12 +80,18 @@ function ShowResults(props) {
   }
 }
 
-function Search() {
+function Search(props) {
   const [modalOpen, setModalOpen] = useState(false)
   const [searchWord, setSearchWord] = useState(queryString.parse(window.location.search).word)
   const [searchQuery, setSearchQuery] = useState(queryString.parse(window.location.search).word)
   const [searchResult, setSearchResult] = useState(resultList)  // >>구현 필요 << 여기에 처음 게시글 검색 결과 넣기
   const [resultExist, setResultExist] = useState(null)
+
+  console.log(queryString.parse(window.location.search).word);
+  resultList = props.state.searchResult;
+  console.log(resultList);
+  //setSearchResult(resultList);
+  resultList
 
   useEffect(()=>{
     if(sessionStorage.getItem('searchWord')!=null){setSearchWord(sessionStorage.getItem('searchWord'))}
@@ -103,6 +114,9 @@ function Search() {
   useEffect(()=>{
     sessionStorage.setItem('searchExist', resultExist)
   }, [resultExist])
+  useEffect(()=>{
+    setSearchResult(props.state.searchResult)
+  }, [resultList])
 
   function search(){
     if(searchWord===""){
@@ -149,4 +163,46 @@ function Search() {
   );
 }
 
-export default Search;
+class AllSearch extends React.Component {
+  constructor () {
+    super ();
+
+    //var pathname = window.location.pathname;
+    
+    this.state = {
+      searchWord : "",
+      searchResult : []
+    };
+
+    this.searchWord = queryString.parse(window.location.search).word;
+
+  }
+
+  componentDidMount(){
+    //1. 검색어 json 형식으로 php 서버에 전송
+    axios.post("http://holo.dothome.co.kr/searchAll.php", JSON.stringify({word: queryString.parse(window.location.search).word}),{
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+    })
+      .then(response => {
+        //console.log(queryString.parse(window.location.search).word);
+        console.log(response.data);
+        this.setState({
+          searchResult: response.data
+        });
+        resultList = response.data;
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  };  
+                                             
+
+  render() {
+    return(
+      <Search state = {this.state}/>
+    );
+  }
+}
+
+export default AllSearch;
