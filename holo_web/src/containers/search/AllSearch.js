@@ -6,6 +6,8 @@ import BoardTable from '../../components/BoardTable';
 import Pagination from '../../components/Pagination';
 import Modal from '../../components/Modal';
 import queryString from 'query-string';
+import axios from 'axios';
+
 
 //>> 삭제 필요 <<
 var resultList = [
@@ -113,7 +115,17 @@ function Search() {
       sessionStorage.setItem('searchPage', 1);
 
       //1. 검색어 json 형식으로 php 서버에 전송
-      setSearchResult([]) //>> 구현 필요 << 검색 결과 여기에 넣기
+      axios.post("http://holo.dothome.co.kr/searchAll.php", JSON.stringify({word: searchWord}),{
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      })
+        .then(response => {
+          console.log(response.data);
+          setSearchResult(response.data);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   }
 
