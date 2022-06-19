@@ -31,6 +31,8 @@ function ShowPost(props) {
   const [replyId, setReplyId] = useState(null);
   const [reReplyId, setReReplyId] = useState(null);
   const [reReplyList, setReReplyList] = useState([]);
+  const [accumulate, setAccumulate] = useState(props.state.accumulate);
+  const [participationList, setParticipationList] = useState(props.state.participationList);
 
   useEffect(() => {
     setCurrentUser(props.state.currentUser);
@@ -61,6 +63,19 @@ function ShowPost(props) {
       })
     }
   }, [reReplyList])
+  //---------------새로 추가한 부분----------------
+  useEffect(()=>{
+    setReplyList(ReplyList);
+  }, [ReplyList]);
+  useEffect(()=>{
+    setReReplyList(ReReplyList);
+  }, [ReReplyList]);
+  useEffect(()=>{
+    setAccumulate(props.state.accumulate);
+  }, [props.state.accumulate]);
+  useEffect(()=>{
+    setParticipationList(props.state.participationList);
+  }, [props.state.participationList]);
 
   var url = '?path=deliverypost&id='+props.state.id;
   var id = props.state.id;
@@ -68,7 +83,7 @@ function ShowPost(props) {
   var user = props.state.user;
   var score = props.state.score;
   var deal_count = props.state.deal_count;
-  var participationList = props.state.participationList;
+  //var ParticipationList = props.state.participationList;
   var title = props.state.title;
   var content = props.state.content;
   var reg_date = props.state.reg_date;
@@ -76,9 +91,10 @@ function ShowPost(props) {
   var buy_location = props.state.buy_location;
   var pickup_location = props.state.pickup_location;
   var goal = props.state.goal;
-  var accumulate = props.state.accumulate;
   var view = props.state.view;
   var profile = props.state.profile;
+  var ReplyList = props.state.replyList;
+  var ReReplyList = props.state.reReplyList;
   
   function replyChange (e) {
     if (e.target.value.length > 200) {
@@ -145,6 +161,35 @@ function ShowPost(props) {
       .catch(function(error) {
         console.log(error);
       });
+    
+    //명단 업데이트
+    setTimeout(() => {
+      axios.post("http://holo.dothome.co.kr/getDeliveryInfo.php", JSON.stringify({postid: id}),{
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+      })
+      .then(response => {
+        console.log(response.data.participationList);
+        setParticipationList(response.data.participationList);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    }, 100);
+  
+    //accumulate 업데이트
+    setTimeout(() => {
+      axios.post("http://holo.dothome.co.kr/findDeliveryPost.php", JSON.stringify({postid: id}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {        
+        setAccumulate(response.data[0].accumulate);
+      })
+      .catch(function(error) {
+        console.log(error);
+      })
+    }, 100);
   }
 
   const participationMsg = "\n공동구매에 참여할 금액을 작성해주세요.\n입력하신 금액은 참여 현황에 반영됩니다.\n신중하게 작성해주세요!\n0원 이하는 입력할 수 없습니다.";
@@ -179,6 +224,20 @@ function ShowPost(props) {
       .catch(function(error) {
         console.log(error);
       });
+    
+    //accumulate 업데이트
+    setTimeout(() => {
+      axios.post("http://holo.dothome.co.kr/findDeliveryPost.php", JSON.stringify({postid: id}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {        
+        setAccumulate(response.data[0].accumulate);
+      })
+      .catch(function(error) {
+        console.log(error);
+      })
+    }, 100);
   };
   
   const cancelMsg = "\n참여를 취소하시겠습니까?\n신중하게 결정해주세요!"
@@ -197,6 +256,20 @@ function ShowPost(props) {
       .catch(function(error) {
         console.log(error);
       });
+    
+    //accumulate 업데이트
+    setTimeout(() => {
+      axios.post("http://holo.dothome.co.kr/findDeliveryPost.php", JSON.stringify({postid: id}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {        
+        setAccumulate(response.data[0].accumulate);
+      })
+      .catch(function(error) {
+        console.log(error);
+      })
+    }, 100);
   }
 
   const deleteMsg = "\n게시글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
@@ -255,20 +328,21 @@ function ShowPost(props) {
           console.log(error);
         });
      
-      axios.post("http://holo.dothome.co.kr/getCommentDelivery.php", JSON.stringify({post: id}),
-      {
-        withCredentials: false,
-        headers: {"Content-Type": "application/json"}
-      }).then(response => {
-        console.log(response.data);
-        
-        setReplyList(response.data);
-        //setReplyNum(replyList.length);
-        
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
+      setTimeout(() => {
+          axios.post("http://holo.dothome.co.kr/getCommentDelivery.php", JSON.stringify({post: id}),
+          {
+            withCredentials: false,
+            headers: {"Content-Type": "application/json"}
+          }).then(response => {        
+            setReplyList(response.data);
+            ReplyList = response.data;
+
+            //setReplyNum(replyList.length);
+          })
+          .catch(function(error) {
+            console.log(error);
+          })
+      }, 100);
     }
   }
   
@@ -285,18 +359,22 @@ function ShowPost(props) {
       .catch(function(error) {
         console.log(error);
       });
-    
-    axios.post("http://holo.dothome.co.kr/getCommentDelivery.php", JSON.stringify({post: id}),
-      {
-        withCredentials: false,
-        headers: {"Content-Type": "application/json"}
-      }).then(response => {   
-        setReplyList(response.data);  
-        console.log(replyList);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
+      
+    setTimeout(() => {
+        axios.post("http://holo.dothome.co.kr/getCommentDelivery.php", JSON.stringify({post: id}),
+        {
+          withCredentials: false,
+          headers: {"Content-Type": "application/json"}
+        }).then(response => {        
+          setReplyList(response.data);
+          ReplyList = response.data;
+
+          //setReplyNum(replyList.length);
+        })
+        .catch(function(error) {
+          console.log(error);
+        })
+    }, 100);
   }
 
   const replyDeleteMsg = "\n댓글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
@@ -318,18 +396,21 @@ function ShowPost(props) {
         console.log(error);
       });
     
-    axios.post("http://holo.dothome.co.kr/getCommentDelivery.php", JSON.stringify({post: id}),
-    {
-      withCredentials: false,
-      headers: {"Content-Type": "application/json"}
-    }).then(response => {        
-      setReplyList(response.data);
-      console.log(replyList);
-      //setReplyNum(replyList.length);
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
+    setTimeout(() => {
+        axios.post("http://holo.dothome.co.kr/getCommentDelivery.php", JSON.stringify({post: id}),
+        {
+          withCredentials: false,
+          headers: {"Content-Type": "application/json"}
+        }).then(response => {        
+          setReplyList(response.data);
+          ReplyList = response.data;
+
+          //setReplyNum(replyList.length);
+        })
+        .catch(function(error) {
+          console.log(error);
+        })
+    }, 100);
   }
 
   const submitReReply = (replyId, reReplyContent) => {
@@ -362,16 +443,20 @@ function ShowPost(props) {
         });
     
     //답글 업데이트
-    axios.post("http://holo.dothome.co.kr/getReplyDelivery.php", JSON.stringify({post: id}),
-    {
-      withCredentials: false,
-      headers: {"Content-Type": "application/json"}
-    }).then(response => {
-      setReReplyList(response.data);
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
+    setTimeout(() => {
+      axios.post("http://holo.dothome.co.kr/getReplyDelivery.php", JSON.stringify({post: id}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {        
+        setReReplyList(response.data);
+        ReReplyList = response.data;
+        //setReplyNum(replyList.length);
+      })
+      .catch(function(error) {
+        console.log(error);
+      })
+    }, 100);
   }
 
   const editReReply = (reReplyId, reReplyContent) => {
@@ -391,16 +476,20 @@ function ShowPost(props) {
       });
     
     //답글 업데이트
-    axios.post("http://holo.dothome.co.kr/getReplyDelivery.php", JSON.stringify({post: id}),
-    {
-      withCredentials: false,
-      headers: {"Content-Type": "application/json"}
-    }).then(response => {
-      setReReplyList(response.data);
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
+    setTimeout(() => {
+      axios.post("http://holo.dothome.co.kr/getReplyDelivery.php", JSON.stringify({post: id}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {        
+        setReReplyList(response.data);
+        ReReplyList = response.data;
+        //setReplyNum(replyList.length);
+      })
+      .catch(function(error) {
+        console.log(error);
+      })
+    }, 100);
   }
 
   const reReplyDeleteMsg = "\n답글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
@@ -426,16 +515,20 @@ function ShowPost(props) {
     
     setReplyNum(replyNum-1);  //댓글 개수 감소
     //답글 업데이트
-    axios.post("http://holo.dothome.co.kr/getReplyDelivery.php", JSON.stringify({post: id}),
-    {
-      withCredentials: false,
-      headers: {"Content-Type": "application/json"}
-    }).then(response => {
-      setReReplyList(response.data);
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
+    setTimeout(() => {
+      axios.post("http://holo.dothome.co.kr/getReplyDelivery.php", JSON.stringify({post: id}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {        
+        setReReplyList(response.data);
+        ReReplyList = response.data;
+        //setReplyNum(replyList.length);
+      })
+      .catch(function(error) {
+        console.log(error);
+      })
+    }, 100);
   }
   
   return (

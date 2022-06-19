@@ -31,6 +31,9 @@ function ShowPost(props) {
   const [replyId, setReplyId] = useState(null);
   const [reReplyId, setReReplyId] = useState(null);
   const [reReplyList, setReReplyList] = useState([]);
+  const [accumulate, setAccumulate] = useState(props.state.accumulate);
+
+  console.log(props.state.accumulate);
 
   useEffect(() => {
     setCurrentUser(props.state.currentUser);
@@ -61,6 +64,16 @@ function ShowPost(props) {
       })
     }
   }, [reReplyList])
+  //---------------새로 추가한 부분----------------
+  useEffect(()=>{
+    setReplyList(ReplyList);
+  }, [ReplyList]);
+  useEffect(()=>{
+    setReReplyList(ReReplyList);
+  }, [ReReplyList]);
+  useEffect(()=>{
+    setAccumulate(props.state.accumulate);
+  }, [props.state.accumulate]);
 
   var url = '?path=ottpost&id='+props.state.id;
   var id = props.state.id;
@@ -75,9 +88,10 @@ function ShowPost(props) {
   var limit_date = props.state.limit_date;
   var buy_location = props.state.buy_location;
   var goal = props.state.goal;
-  var accumulate = props.state.accumulate;
   var view = props.state.view;
   var profile = props.state.profile;
+  var ReplyList = props.state.replyList;
+  var ReReplyList = props.state.reReplyList;
 
   function replyChange (e) {
     if (e.target.value.length > 200) {
@@ -177,6 +191,20 @@ function ShowPost(props) {
       .catch(function(error) {
         console.log(error);
       });
+    
+    //accumulate 업데이트
+    setTimeout(() => {
+      axios.post("http://holo.dothome.co.kr/findOTTPost.php", JSON.stringify({postid: id}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {        
+        setAccumulate(response.data[0].accumulate);
+      })
+      .catch(function(error) {
+        console.log(error);
+      })
+    }, 100);
   }
 
   const cancelMsg = "\n참여를 취소하시겠습니까?\n신중하게 결정해주세요!"
@@ -196,6 +224,20 @@ function ShowPost(props) {
       .catch(function(error) {
         console.log(error);
       });
+    
+    //accumulate 업데이트
+    setTimeout(() => {
+      axios.post("http://holo.dothome.co.kr/findOTTPost.php", JSON.stringify({postid: id}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {        
+        setAccumulate(response.data[0].accumulate);
+      })
+      .catch(function(error) {
+        console.log(error);
+      })
+    }, 100);
   }
 
   const deleteMsg = "\n게시글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
@@ -254,21 +296,22 @@ function ShowPost(props) {
           console.log(error);
         });
       
+      //댓글 업데이트
+      setTimeout(() => {
         axios.post("http://holo.dothome.co.kr/getCommentOtt.php", JSON.stringify({post: id}),
         {
           withCredentials: false,
           headers: {"Content-Type": "application/json"}
-        }).then(response => {
-          //console.log(response.data);
-          
+        }).then(response => {        
           setReplyList(response.data);
-          console.log(replyList);
+          ReplyList = response.data;
+
           //setReplyNum(replyList.length);
-          
         })
         .catch(function(error) {
           console.log(error);
-        });
+        })
+      }, 100);
     }
   }
   
@@ -286,17 +329,22 @@ function ShowPost(props) {
         console.log(error);
       });
     
-    axios.post("http://holo.dothome.co.kr/getCommentOtt.php", JSON.stringify({post: id}),
+    //댓글 업데이트
+    setTimeout(() => {
+      axios.post("http://holo.dothome.co.kr/getCommentOtt.php", JSON.stringify({post: id}),
       {
         withCredentials: false,
         headers: {"Content-Type": "application/json"}
-      }).then(response => {   
-        setReplyList(response.data);  
-        console.log(replyList);
+      }).then(response => {        
+        setReplyList(response.data);
+        ReplyList = response.data;
+
+        //setReplyNum(replyList.length);
       })
       .catch(function(error) {
         console.log(error);
-      });
+      })
+    }, 100);
   }
 
   const replyDeleteMsg = "\n댓글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
@@ -317,19 +365,23 @@ function ShowPost(props) {
       .catch(function(error) {
         console.log(error);
       });
-    
-    axios.post("http://holo.dothome.co.kr/getCommentOtt.php", JSON.stringify({post: id}),
-    {
-      withCredentials: false,
-      headers: {"Content-Type": "application/json"}
-    }).then(response => {        
-      setReplyList(response.data);
-      console.log(replyList);
-      //setReplyNum(replyList.length);
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
+
+    //댓글 업데이트
+    setTimeout(() => {
+      axios.post("http://holo.dothome.co.kr/getCommentOtt.php", JSON.stringify({post: id}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {        
+        setReplyList(response.data);
+        ReplyList = response.data;
+
+        //setReplyNum(replyList.length);
+      })
+      .catch(function(error) {
+        console.log(error);
+      })
+    }, 100);
   }
 
   const submitReReply = (replyId, reReplyContent) => {
@@ -361,17 +413,21 @@ function ShowPost(props) {
           console.log(error);
         });
 
-    axios.post("http://holo.dothome.co.kr/getReplyOtt.php", JSON.stringify({post: id}),
-    {
-      withCredentials: false,
-      headers: {"Content-Type": "application/json"}
-    }).then(response => {   
-      setReReplyList(response.data);  
-      console.log(reReplyList);
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
+    //답글 업데이트
+    setTimeout(() => {
+      axios.post("http://holo.dothome.co.kr/getReplyOtt.php", JSON.stringify({post: id}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {        
+        setReReplyList(response.data);
+        ReReplyList = response.data;
+        //setReplyNum(replyList.length);
+      })
+      .catch(function(error) {
+        console.log(error);
+      })
+    }, 100);
   }
 
   const editReReply = (reReplyId, reReplyContent) => {
@@ -390,17 +446,21 @@ function ShowPost(props) {
         console.log(error);
       });
     
-    axios.post("http://holo.dothome.co.kr/getReplyOtt.php", JSON.stringify({post: id}),
+    //답글 업데이트
+    setTimeout(() => {
+      axios.post("http://holo.dothome.co.kr/getReplyOtt.php", JSON.stringify({post: id}),
       {
         withCredentials: false,
         headers: {"Content-Type": "application/json"}
-      }).then(response => {   
-        setReReplyList(response.data);  
-        console.log(reReplyList);
+      }).then(response => {        
+        setReReplyList(response.data);
+        ReReplyList = response.data;
+        //setReplyNum(replyList.length);
       })
       .catch(function(error) {
         console.log(error);
-      });
+      })
+    }, 100);
   }
 
   const reReplyDeleteMsg = "\n답글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
@@ -424,17 +484,22 @@ function ShowPost(props) {
       });
     
     setReplyNum(replyNum-1);  //댓글 개수 증가
-    axios.post("http://holo.dothome.co.kr/getReplyOtt.php", JSON.stringify({post: id}),
-    {
-      withCredentials: false,
-      headers: {"Content-Type": "application/json"}
-    }).then(response => {        
-      setReReplyList(response.data);
-      //setReplyNum(replyList.length);
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
+
+    //답글 업데이트
+    setTimeout(() => {
+      axios.post("http://holo.dothome.co.kr/getReplyOtt.php", JSON.stringify({post: id}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {        
+        setReReplyList(response.data);
+        ReReplyList = response.data;
+        //setReplyNum(replyList.length);
+      })
+      .catch(function(error) {
+        console.log(error);
+      })
+    }, 100);
   }
 
   return (
@@ -443,7 +508,7 @@ function ShowPost(props) {
         <div>OTT 구독</div>
       </div>
       <div className="postTitle">{title}</div>
-      <div className="postUser"><div><img src={profile} alt=" " onClick={()=>setUserInfoModal(true)}/></div><span>{user}</span></div>
+      <div className="postUser"><div><img src={profile} alt=" "/></div><span>{user}</span></div>
       <div className="postRegDate">{reg_date}</div>
       <div className="postContent">
         <div className="postDealContent">
@@ -551,7 +616,7 @@ class Post extends React.Component {
       headers: {"Content-Type": "application/json"}
     })
       .then(response => {
-        //console.log(response.data);
+        console.log(response.data);
         this.setState ({
           score : response.data.score,
           userMail: response.data.userMail,

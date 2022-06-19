@@ -11,7 +11,7 @@ import axios from 'axios';
 
 function ShowPost(props) {
   const navigate = useNavigate();
-  const [currentUser, setCurrentUser] = useState(70); //초기값 수정 필요
+  const [currentUser, setCurrentUser] = useState(28); //초기값 수정 필요
   const [heart, setHeart] = useState(false);
   const [like, setLike] =useState('');
   const [deleteModal, setDeleteModal] = useState(false);
@@ -41,6 +41,9 @@ function ShowPost(props) {
     setReplyNum(props.state.replyList.length + props.state.reReplyList.length);
   }, [props.state.replyList, props.state.reReplyList]);
   useEffect(()=>{
+    setReReplyList(props.state.reReplyList);
+  }, [props.state.reReplyList]);
+  useEffect(()=>{
     for(let i=0;i<replyList.length;i++){
       getProfileImg(replyList[i].mail).then((img) => {
         replyList[i].profile = img
@@ -54,6 +57,13 @@ function ShowPost(props) {
       })
     }
   }, [reReplyList])
+  //---------------새로 추가한 부분----------------
+  useEffect(()=>{
+    setReplyList(ReplyList);
+  }, [ReplyList]);
+  useEffect(()=>{
+    setReReplyList(ReReplyList);
+  }, [ReReplyList]);
 
   var url = '?path=policypost&id='+props.state.id;
   var id = props.state.id;
@@ -64,6 +74,8 @@ function ShowPost(props) {
   var reg_date = props.state.reg_date;
   var view = props.state.view;
   var profile = props.state.profile;
+  var ReplyList = props.state.replyList;
+  var ReReplyList = props.state.reReplyList;
   
   function replyChange (e) {
     if (e.target.value.length > 200) {
@@ -167,18 +179,21 @@ function ShowPost(props) {
         .catch(function(error) {
           console.log(error);
         });
-      
-      axios.post("http://holo.dothome.co.kr/getCommentPolicy.php", JSON.stringify({post: id}),
-        {
-          withCredentials: false,
-          headers: {"Content-Type": "application/json"}
-        }).then(response => {   
-          setReplyList(response.data);  
-          console.log(replyList);
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+
+      setTimeout(() => {
+          axios.post("http://holo.dothome.co.kr/getCommentPolicy.php", JSON.stringify({post: id}),
+          {
+            withCredentials: false,
+            headers: {"Content-Type": "application/json"}
+          }).then(response => {        
+            setReplyList(response.data);
+            ReplyList = response.data;
+            //setReplyNum(replyList.length);
+          })
+          .catch(function(error) {
+            console.log(error);
+          })
+      }, 100);
     }
   }
   
@@ -196,17 +211,21 @@ function ShowPost(props) {
         console.log(error);
       });
     
-    axios.post("http://holo.dothome.co.kr/getCommentPolicy.php", JSON.stringify({post: id}),
-      {
-        withCredentials: false,
-        headers: {"Content-Type": "application/json"}
-      }).then(response => {   
-        setReplyList(response.data);  
-        console.log(replyList);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
+    setTimeout(() => {
+        axios.post("http://holo.dothome.co.kr/getCommentPolicy.php", JSON.stringify({post: id}),
+        {
+          withCredentials: false,
+          headers: {"Content-Type": "application/json"}
+        }).then(response => {        
+          setReplyList(response.data);
+          ReplyList = response.data;
+
+          //setReplyNum(replyList.length);
+        })
+        .catch(function(error) {
+          console.log(error);
+        })
+      }, 100);
   }
 
   const replyDeleteMsg = "\n댓글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
@@ -228,19 +247,23 @@ function ShowPost(props) {
         console.log(error);
       });
     
-    setReplyNum(replyNum-1);  //댓글 개수 증가
-    axios.post("http://holo.dothome.co.kr/getCommentPolicy.php", JSON.stringify({post: id}),
-    {
-      withCredentials: false,
-      headers: {"Content-Type": "application/json"}
-    }).then(response => {        
-      setReplyList(response.data);
-      console.log(replyList);
-      //setReplyNum(replyList.length);
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
+    setReplyNum(replyNum-1);  //댓글 개수 감소
+
+    setTimeout(() => {
+          axios.post("http://holo.dothome.co.kr/getCommentPolicy.php", JSON.stringify({post: id}),
+          {
+            withCredentials: false,
+            headers: {"Content-Type": "application/json"}
+          }).then(response => {        
+            setReplyList(response.data);
+            ReplyList = response.data;
+
+            //setReplyNum(replyList.length);
+          })
+          .catch(function(error) {
+            console.log(error);
+          })
+        }, 100);
   }
 
   const submitReReply = (replyId, reReplyContent) => {
@@ -272,17 +295,21 @@ function ShowPost(props) {
           console.log(error);
         });
         
-    axios.post("http://holo.dothome.co.kr/getReplyPolicy.php", JSON.stringify({post: id}),
-    {
-      withCredentials: false,
-      headers: {"Content-Type": "application/json"}
-    }).then(response => {   
-      setReReplyList(response.data);  
-      console.log(reReplyList);
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
+    //답글 업데이트
+    setTimeout(() => {
+      axios.post("http://holo.dothome.co.kr/getReplyPolicy.php", JSON.stringify({post: id}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {        
+        setReReplyList(response.data);
+        ReReplyList = response.data;
+        //setReplyNum(replyList.length);
+      })
+      .catch(function(error) {
+        console.log(error);
+      })
+    }, 100);
   }
 
   const editReReply = (reReplyId, reReplyContent) => {
@@ -301,17 +328,21 @@ function ShowPost(props) {
         console.log(error);
       });
     
-    axios.post("http://holo.dothome.co.kr/getReplyPolicy.php", JSON.stringify({post: id}),
+    //답글 업데이트
+    setTimeout(() => {
+      axios.post("http://holo.dothome.co.kr/getReplyPolicy.php", JSON.stringify({post: id}),
       {
         withCredentials: false,
         headers: {"Content-Type": "application/json"}
-      }).then(response => {   
-        setReReplyList(response.data);  
-        console.log(reReplyList);
+      }).then(response => {        
+        setReReplyList(response.data);
+        ReReplyList = response.data;
+        //setReplyNum(replyList.length);
       })
       .catch(function(error) {
         console.log(error);
-      });
+      })
+    }, 100);
   }
 
   const reReplyDeleteMsg = "\n답글을 삭제하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
@@ -335,17 +366,21 @@ function ShowPost(props) {
     
     setReplyNum(replyNum-1);  //댓글 개수 감소
 
-    axios.post("http://holo.dothome.co.kr/getReplyPolicy.php", JSON.stringify({post: id}),
-    {
-      withCredentials: false,
-      headers: {"Content-Type": "application/json"}
-    }).then(response => {        
-      setReReplyList(response.data);
-      //setReplyNum(replyList.length);
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
+    //답글 업데이트
+    setTimeout(() => {
+      axios.post("http://holo.dothome.co.kr/getReplyPolicy.php", JSON.stringify({post: id}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {        
+        setReReplyList(response.data);
+        ReReplyList = response.data;
+        //setReplyNum(replyList.length);
+      })
+      .catch(function(error) {
+        console.log(error);
+      })
+    }, 100);
   }
 
   return (
