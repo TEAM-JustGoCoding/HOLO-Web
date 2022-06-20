@@ -24,6 +24,18 @@ function ShowPost(props) {
   const [replyId, setReplyId] = useState(null);
   const [reReplyId, setReReplyId] = useState(null);
   const [reReplyList, setReReplyList] = useState([]);
+  
+  var url = '?path=policypost&id='+props.state.id;
+  var id = props.state.id;
+  var user_id = props.state.user_id;
+  var user = props.state.user;
+  var title = props.state.title;
+  var content = props.state.content;
+  var reg_date = props.state.reg_date;
+  var view = props.state.view;
+  var profile = props.state.profile;
+  var ReplyList = props.state.replyList;
+  var ReReplyList = props.state.reReplyList;
 
   useEffect(() => {
     setCurrentUser(props.state.currentUser);
@@ -44,38 +56,11 @@ function ShowPost(props) {
     setReReplyList(props.state.reReplyList);
   }, [props.state.reReplyList]);
   useEffect(()=>{
-    for(let i=0;i<replyList.length;i++){
-      getProfileImg(replyList[i].mail).then((img) => {
-        replyList[i].profile = img
-      })
-    }
-  }, [replyList])
-  useEffect(()=>{
-    for(let i=0;i<reReplyList.length;i++){
-      getProfileImg(reReplyList[i].mail).then((img) => {
-        reReplyList[i].profile = img
-      })
-    }
-  }, [reReplyList])
-  //---------------새로 추가한 부분----------------
-  useEffect(()=>{
     setReplyList(ReplyList);
   }, [ReplyList]);
   useEffect(()=>{
     setReReplyList(ReReplyList);
   }, [ReReplyList]);
-
-  var url = '?path=policypost&id='+props.state.id;
-  var id = props.state.id;
-  var user_id = props.state.user_id;
-  var user = props.state.user;
-  var title = props.state.title;
-  var content = props.state.content;
-  var reg_date = props.state.reg_date;
-  var view = props.state.view;
-  var profile = props.state.profile;
-  var ReplyList = props.state.replyList;
-  var ReReplyList = props.state.reReplyList;
   
   function replyChange (e) {
     if (e.target.value.length > 200) {
@@ -274,7 +259,7 @@ function ShowPost(props) {
       var date = getToday();
   
       axios.post("http://holo.dothome.co.kr/replyPolicy.php", 
-                JSON.stringify({writer: user, reply_id: replyId, user: currentUser, content: reReplyContent, date: date}),
+        JSON.stringify({writer: user, reply_id: replyId, user: currentUser, content: reReplyContent, date: date}),
       {
         withCredentials: false,
         headers: {"Content-Type": "application/json"}

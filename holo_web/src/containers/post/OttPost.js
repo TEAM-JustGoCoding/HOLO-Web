@@ -34,50 +34,6 @@ function ShowPost(props) {
   const [accumulate, setAccumulate] = useState(props.state.accumulate);
   const [participationList, setParticipationList] = useState(props.state.participationList);
 
-  useEffect(() => {
-    setCurrentUser(props.state.currentUser);
-  }, [props.state.currentUser])
-  useEffect(()=>{
-    setReplyList(props.state.replyList);
-  }, [props.state.replyList]);
-  useEffect(()=>{
-    setReplyNum(props.state.replyList.length + props.state.reReplyList.length);
-  }, [props.state.replyList, props.state.reReplyList]);
-  useEffect(()=>{
-    setParticipation(props.state.alreadyParticipated);
-  }, [props.state.alreadyParticipated]);
-  useEffect(()=>{
-    setReReplyList(props.state.reReplyList);
-  }, [props.state.reReplyList]);
-  useEffect(()=>{
-    for(let i=0;i<replyList.length;i++){
-      getProfileImg(replyList[i].mail).then((img) => {
-        replyList[i].profile = img
-      })
-    }
-  }, [replyList])
-  useEffect(()=>{
-    for(let i=0;i<reReplyList.length;i++){
-      getProfileImg(reReplyList[i].mail).then((img) => {
-        console.log("rereply: ", i)
-        reReplyList[i].profile = img
-      })
-    }
-  }, [reReplyList])
-  //---------------새로 추가한 부분----------------
-  useEffect(()=>{
-    setReplyList(ReplyList);
-  }, [ReplyList]);
-  useEffect(()=>{
-    setReReplyList(ReReplyList);
-  }, [ReReplyList]);
-  useEffect(()=>{
-    setAccumulate(props.state.accumulate);
-  }, [props.state.accumulate]);
-  useEffect(()=>{
-    setParticipationList(props.state.participationList);
-  }, [props.state.participationList]);
-
   var url = '?path=ottpost&id='+props.state.id;
   var id = props.state.id;
   var user_id = props.state.user_id;
@@ -94,6 +50,34 @@ function ShowPost(props) {
   var profile = props.state.profile;
   var ReplyList = props.state.replyList;
   var ReReplyList = props.state.reReplyList;
+  
+  useEffect(() => {
+    setCurrentUser(props.state.currentUser);
+  }, [props.state.currentUser])
+  useEffect(()=>{
+    setReplyList(props.state.replyList);
+  }, [props.state.replyList]);
+  useEffect(()=>{
+    setReplyNum(props.state.replyList.length + props.state.reReplyList.length);
+  }, [props.state.replyList, props.state.reReplyList]);
+  useEffect(()=>{
+    setParticipation(props.state.alreadyParticipated);
+  }, [props.state.alreadyParticipated]);
+  useEffect(()=>{
+    setReReplyList(props.state.reReplyList);
+  }, [props.state.reReplyList]);
+  useEffect(()=>{
+    setReplyList(ReplyList);
+  }, [ReplyList]);
+  useEffect(()=>{
+    setReReplyList(ReReplyList);
+  }, [ReReplyList]);
+  useEffect(()=>{
+    setAccumulate(props.state.accumulate);
+  }, [props.state.accumulate]);
+  useEffect(()=>{
+    setParticipationList(props.state.participationList);
+  }, [props.state.participationList]);
 
   function replyChange (e) {
     if (e.target.value.length > 200) {

@@ -26,6 +26,18 @@ function ShowPost(props) {
   const [reReplyId, setReReplyId] = useState(null);
   const [reReplyList, setReReplyList] = useState([]);
 
+  var url = '?path=documentpost&id='+props.state.id;
+  var id = props.state.id;
+  var user_id = props.state.user_id;
+  var user = props.state.user;
+  var title = props.state.title;
+  var content = props.state.content;
+  var reg_date = props.state.reg_date;
+  var view = props.state.view;
+  var profile = props.state.profile;
+  var ReplyList = props.state.replyList;
+  var ReReplyList = props.state.reReplyList;
+
   useEffect(() => {
     setCurrentUser(props.state.currentUser);
   }, [props.state.currentUser])
@@ -44,40 +56,13 @@ function ShowPost(props) {
   useEffect(()=>{
     setReReplyList(props.state.reReplyList);
   }, [props.state.reReplyList]);
-  useEffect(()=>{
-    for(let i=0;i<replyList.length;i++){
-      getProfileImg(replyList[i].mail).then((img) => {
-        replyList[i].profile = img
-      })
-    }
-  }, [replyList])
-  useEffect(()=>{
-    for(let i=0;i<reReplyList.length;i++){
-      getProfileImg(reReplyList[i].mail).then((img) => {
-        reReplyList[i].profile = img
-      })
-    }
-  }, [reReplyList])
-  //---------------새로 추가한 부분----------------
+  
   useEffect(()=>{
     setReplyList(ReplyList);
   }, [ReplyList]);
   useEffect(()=>{
     setReReplyList(ReReplyList);
   }, [ReReplyList]);
-
-
-  var url = '?path=documentpost&id='+props.state.id;
-  var id = props.state.id;
-  var user_id = props.state.user_id;
-  var user = props.state.user;
-  var title = props.state.title;
-  var content = props.state.content;
-  var reg_date = props.state.reg_date;
-  var view = props.state.view;
-  var profile = props.state.profile;
-  var ReplyList = props.state.replyList;
-  var ReReplyList = props.state.reReplyList;
   
   function replyChange (e) {
     if (e.target.value.length > 200) {
@@ -102,8 +87,8 @@ function ShowPost(props) {
       .catch(function(error) {
         console.log(error);
       });
-    navigate(-1)
-  }
+      navigate(-1)
+    }
 
   function increaseHeart(){
     var temp = Number(like);
@@ -390,7 +375,7 @@ function ShowPost(props) {
       .catch(function(error) {
         console.log(error);
       })
-  }, 100);
+    }, 100);
   }
 
   return (
@@ -430,8 +415,8 @@ function ShowPost(props) {
             <button onClick={() => {submitReply()}}>등록</button>
         </div>
         <div className="replyTable">
-          <ReplyTable currentUser={currentUser} replyList={replyList} replyEditFunc={editReply} replyDeleteFunc={setDeleteReply}
-                      reReplyList={reReplyList} reReplySubmitFunc={submitReReply} reReplyEditFunc={editReReply} reReplyDeleteFunc={setDeleteReReply}/>
+        <ReplyTable currentUser={currentUser} replyList={replyList} replyEditFunc={editReply} replyDeleteFunc={setDeleteReply}
+                    reReplyList={reReplyList} reReplySubmitFunc={submitReReply} reReplyEditFunc={editReReply} reReplyDeleteFunc={setDeleteReReply}/>
         </div>
       </div>
       <Modal type="Check" open={deleteModal} close={()=>{setDeleteModal(false);}} submit={deletePost}>{deleteMsg}</Modal>

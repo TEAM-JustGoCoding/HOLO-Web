@@ -7,19 +7,6 @@ import Pagination from '../../components/Pagination';
 import Modal from '../../components/Modal';
 import queryString from 'query-string';
 import axios from 'axios';
-import { SystemSecurityUpdate } from '@mui/icons-material';
-
-
-//>> 삭제 필요 <<
-/*
-var resultList = [
-  {category: 'policy', id: 3, title: '정책 게시글', reg_date: '2022-02-05', nick_name: '옌', view: '500', like: '5'},
-  {category: 'document', id: 3, title: '생활백서 게시글', reg_date: '2022-02-05', nick_name: '옌2', view: '500', like: '5'},
-  {category: 'delivery', id: 3, title: '공동구매 게시글', reg_date: '2022-02-05', nick_name: '옌3', view: '500', accumulate: '100', goal: '1000'},
-  {category: 'ott', id: 3, title: 'ott 게시글', reg_date: '2022-02-05', nick_name: '옌4', view: '500', accumulate: '1', goal: '5'},
-  {category: 'faq', id: 3, title: 'FAQ 게시글'}
-]sjr
-*/
 
 var resultList = [];
 
@@ -91,7 +78,6 @@ function Search(props) {
   resultList = props.state.searchResult;
   console.log(resultList);
   //setSearchResult(resultList);
-  resultList
 
   useEffect(()=>{
     if(sessionStorage.getItem('searchWord')!=null){setSearchWord(sessionStorage.getItem('searchWord'))}
@@ -116,7 +102,7 @@ function Search(props) {
   }, [resultExist])
   useEffect(()=>{
     setSearchResult(props.state.searchResult)
-  }, [resultList])
+  }, [props.state.searchResult])
 
   function search(){
     if(searchWord===""){

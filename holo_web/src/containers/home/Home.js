@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import queryString from 'query-string';
 import {images} from '../../images';
 
-function Home({history}) {
+function Home() {
   sessionStorage.removeItem('boardSelect');
   sessionStorage.removeItem('boardPage');
   sessionStorage.removeItem('searchWord');

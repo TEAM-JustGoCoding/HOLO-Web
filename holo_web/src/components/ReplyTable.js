@@ -4,6 +4,7 @@ import { Table } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Modal from '../components/Modal';
 import {MdSubdirectoryArrowRight} from "react-icons/md";
+import {getProfileImg} from '../firebase'
 
 const ReplyTable = ({currentUser, replyList, replyEditFunc, replyDeleteFunc, reReplyList, reReplySubmitFunc, reReplyEditFunc, reReplyDeleteFunc}) => {
   const [replyState, setReplyState] = useState(null)
@@ -94,7 +95,7 @@ const ReplyTable = ({currentUser, replyList, replyEditFunc, replyDeleteFunc, reR
                 </div>
               : <div className="reply">
                   <div className="replyTitle">
-                      <div className="replyUser"><div><img src={item.profile} alt="User"/></div><span>{item.nick_name}</span></div>
+                      <div className="replyUser"><div><img src={item.profile} alt=" "/></div><span>{item.nick_name}</span></div>
                       <div className="replyDate">{item.date}</div>
                   </div>
                   <div className="replyContent">{item.content}</div>
@@ -148,7 +149,7 @@ const ReplyTable = ({currentUser, replyList, replyEditFunc, replyDeleteFunc, reR
                         :<div className="reply">
                             <div className="replyTitle">
                                 <MdSubdirectoryArrowRight style={{fontSize: "30px", padding: "3px"}}/>
-                                <div className="replyUser"><div><img src={item2.profile} alt="User"/></div><span>{item2.nick_name}</span></div>
+                                <div className="replyUser"><div><img src={item2.profile} alt=" "/></div><span>{item2.nick_name}</span></div>
                                 <div className="replyDate">{item2.date}</div>
                             </div>
                             <div className="replyContent" style={{paddingLeft: "35px"}}>{item2.content}</div>
@@ -178,4 +179,92 @@ const ReplyTable = ({currentUser, replyList, replyEditFunc, replyDeleteFunc, reR
   );
 }
 
-export default ReplyTable;
+class ShowReplyTable extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      replyList : [],
+      reReplyList : []
+    }
+  }
+
+  componentDidMount(){
+    this.setState({
+      replyList: this.props.replyList,
+      reReplyList: this.props.reReplyList
+    })
+    // setTimeout(()=>{
+    //   this.forceUpdate()
+    // },1000)
+
+    // setTimeout(()=>{
+    // var temp = this.props.replyList
+    // for(let i=0;i<temp.length;i++){
+    //   getProfileImg(temp[i].mail).then((img) => {
+    //     temp[i].profile = img
+    //     this.setState({
+    //       replyList: temp
+    //     })
+    //   })
+    //   console.log("!")
+    // }
+    // }, 100)
+
+  }              
+  componentDidUpdate(prevProps) {
+    if(this.props.replyList !== prevProps.replyList){
+      var replyData = this.props.replyList
+      for(let i=0;i<replyData.length;i++){
+        if(sessionStorage.getItem(replyData[i].mail)===null){
+          getProfileImg(replyData[i].mail).then((img) => {
+            replyData[i].profile = img
+            sessionStorage.setItem(replyData[i].mail, img)
+            this.setState({
+              replyList: replyData
+            })
+          })
+        }
+        else{
+          replyData[i].profile = sessionStorage.getItem(replyData[i].mail)
+          this.setState({
+            replyList: replyData
+          })
+        }
+      }
+      setTimeout(()=>{
+        this.forceUpdate()
+      }, 10)    
+    }
+    if(this.props.reReplyList !== prevProps.reReplyList){
+      var reReplyData = this.props.reReplyList
+      for(let i=0;i<reReplyData.length;i++){
+        if(sessionStorage.getItem(reReplyData[i].mail)===null){
+          getProfileImg(reReplyData[i].mail).then((img) => {
+            reReplyData[i].profile = img
+            this.setState({
+              reReplyList: reReplyData
+            })
+          })
+        }
+        else{
+          reReplyData[i].profile = sessionStorage.getItem(reReplyData[i].mail)
+          this.setState({
+            reReplyList: reReplyData
+          })
+        }
+      }
+      setTimeout(()=>{
+        this.forceUpdate()
+      }, 10)
+    }
+  }
+
+  render() {
+    return(
+      <ReplyTable currentUser={this.props.currentUser} replyList={this.state.replyList} replyEditFunc={this.props.replyEditFunc} replyDeleteFunc={this.props.replyDeleteFunc}
+      reReplyList={this.state.reReplyList} reReplySubmitFunc={this.props.reReplySubmitFunc} reReplyEditFunc={this.props.reReplyEditFunc} reReplyDeleteFunc={this.props.reReplyDeleteFunc}/>
+    );
+  }
+}
+
+export default ShowReplyTable;
