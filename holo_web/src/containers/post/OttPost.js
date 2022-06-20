@@ -32,8 +32,7 @@ function ShowPost(props) {
   const [reReplyId, setReReplyId] = useState(null);
   const [reReplyList, setReReplyList] = useState([]);
   const [accumulate, setAccumulate] = useState(props.state.accumulate);
-
-  console.log(props.state.accumulate);
+  const [participationList, setParticipationList] = useState(props.state.participationList);
 
   useEffect(() => {
     setCurrentUser(props.state.currentUser);
@@ -60,6 +59,7 @@ function ShowPost(props) {
   useEffect(()=>{
     for(let i=0;i<reReplyList.length;i++){
       getProfileImg(reReplyList[i].mail).then((img) => {
+        console.log("rereply: ", i)
         reReplyList[i].profile = img
       })
     }
@@ -74,6 +74,9 @@ function ShowPost(props) {
   useEffect(()=>{
     setAccumulate(props.state.accumulate);
   }, [props.state.accumulate]);
+  useEffect(()=>{
+    setParticipationList(props.state.participationList);
+  }, [props.state.participationList]);
 
   var url = '?path=ottpost&id='+props.state.id;
   var id = props.state.id;
@@ -81,7 +84,6 @@ function ShowPost(props) {
   var user = props.state.user;
   var score = props.state.score;
   var deal_count = props.state.deal_count;
-  var participationList = props.state.participationList;
   var title = props.state.title;
   var content = props.state.content;
   var reg_date = props.state.reg_date;
@@ -158,6 +160,35 @@ function ShowPost(props) {
       .catch(function(error) {
         console.log(error);
       });
+    
+    //명단 업데이트
+    setTimeout(() => {
+      axios.post("http://holo.dothome.co.kr/getOttInfo.php", JSON.stringify({postid: id}),{
+      withCredentials: false,
+      headers: {"Content-Type": "application/json"}
+      })
+      .then(response => {
+        console.log(response.data.participationList);
+        setParticipationList(response.data.participationList);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    }, 100);
+  
+    //accumulate 업데이트
+    setTimeout(() => {
+      axios.post("http://holo.dothome.co.kr/findOTTPost.php", JSON.stringify({postid: id}),
+      {
+        withCredentials: false,
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {        
+        setAccumulate(response.data[0].accumulate);
+      })
+      .catch(function(error) {
+        console.log(error);
+      })
+    }, 100);
   }
 
   const participationMsg = "\nOTT 구독자 모집에 참여하시겠습니까?\n신중하게 결정해주세요!"
@@ -594,7 +625,7 @@ class Post extends React.Component {
        view : "",
        replyList : [],   //임의 댓글 데이터
        reReplyList : [],
-       currentUser : 28,
+       currentUser : 25,
        alreadyParticipated : "false",
        profile: ''
     };
