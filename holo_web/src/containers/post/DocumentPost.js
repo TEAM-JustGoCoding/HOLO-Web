@@ -477,10 +477,19 @@ class Post extends React.Component {
           score : response.data.score,
           userMail: response.data.userMail,
           deal_count : response.data.deal_count});
-        getProfileImg(response.data.userMail).then((img) => {
+        if(sessionStorage.getItem(response.data.userMail)===null){
+          getProfileImg(response.data.userMail).then((img) => {
+            this.setState ({
+              profile: img
+            })
+            sessionStorage.setItem(response.data.userMail, img)
+          });
+        }
+        else{
           this.setState ({
-            profile: img})
-        });
+            profile: sessionStorage.getItem(response.data.userMail)
+          })
+        }
       })
       .catch(function(error) {
         console.log(error);

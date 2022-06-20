@@ -39,8 +39,10 @@ function ShowBoard(props) {
     sessionStorage.setItem('searchPage', 1)
   },[])
   useEffect(()=> {
-    setPolicyJson([...hotPoliInfo,...poliInfo])
-    setDocumentJson([...hotDocInfo,...docInfo])
+    if(hotPoliInfo===null){setPolicyJson([...poliInfo])}
+    else{setPolicyJson([...hotPoliInfo,...poliInfo])}
+    if(hotDocInfo===null){setDocumentJson([...docInfo])}
+    else{setDocumentJson([...hotDocInfo,...docInfo])}
   },[poliInfo, docInfo, hotPoliInfo, hotDocInfo])
 
   function sliceList(){
