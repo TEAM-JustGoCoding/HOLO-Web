@@ -12,7 +12,7 @@ import axios from 'axios';
 
 function ShowPost(props) {
   const navigate = useNavigate();
-  const [currentUser, setCurrentUser] = useState(28); //초기값 수정 필요
+  const [currentUser, setCurrentUser] = useState(0);
   const [heart, setHeart] = useState(false);
   const [like, setLike] =useState('');
   const [deleteModal, setDeleteModal] = useState(false);

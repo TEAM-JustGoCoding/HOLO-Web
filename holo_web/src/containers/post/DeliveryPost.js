@@ -12,13 +12,15 @@ import {Cookies} from "react-cookie";
 
 function ShowPost(props) {
   const navigate = useNavigate();
-  const [currentUser, setCurrentUser] = useState(28); //초기값 수정 필요
+  const [currentUser, setCurrentUser] = useState(0);
   const [participation, setParticipation] = useState(false);
   const [userInfoModal, setUserInfoModal] = useState(false);
   const [manageModal, setManageModal] = useState(false);
   const [refuseModal, setRefuseModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
-  const [participationModal, setParticipationModal] = useState(false);
+  const [participationModal, setParticipationModal] = useState(false); 
+  const [participationCheckMsg, setParticipationCheckMsg] = useState("");
+  const [participationCheckModal, setParticipationCheckModal] = useState(false);
   const [cancelModal, setCancelModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [checkModal, setCheckModal] = useState(false);
@@ -89,6 +91,9 @@ function ShowPost(props) {
       setReply(e.target.value)
     }
   };
+  function priceToString(price) {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
 
   const successMsg = "\n모집을 마감하시겠습니까?\n추후 복구는 불가능합니다.\n신중하게 결정해주세요!"
   const successPost = () => {
@@ -177,52 +182,62 @@ function ShowPost(props) {
     }, 100);
   }
 
-  const participationMsg = "\n공동구매에 참여할 금액을 작성해주세요.\n입력하신 금액은 참여 현황에 반영됩니다.\n신중하게 작성해주세요!\n0원 이하는 입력할 수 없습니다.";
+  const participationMsg = "\n공동구매에 참여할 금액을 작성해주세요.\n입력하신 금액은 참여 현황에 반영됩니다.\n신중하게 작성해주세요!";
   const participationPost = (money) => {
-    setParticipationModal(false);
-    setParticipation(true);
-    console.log(money+"원! 공동구매 금액 추가!")
-
-    //공동구매 참여
-    axios.post("http://holo.dothome.co.kr/DeliveryParticipate.php", JSON.stringify({id: id, starter: user, user: currentUser, money: money}),{
-      withCredentials: false,
-      headers: {"Content-Type": "application/json"}
-    })
-      .then(response => {
-        //채팅방 개설하는 코드를 여기에다 작성        
-        if(response.data['complete'] === "true"){
-          console.log("거래 다 완료됨!");
-
-          var hostEmail = response.data['starter'];
-          var partner = response.data['mates'];
-          var boardTitle = title;
-
-          try {
-            window.Android.createChatRoom(hostEmail, partner, boardTitle);
-          }
-          catch (e) {
-            console.log("Android 없음!");
-          }
-        }
-        
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-    
-    //accumulate 업데이트
-    setTimeout(() => {
-      axios.post("http://holo.dothome.co.kr/findDeliveryPost.php", JSON.stringify({postid: id}),
-      {
+    console.log(money)
+    if(money<=0){
+      setParticipationCheckMsg("목표 금액은 1원 이상으로 입력해주세요!")
+      setParticipationCheckModal(true)
+    }
+    else if(money>1000000){
+      setParticipationCheckMsg("목표 금액은 100만원 이하로 입력해주세요!")     
+      setParticipationCheckModal(true)
+    }
+    else{
+      setParticipationModal(false);
+      setParticipation(true);
+  
+      //공동구매 참여
+      axios.post("http://holo.dothome.co.kr/DeliveryParticipate.php", JSON.stringify({id: id, starter: user, user: currentUser, money: money}),{
         withCredentials: false,
         headers: {"Content-Type": "application/json"}
-      }).then(response => {        
-        setAccumulate(response.data[0].accumulate);
       })
-      .catch(function(error) {
-        console.log(error);
-      })
-    }, 100);
+        .then(response => {
+          //채팅방 개설하는 코드를 여기에다 작성        
+          if(response.data['complete'] === "true"){
+            console.log("거래 다 완료됨!");
+  
+            var hostEmail = response.data['starter'];
+            var partner = response.data['mates'];
+            var boardTitle = title;
+  
+            try {
+              window.Android.createChatRoom(hostEmail, partner, boardTitle);
+            }
+            catch (e) {
+              console.log("Android 없음!");
+            }
+          }
+          
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+      
+      //accumulate 업데이트
+      setTimeout(() => {
+        axios.post("http://holo.dothome.co.kr/findDeliveryPost.php", JSON.stringify({postid: id}),
+        {
+          withCredentials: false,
+          headers: {"Content-Type": "application/json"}
+        }).then(response => {        
+          setAccumulate(response.data[0].accumulate);
+        })
+        .catch(function(error) {
+          console.log(error);
+        })
+      }, 100);
+    }
   };
   
   const cancelMsg = "\n참여를 취소하시겠습니까?\n신중하게 결정해주세요!"
@@ -529,8 +544,8 @@ function ShowPost(props) {
             구매 일시: {limit_date} <br/>
             구매처: {buy_location} <br/>
             픽업 위치: {pickup_location} <br/>
-            목표 금액: {goal} <br/>
-            달성 금액: {accumulate}
+            목표 금액: {priceToString(goal)}원 <br/>
+            달성 금액: {priceToString(accumulate)}원
         </div>
         {content}
         <div className="postEtc">
@@ -573,6 +588,7 @@ function ShowPost(props) {
       <Modal type="Check" open={refuseModal} close={()=>{setRefuseModal(false);}} submit={refuseUser}>{refuseMsg}</Modal>
       <Modal type="Check" open={successModal} close={()=>{setSuccessModal(false);}} submit={successPost}>{successMsg}</Modal>
       <Modal type="Input" open={participationModal} close={()=>{setParticipationModal(false);}} submit={participationPost}>{participationMsg}</Modal>
+      <Modal type="Info" open={participationCheckModal} close={()=>{setParticipationCheckModal(false)}}>{participationCheckMsg}</Modal>
       <Modal type="Check" open={cancelModal} close={()=>{setCancelModal(false);}} submit={cancelPost}>{cancelMsg}</Modal>
       <Modal type="Check" open={deleteModal} close={()=>{setDeleteModal(false);}} submit={deletePost}>{deleteMsg}</Modal>
       <Modal type="Info" open={checkModal} close={()=>setCheckModal(false)}>내용을 입력해주세요!</Modal>

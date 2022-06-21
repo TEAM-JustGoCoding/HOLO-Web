@@ -12,7 +12,7 @@ import {Cookies} from "react-cookie";
 
 function ShowPost(props) {
   const navigate = useNavigate();
-  const [currentUser, setCurrentUser] = useState(28); //초기값 수정 필요
+  const [currentUser, setCurrentUser] = useState(0);
   const [userInfoModal, setUserInfoModal] = useState(false);
   const [manageModal, setManageModal] = useState(false);
   const [refuseModal, setRefuseModal] = useState(false);
@@ -529,8 +529,8 @@ function ShowPost(props) {
         <div className="postDealContent">
             결제 일시: {limit_date} <br/>
             구매처: {buy_location} <br/>
-            목표 인원: {goal} <br/>
-            달성 인원: {accumulate}
+            목표 인원: {goal}명 <br/>
+            달성 인원: {accumulate}명
         </div>
         {content}
         <div className="postEtc">

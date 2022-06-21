@@ -394,6 +394,8 @@ function DeliverySubmit(data){
 function ShowEdit(props) {
   const navigate = useNavigate();
   const [checkModal, setCheckModal] = useState(false);
+  const [ottCheckMsg, setOttCheckMsg] = useState("");
+  const [deliveryCheckMsg, setDeliveryCheckMsg] = useState("");
   const [ottCheckModalOpen, setOttCheckModalOpen] = useState(false);
   const [deliveryCheckModalOpen, setDeliveryCheckModalOpen] = useState(false);
   const [finModal, setFinModal] = useState(false);
@@ -427,13 +429,15 @@ function ShowEdit(props) {
       case "ott":
         if(OTT_state.title===''||OTT_state.content===''||OTT_state.limit_date===''||OTT_state.buy_location===''
           ||OTT_state.goal===''){setCheckModal(true)}
-        else if(OTT_state.goal>10){setOttCheckModalOpen(true)}
+        else if(OTT_state.goal>10){setOttCheckMsg("목표 인원은 10명 이하로 입력해주세요!"); setOttCheckModalOpen(true)}
+        else if(OTT_state.goal<=0){setOttCheckMsg("목표 인원은 1명 이상으로 입력해주세요!"); setOttCheckModalOpen(true)}
         else{openFinModal(); postDB(category);}
         return;
       case "delivery":
         if(Delivery_state.title===''||Delivery_state.content===''||Delivery_state.limit_date===''||Delivery_state.buy_location===''
           ||Delivery_state.pickup_location===''||Delivery_state.goal===''){setCheckModal(true)}
-        else if(Delivery_state.goal>1000000){setDeliveryCheckModalOpen(true)}
+        else if(Delivery_state.goal>1000000){setDeliveryCheckMsg("목표 금액은 100만원 이하로 입력해주세요!"); setDeliveryCheckModalOpen(true)}
+        else if(Delivery_state.goal<=0){setOttCheckMsg("목표 금액은 1원 이상으로 입력해주세요!"); setOttCheckModalOpen(true)}
         else{openFinModal(); postDB(category);}
         return;
       default:
@@ -448,8 +452,8 @@ function ShowEdit(props) {
         <button className="categoryButton" disabled>{category}</button>
         <button className="finButton" onClick={() => {checkFin(props.category);}}>완료</button>
         <Modal type="Info" open={checkModal} close={()=>setCheckModal(false)}>내용을 모두 입력해주세요!</Modal>
-        <Modal type="Info" open={ottCheckModalOpen} close={()=>setOttCheckModalOpen(false)}>목표 인원은 10명 이하로 입력해주세요!</Modal>
-        <Modal type="Info" open={deliveryCheckModalOpen} close={()=>setDeliveryCheckModalOpen(false)}>목표 금액은 100만원 이하로 입력해주세요!</Modal>
+        <Modal type="Info" open={ottCheckModalOpen} close={()=>setOttCheckModalOpen(false)}>{ottCheckMsg}</Modal>
+        <Modal type="Info" open={deliveryCheckModalOpen} close={()=>setDeliveryCheckModalOpen(false)}>{deliveryCheckMsg}</Modal>
         <Modal type="Info" open={finModal} close={closeFinModal}>게시글 수정이 완료되었어요!</Modal>
       </div>
       <ShowInput category={props.category} id = {props.id} user={props.user} title={props.title} 

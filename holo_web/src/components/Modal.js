@@ -50,9 +50,12 @@ function DealModal({open, close, submit, refuse, list}){
 function InputModal({open, close, submit, msg}){
   var money = 0;
   function moneyChange(e) {
+    if (e.target.value.length > 7){
+      e.target.value = parseInt(String(e.target.value).slice(0,7));
+    }
     money = e.target.value;
   }
-
+  
   return (
     <div className={open ? 'openModal modal' : 'modal'}>
       {open ? (
@@ -60,10 +63,10 @@ function InputModal({open, close, submit, msg}){
           <button className="modalCloseButton" onClick={close}>&times;</button>
           <div>{msg}</div>
           <div>
-            <input type="number" min="0" onInput={(e)=>{e.target.value=e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1')}} onChange={moneyChange}></input>원
+            <input type="number" min="0" max="1000000" onInput={(e)=>{e.target.value=e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1')}} onChange={moneyChange} maxLength='7'></input>원
           </div>
           <div>
-            <button className="modalFinButton" onClick={()=> {if(money>0){submit(parseInt(money));}}}>확인</button>
+            <button className="modalFinButton" onClick={()=> {submit(parseInt(money));}}>확인</button>
             <button className="modalFinButton" onClick={close}>취소</button>
           </div>
         </section>

@@ -10,19 +10,19 @@ import {Cookies} from "react-cookie";
 axios.defaults.withCredentials = true;  //axios 전역설정
 
 var Policy_state = {
-  user : '32',
+  user : '82',
   title : '',
   content : '',
   reg_date : ''
 };
 var Document_state = {
-  user : '32',
+  user : '82',
   title : '',
   content : '',
   reg_date : ''
 };
 var OTT_state = {
-  user : '32',
+  user : '82',
   title : '',
   content : '',
   reg_date : '',
@@ -31,14 +31,14 @@ var OTT_state = {
   goal : ''
 };
 var Delivery_state = {
-  user : '32',
+  user : '82',
   title : '',
   content : '',
   reg_date : '',
   limit_date : '',
   buy_location : '',
   pickup_location : '',
-  town_location : '양호동',
+  town_location : '거의동',
   goal : ''
 };
 
@@ -162,7 +162,7 @@ function DeliveryWrite() {
       <input type='text' id="title" placeholder='제목' spellCheck="false" onChange={G_titleChange} maxLength='50'/>
       <input type="datetime-local" id="limitDate" data-placeholder="구매 일시" required aria-required="true" onChange={G_limitDateChange}/>
       <input type='text' id="buyLocation" placeholder='구매처' spellCheck="false" onChange={G_buyLocationChange} maxLength='50'/>
-      <input type='number' id="goal" min="0"  max="1000000" placeholder='목표 금액 (100만원 이하)' onInput={(e)=>{e.target.value=e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1')}} onChange={G_goalChange} maxLength='7'/>
+      <input type='number' id="goal" min="0"  max="1000000" placeholder='목표 금액 (단위: 원/백만원 이하)' onInput={(e)=>{e.target.value=e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1')}} onChange={G_goalChange} maxLength='7'/>
       <input type='text' id="pickupLocation" placeholder='픽업 위치' spellCheck="false" onChange={G_pickupChange} maxLength='50'/>
       <textarea id="content" className="deliveryContent" placeholder='내용을 입력하세요.' spellCheck="false" onChange={G_contentChange} maxLength='21845'/>
     </div>
@@ -297,6 +297,8 @@ function Write() {
   const [category, setCategory] = useState("정책");
   const [dropdownOpen, setDropdown] = useState(false);
   const [checkModalOpen, setCheckModalOpen] = useState(false);
+  const [ottCheckMsg, setOttCheckMsg] = useState("");
+  const [deliveryCheckMsg, setDeliveryCheckMsg] = useState("");
   const [ottCheckModalOpen, setOttCheckModalOpen] = useState(false);
   const [deliveryCheckModalOpen, setDeliveryCheckModalOpen] = useState(false);
   const [finModalOpen, setFinModalOpen] = useState(false);
@@ -364,13 +366,15 @@ function Write() {
       case "OTT구독":
         if(OTT_state.title===''||OTT_state.content===''||OTT_state.limit_date===''||OTT_state.buy_location===''
           ||OTT_state.goal===''){setCheckModalOpen(true)}
-        else if(OTT_state.goal>10){setOttCheckModalOpen(true)}
+        else if(OTT_state.goal>10){setOttCheckMsg("목표 인원은 10명 이하로 입력해주세요!"); setOttCheckModalOpen(true)}
+        else if(OTT_state.goal<=0){setOttCheckMsg("목표 인원은 1명 이상으로 입력해주세요!"); setOttCheckModalOpen(true)}
         else{openFinModal(); postDB(category);}
         return;
       case "공동구매":
         if(Delivery_state.title===''||Delivery_state.content===''||Delivery_state.limit_date===''||Delivery_state.buy_location===''
           ||Delivery_state.pickup_location===''||Delivery_state.goal===''){setCheckModalOpen(true)}
-        else if(Delivery_state.goal>1000000){setDeliveryCheckModalOpen(true)}
+        else if(Delivery_state.goal>1000000){setDeliveryCheckMsg("목표 금액은 100만원 이하로 입력해주세요!"); setDeliveryCheckModalOpen(true)}
+        else if(Delivery_state.goal<=0){setOttCheckMsg("목표 금액은 1원 이상으로 입력해주세요!"); setOttCheckModalOpen(true)}
         else{openFinModal(); postDB(category);}
         return;
       default:
@@ -386,8 +390,8 @@ function Write() {
         <Dropdown open={dropdownOpen} close={closeDropdown}></Dropdown>
         <button className="finButton" onClick={() => {checkFin(category);}}>완료</button>
         <Modal type="Info" open={checkModalOpen} close={()=>setCheckModalOpen(false)}>내용을 모두 입력해주세요!</Modal>
-        <Modal type="Info" open={ottCheckModalOpen} close={()=>setOttCheckModalOpen(false)}>목표 인원은 10명 이하로 입력해주세요!</Modal>
-        <Modal type="Info" open={deliveryCheckModalOpen} close={()=>setDeliveryCheckModalOpen(false)}>목표 금액은 100만원 이하로 입력해주세요!</Modal>
+        <Modal type="Info" open={ottCheckModalOpen} close={()=>setOttCheckModalOpen(false)}>{ottCheckMsg}</Modal>
+        <Modal type="Info" open={deliveryCheckModalOpen} close={()=>setDeliveryCheckModalOpen(false)}>{deliveryCheckMsg}</Modal>
         <Modal type="Info" open={finModalOpen} close={closeFinModal}>게시글 작성이 완료되었어요!</Modal>
       </div>
       <ShowInput category={category}></ShowInput>
