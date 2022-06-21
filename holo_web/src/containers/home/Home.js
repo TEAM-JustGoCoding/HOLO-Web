@@ -67,7 +67,12 @@ function Home() {
       }
     }
     else{
-      window.history.back()
+      try {
+        window.Android.exitWebview();
+      }
+      catch (e) {
+        window.history.back()
+      }
     }
   },[])
 
