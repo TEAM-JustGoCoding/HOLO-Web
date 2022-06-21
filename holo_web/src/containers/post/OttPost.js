@@ -609,7 +609,7 @@ class Post extends React.Component {
        view : "",
        replyList : [],   //임의 댓글 데이터
        reReplyList : [],
-       currentUser : 25,
+       currentUser : 82,
        alreadyParticipated : "false",
        profile: ''
     };

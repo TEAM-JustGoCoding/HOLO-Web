@@ -450,7 +450,7 @@ class Post extends React.Component {
        alreadyLiked: "",
        replyList : [],
        reReplyList : [],
-       currentUser: 39, //초기값 수정 필요
+       currentUser: 82, //초기값 수정 필요
        profile: ''
     };
 

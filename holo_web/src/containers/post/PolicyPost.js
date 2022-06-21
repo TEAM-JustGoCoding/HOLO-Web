@@ -441,7 +441,7 @@ class Post extends React.Component {
        alreadyLiked : '', //이 글을 보는 사용자가 이전에 이미 좋아요를 눌렀는지 체크하는 변수
        replyList : [],
        reReplyList : [],
-       currentUser: 70, //초기값 수정 필요
+       currentUser: 82, //초기값 수정 필요
        profile: ''
     };
 

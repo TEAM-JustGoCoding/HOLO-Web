@@ -609,7 +609,7 @@ class Post extends React.Component {
        accumulate : "",
        view : "",
        replyList : [],
-       currentUser : 28,
+       currentUser : 82,
        reReplyList : [],
        alreadyParticipated : "false",
        profile: ''
