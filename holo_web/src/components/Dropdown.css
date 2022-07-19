@@ -1,0 +1,40 @@
+.dropdown{
+    display: none;
+    position: fixed;
+    top: 10vh;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 99;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+.dropdown.openDropdown {
+    display: flex;
+    align-items: center;
+}
+.dropdown ul{
+    width: 100vw;
+    padding: 0;
+    margin: 0 auto auto auto;
+    background: white;
+    font-family: "aSmile";
+    color: black;
+    font-size: 4vh;
+}
+.dropdown li{
+    width: 100%;
+    padding: 1vh 3vh 1vh 3vh;
+    list-style: none;
+}
+.dropdown li:hover{
+    background-color: #ECECEC;
+}
+
+@font-face {
+    font-family: "aSmile_L";
+    src: url(../fonts/aSmile_L.ttf);
+} 
+@font-face {
+    font-family: "aSmile";
+    src: url(../fonts/aSmile.ttf);
+}

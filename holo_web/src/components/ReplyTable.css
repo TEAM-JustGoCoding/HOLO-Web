@@ -1,0 +1,119 @@
+.reply{
+    width: 90vw;
+    padding: 10px;
+}
+.replyTitle{
+    padding: 3px;
+    display:flex;
+    flex-direction: row;
+}
+.replyUser {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    margin: auto auto auto 0;
+    font-family: "aSmile_L";
+    font-size: 2vh;
+}
+.replyUser > div {
+    position: relative;
+    width: 5vh;
+    height: 5vh;
+    margin: 0 5px 0 0;
+}
+.replyUser > div > img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(50, 50);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    margin: auto;
+    border: solid 1px #ababab;
+    border-radius: 50px;
+}
+.replyUser > span {
+    margin: auto auto auto 1px;
+}
+.replyDate {
+    height: 100%;
+    margin: auto 0 auto auto;
+    font-family: "aSmile_L";
+    font-size: 1.5vh;
+    color: #a5a5a5;
+}
+.replyContent {
+    width: 100%;
+    height: 100%;
+    padding: 3px;
+    margin: auto;
+    white-space: pre-line;
+    font-family: "aSmile_L";
+    font-size: 2vh;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+.replyButton {
+    padding: 3px;
+    display:flex;
+    flex-direction: row;
+    font-family: "aSmile_L";
+    font-size: 1.75vh;
+}
+.replyButton > button {
+    margin: auto auto auto 0;
+    background-color: white;
+    border: solid 1px #ababab;
+}
+.replyButton > div {
+    margin: auto 0 auto auto;
+}
+.replyButton > div > button {
+    background-color: white;
+    border: solid 1px #ababab;
+}
+.replyTableInput{
+    width: 100%;
+    height: 15vh;
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
+}
+.replyTableInput > div{
+    width: 95%;
+    height: 100%;
+    background-color: #f0f0f0;
+    display: flex;
+    margin: auto;
+}
+.replyTableInput > div > textarea{
+    background-color: #f0f0f0;
+    width: 75%;
+    height: 10vh;
+    margin: auto;
+    border: none;
+    resize: none;
+    font-family: "aSmile_L";
+    font-size: 2vh;
+}
+.replyTableInput > div > textarea:focus{
+    outline: none;
+}
+.replyTableInput > div > div {
+    width: 20%;
+    max-width: 10vh;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.replyTableInput > div > div > button {
+    background-color: #ababab;
+    width: 100%;
+    height: 45%;
+    margin: auto auto auto 0;
+    border: none;
+}
+.replyTableInput > div > div > button:active {
+    background-color: #848484;
+}

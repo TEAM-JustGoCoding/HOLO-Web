@@ -1,0 +1,158 @@
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 99;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+.modal button {
+    outline: none;
+    cursor: pointer;
+    border: 0;
+}
+.infoModal{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: #9dc3e6;
+    width: 90%;
+    max-width: 450px;
+    height: 30%;
+    margin: 0 auto;
+    border-radius: 35px;
+    border: 10px solid #1d4999;
+    animation: modal-show 0.3s;
+    overflow: hidden;
+    text-align: center;
+}
+.dealModal{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: #9dc3e6;
+    width: 90%;
+    max-width: 450px;
+    height: 50%;
+    margin: 0 auto;
+    border-radius: 35px;
+    border: 10px solid #1d4999;
+    animation: modal-show 0.3s;
+    overflow: hidden;
+}
+.checkModal {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: #9dc3e6;
+    width: 90%;
+    max-width: 450px;
+    height: 30%;
+    margin: 0 auto;
+    border-radius: 35px;
+    border: 10px solid #1d4999;
+    animation: modal-show 0.3s;
+    overflow: hidden;
+}
+.inputModal {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: #9dc3e6;
+    width: 90%;
+    max-width: 450px;
+    height: 35%;
+    margin: 0 auto;
+    border-radius: 35px;
+    border: 10px solid #1d4999;
+    animation: modal-show 0.3s;
+    overflow: hidden;
+    text-align: center;
+}
+
+.infoModal > div,
+.dealModal > div,
+.inputModal > div,
+.checkModal > div {
+    margin: auto;
+    font-family: "aSmile";
+    font-size: 2vh;
+    color: #1d4999;
+    white-space: pre-line;
+}
+.dealModal > div > span {
+    margin: auto;
+    font-family: "aSmile";
+    font-size: 2.5vh;
+    color: #1d4999;
+    white-space: pre-line;
+}
+.inputModal > div > input {
+    margin: 0 1vh 0 0;
+    width: 15vh;
+    font-family: "aSmile_L";
+    font-size: 2vh;
+}
+.inputModal > div > input::-webkit-outer-spin-button,
+.inputModal > div > input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.modalCloseButton {
+    background-color: transparent;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: auto;
+    height: auto;
+    font-size: 5vh;
+    font-weight: 700;
+    text-align: center;
+    color: #1d4999;
+}
+.modalSuccessButton,
+.modalFinButton{
+    background-color: #1d4999;
+    padding: 0.5vh 2vh;
+    margin: auto 3.5vh auto 3.5vh;
+    border-radius: 10px;
+    font-family: "aSmile_L";
+    font-size: 2.5vh;
+    color: white;
+}
+
+.modal.openModal {
+    display: flex;
+    align-items: center;
+    animation: modal-bg-show 0.3s;
+}
+
+@keyframes modal-show {
+    from {
+        opacity: 0;
+        margin-top: -50px;
+    }
+    to {
+        opacity: 1;
+        margin-top: 0;
+    }
+}
+@keyframes modal-bg-show {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@font-face {
+    font-family: "aSmile_L";
+    src: url(../fonts/aSmile_L.ttf);
+}
+@font-face {
+    font-family: "aSmile";
+    src: url(../fonts/aSmile.ttf);
+}

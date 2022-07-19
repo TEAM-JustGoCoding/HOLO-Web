@@ -1,0 +1,203 @@
+.postHeaderBar {
+    background-color: #9dc3e6;
+    width: 100%;
+    height: 10vh;
+    display: flex;
+    box-shadow: 0 3px 5px rgba(0,0,0,0.30);
+}
+.postHeaderBar > div {
+    margin: auto;
+    font-family: "aSmile";
+    font-size: 4.5vh;
+    color: white;
+}
+
+.postTitle {
+    width: 90vw;
+    height: 100%;
+    padding: 5vh 0 2.5vh 0;
+    margin: auto;
+    border: none;
+    font-family: "aSmile";
+    font-size: 3.5vh;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+.postUser {
+    display: flex;
+    flex-direction: row;
+    width: 90vw;
+    height: 100%;
+    margin: auto;
+    font-family: "aSmile_L";
+    font-size: 2.5vh;
+}
+.postUser > div {
+    position: relative;
+    width: 7vh;
+    height: 7vh;
+    margin: 0 1vh 0 0;
+}
+.postUser > div > img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(50, 50);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    margin: auto;
+    border: solid 1px #ababab;
+    border-radius: 50px;
+}
+.postUser > span {
+    margin: auto auto auto 1px;
+}
+.postRegDate {
+    width: 90vw;
+    height: 100%;
+    margin: auto;
+    text-align: right;
+    font-family: "aSmile_L";
+    font-size: 2.5vh;
+}
+.postContent {
+    width: 90vw;
+    height: 100%;
+    padding: 2.5vh 0 2.5vh 0;
+    margin: auto;
+    border: none;
+    border-top: solid 1px #ababab;
+    border-bottom: solid 1px #ababab;
+    white-space: pre-line;
+    font-family: "aSmile_L";
+    font-size: 2.5vh;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+.postDealContent {
+    width: 100%;
+    height: 100%;
+    padding: 2.5vh 2.5vh;
+    margin: auto auto 2.5vh auto;
+    border: 7px solid #9dc3e6;
+    border-radius: 50px;
+    text-align: center;
+    font-family: "aSmile";
+    font-size: 2.5vh;
+}
+.postFAQContent {
+    width: 90vw;
+    height: 100%;
+    padding: 2.5vh 0 2.5vh 0;
+    margin: auto;
+    border: none;
+    border-top: solid 1px #ababab;
+    white-space: pre-line;
+    font-family: "aSmile_L";
+    font-size: 2.5vh;
+}
+
+.postEtc {
+    margin: 10vh 0 0 0;
+}
+.postEtc2 {
+    display: flex;
+    flex-direction: row;
+}
+.postEtc2 > div {
+    margin: auto 0 auto auto;
+}
+.postEtcButton {
+    background-color: white;
+    border: solid 1px #ababab;
+}
+
+.postReply {
+    width: 90vw;
+    height: 100%;
+    padding: 2.5vh 0 2.5vh 0;
+    margin: auto;
+    font-family: "aSmile_L";
+    font-size: 2.5vh;
+}
+.replyInput{
+    background-color: #f0f0f0;
+    width: 90vw;
+    height: 15vh;
+    margin: 1vh auto auto auto;
+    display: flex;
+    flex-direction: row;
+}
+.replyInput > textarea{
+    background-color: #f0f0f0;
+    width: 75%;
+    height: 10vh;
+    margin: auto;
+    border: none;
+    resize: none;
+    font-family: "aSmile_L";
+    font-size: 2vh;
+}
+.replyInput > textarea:focus{
+    outline: none;
+}
+.replyInput > button {
+    background-color: #ababab;
+    width: 20%;
+    max-width: 10vh;
+    height: 75%;
+    margin: auto auto auto 0;
+    border: none;
+}
+.replyInput > button:active {
+    background-color: #848484;
+}
+.replyTable {
+    margin-top: 1%;
+}
+
+.heartIcon{
+    margin: 0 1vh 0 3vh;
+    cursor: pointer;
+    transition: transform 300ms ease;
+    font-size: 3.5vh;
+}
+.heartIcon:hover{
+    transform: scale(1.1);
+}
+.dealButton{
+    background-color: #e7ebfd;
+    display: block;
+    padding: 2vh;
+    margin: auto auto 20px auto;
+    border: 5px solid;
+    border-radius: 15px;
+    font-family: "aSmile";
+    font-size: 3vh;
+}
+
+.red{
+    color: red;
+}
+.pink{
+    color: #f38993;
+    border-color: #f38993;
+}
+.skyblue{
+    color: #9dc3e6;
+    border-color: #9dc3e6;
+}
+.purple{
+    color: #ca9de6;
+    border-color: #ca9de6;
+}
+
+@font-face {
+    font-family: "aSmile_L";
+    src: url(../../fonts/aSmile_L.ttf);
+}
+@font-face {
+    font-family: "aSmile";
+    src: url(../../fonts/aSmile.ttf);
+}
