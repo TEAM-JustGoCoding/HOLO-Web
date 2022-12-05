@@ -8,22 +8,13 @@
 
   $search = $data['word'];
 
-  //$search = '떡볶이';
-  //echo 'searchDelivery.php가 무사히 열렸습니다.';  //확인용 메세지
-  //echo '<br>';
-  //echo '검색: '.$search;
-  //echo '<br>';
-
-  //$Data = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);;  //다시 json 문자열로 변환
-  //print_r('encode -> '.$Data);
-
   //=========================================================
   //데이터베이스 연결
   $db_host = "localhost";
 
-  $db_user = "holo";
+  $db_user = "";
 
-  $db_password = "kitce2022*";
+  $db_password = "";
 
   $db_name = "holo";
 

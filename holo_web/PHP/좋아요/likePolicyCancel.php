@@ -9,16 +9,13 @@
   $postId = $data['id'];  //좋아요 누른 게시글 id
   $userId = $data['user'];  //좋아요 누른 user id
 
-  //$postId = 60;
-  //$userId = 34;
-
   //=========================================================
   //데이터베이스 연결
   $db_host = "localhost";
 
-  $db_user = "holo";
+  $db_user = "";
 
-  $db_password = "kitce2022*";
+  $db_password = "";
 
   $db_name = "holo";
 

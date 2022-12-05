@@ -5,21 +5,16 @@
   header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept');
 
   $data = json_decode(file_get_contents('php://input'),true);
-  echo json_encode($data);
-  //print_r($data);
-  echo $data['id'];
 
-  //$id = $data['id'];
-
-    $id = $data['id'];
+  $id = $data['id'];
 
   //=========================================================
   //데이터베이스 연결
   $db_host = "localhost";
 
-  $db_user = "holo";
+  $db_user = "";
 
-  $db_password = "kitce2022*";
+  $db_password = "";
 
   $db_name = "holo";
 

@@ -4,14 +4,8 @@
   header('Access-Control-Allow-Methods: POST,GET,OPTIONS');
   header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept');
 
-  echo "확인차 해보는거 <br>";
 
   $data = json_decode(file_get_contents('php://input'),true);
-  //header('Content-Type: application/json');
-  echo json_encode($data);
-  //$data = json_decode(array_keys($_POST)[0], true);
-
-  //print_r($data);
 
   $user = $data['user'];
   $title = $data['title'];
@@ -26,9 +20,9 @@
   //데이터베이스 연결
   $db_host = "localhost";
 
-  $db_user = "holo";
+  $db_user = "";
 
-  $db_password = "kitce2022*";
+  $db_password = "";
 
   $db_name = "holo";
 
